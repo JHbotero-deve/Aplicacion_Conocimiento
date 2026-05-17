@@ -1,0 +1,30 @@
+<form id="registroForm">
+  <input type="text" name="usuario" placeholder="Usuario" required>
+  <input type="password" name="contraseña" placeholder="Contraseña" required>
+  <input type="text" name="rol" placeholder="Rol" required>
+  <button type="submit">Registrar</button>
+</form>
+<script src="../services/api.js"></script>
+<script>
+  const registroForm = document.getElementById('registroForm');
+  registroForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registroForm);
+    const data = {
+      usuario: formData.get('usuario'),
+      contraseña: formData.get('contraseña'),
+      rol: formData.get('rol')
+    };
+    try {
+      const response = await api.post('/registro', data);
+      if (response.ok) {
+        alert('Registro exitoso');
+        registroForm.reset();
+      } else {
+        alert('Error en el registro');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error en la conexión');
+    }
+  });
