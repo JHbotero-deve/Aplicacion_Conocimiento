@@ -1,0 +1,37 @@
+### Registro de usuario
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "nombre_usuario": "jorge",
+  "contraseña": "123456"
+}
+
+### Login de usuario
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "nombre_usuario": "jorge",
+  "contraseña": "123456"
+}
+
+### Ingreso de ganado
+POST http://localhost:3000/ganado
+Content-Type: application/json
+
+{
+  "chapeta": "12345",
+  "raza": "Brahman",
+  "edad": 3,
+  "peso": 450.50,
+  "fecha_ingreso": "2026-05-17",
+  "estadoICA": "Sano"
+}
+
+### Bloquear registro de ganado
+PUT http://localhost:3000/ganado/bloquear/1
+Content-Type: application/json
+
+### Buscar ganado por chapeta
+GET http://localhost:3000/ganado/chapeta/12345
