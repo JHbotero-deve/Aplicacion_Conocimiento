@@ -2,14 +2,17 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+ 
   "scripts": {
-    "dev": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "dev": "nodemon server.js",
+  "start": "node server.js",
+  "seed": "node seed.js"
+},
+
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Proyecto Ganaderia - Backend con Node.js, Express y PostgreSQL",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",

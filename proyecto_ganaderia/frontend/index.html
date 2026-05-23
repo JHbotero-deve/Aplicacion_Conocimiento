@@ -1,4 +1,37 @@
-<h1>Sistema de Gestión Ganadera</h1>
-<a href="forms/registro.html">Registro</a>
-<a href="forms/login.html">Login</a>
-<a href="forms/ingreso.html">Ingreso de Ganado</a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Sistema Ganadero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="./dist/output.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-green-100 to-green-200 min-h-screen flex items-center justify-center">
+
+  <!-- Tarjeta principal -->
+  <div class="bg-white shadow-2xl rounded-xl p-10 w-full max-w-lg text-center space-y-6 border border-green-300">
+    <h1 class="text-4xl font-bold text-green-700">
+      🐄 Sistema de Gestión Ganadera
+    </h1>
+    <p class="text-gray-600 text-lg">
+      Bienvenido al sistema de control y registro de tu finca ganadera.
+    </p>
+
+    <!-- Botones de navegación -->
+    <div class="flex flex-col gap-4 mt-6">
+      <a href="./forms/login.html" 
+         class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition font-semibold">
+        Ingresar al Sistema
+      </a>
+      <a href="./forms/registro.html" 
+         class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold">
+        Registrarse como Usuario
+      </a>
+      
+ 
+    </div>
+  </div>
+
+</body>
+</html>

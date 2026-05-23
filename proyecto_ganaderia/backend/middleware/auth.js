@@ -1,13 +1,17 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (req,res,next) => {
+module.exports = (req, res, next) => {
   const header = req.headers["authorization"];
-  if(!header) return res.status(401).json({message:"Token requerido"});
+  if (!header) {
+    return res.status(401).json({ message: "Token requerido" });
+  }
+
   const token = header.split(" ")[1];
   try {
-    jwt.verify(token,"secreto");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY); // usa variable de entorno
+    req.user = decoded; // guardar datos del usuario en la request
     next();
-  } catch(err) {
-    res.status(401).json({message:"Token inválido"});
+  } catch (err) {
+    return res.status(403).json({ message: "Token inválido o expirado" });
   }
 };

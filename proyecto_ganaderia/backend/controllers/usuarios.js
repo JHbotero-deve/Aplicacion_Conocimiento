@@ -1,41 +1,41 @@
-const db = require("../models/db");
+const pool = require("../models/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-async function registro(req, res) {
+const registro = async (req, res) => {
   try {
-    const { nombre_usuario, contraseña } = req.body;
-    const hash = await bcrypt.hash(contraseña, 10);
+    const { nombre_usuario, contrasena, rol_usuario } = req.body;
+    const hash = await bcrypt.hash(contrasena, 10);
 
-    await db.query(
-      "INSERT INTO usuarios (nombre_usuario, contraseña_hash, rol_usuario) VALUES ($1, $2, $3)",
-      [nombre_usuario, hash, "operador"]
+    await pool.query(
+      "INSERT INTO usuarios (nombre_usuario, contrasena_hash, rol_usuario, fecha_creacion) VALUES ($1,$2,$3,NOW())",
+      [nombre_usuario, hash, rol_usuario]
     );
 
-    res.status(201).send("Usuario registrado");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error en el registro");
+    res.json({ mensaje: "Usuario registrado con éxito" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error en registro" });
   }
-}
+};
 
-async function login(req, res) {
+const login = async (req, res) => {
   try {
-    const { nombre_usuario, contraseña } = req.body;
-    const result = await db.query(
-      "SELECT * FROM usuarios WHERE nombre_usuario = $1",
+    const { nombre_usuario, contrasena } = req.body;
+    const result = await pool.query(
+      "SELECT * FROM usuarios WHERE nombre_usuario=$1",
       [nombre_usuario]
     );
 
     if (result.rows.length === 0) {
-      return res.status(401).send("Usuario no encontrado");
+      return res.status(401).json({ error: "Usuario no encontrado" });
     }
 
     const usuario = result.rows[0];
-    const valido = await bcrypt.compare(contraseña, usuario.contraseña_hash);
+    const valido = await bcrypt.compare(contrasena, usuario.contrasena_hash);
 
     if (!valido) {
-      return res.status(401).send("Contraseña incorrecta");
+      return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
     const token = jwt.sign(
@@ -44,11 +44,11 @@ async function login(req, res) {
       { expiresIn: "1h" }
     );
 
-    res.json({ token });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error en el login");
+    res.json({ mensaje: "Login exitoso", token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error en login" });
   }
-}
+};
 
 module.exports = { registro, login };

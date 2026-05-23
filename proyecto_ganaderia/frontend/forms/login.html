@@ -1,6 +1,71 @@
-<form id="loginForm">
-  <input type="text" name="usuario" placeholder="Usuario" required>
-  <input type="password" name="contraseña" placeholder="Contraseña" required>
-  <button type="submit">Login</button>
-</form>
-<script src="../services/api.js"></script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sistema Ganadero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-green-200 min-h-screen flex items-center justify-center p-4">
+
+  <form id="loginForm" class="w-full max-w-md bg-white rounded-xl shadow-xl p-8 space-y-6">
+    <h2 class="text-3xl font-bold text-center text-green-700">Iniciar Sesión</h2>
+    
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Usuario</label>
+      <input type="text" name="nombre_usuario" required
+        class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+      <input type="password" name="contrasena" required
+        class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+
+    <button type="submit"
+      class="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-600 transition">
+      Entrar
+    </button>
+
+    <button type="button" onclick="window.history.back()"
+      class="w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600 transition">
+      ⬅️ Atrás
+    </button>
+  </form>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        nombre_usuario: loginForm.nombre_usuario.value,
+        contrasena: loginForm.contrasena.value
+      };
+      try {
+        const response = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          // Guardar token en localStorage
+          localStorage.setItem("token", result.token);
+          alert("Login exitoso ✅");
+          // Redirigir al formulario de registro de ganado
+          window.location.href = "registro_ganado.html";
+        } else {
+          const error = await response.json();
+          alert("Credenciales inválidas ❌: " + (error.error || "Usuario o contraseña incorrectos"));
+        }
+      } catch (error) {
+        alert("Error en la conexión con el servidor");
+      }
+    });
+  </script>
+</body>
+</html>
+ 
