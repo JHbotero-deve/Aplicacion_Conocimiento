@@ -1,8 +1,0 @@
-{
-    "github.copilot.enable": {
-    "*": false
-},
-"chat.disableAIFeatures": false,
-"continue.enableTabAutocomplete": true
-
-}
