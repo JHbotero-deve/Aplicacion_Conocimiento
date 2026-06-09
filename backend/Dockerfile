@@ -1,19 +1,15 @@
-FROM node:18
+FROM node:18-bullseye-slim
 
-# Directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 
-# Instalar dependencias
-RUN npm install
+ENV NODE_ENV=production
+RUN npm ci --only=production --no-audit --no-fund
 
-# Copiar el resto del código
 COPY . .
 
-# Exponer puerto (el mismo que usas en tu server.js)
-EXPOSE 3000
-
-# Comando de inicio
-CMD ["npm", "start"]
+RUN useradd --user-group --create-home --shell /bin/false appuser && chown -R appuser:appuser /app
+USER appuser
