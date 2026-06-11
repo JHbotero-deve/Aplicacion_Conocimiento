@@ -1,0 +1,13 @@
+[33m70889e7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m chore: actualizar .gitignore en backend y frontend para ignorar node_modules
+[33m440d2c2[m chore: ignorar node_modules, dist y archivos sensibles
+[33m47580db[m feat(frontend): formulario de login responsivo con verificación JWT
+[33m0a3e1c8[m Create README.md
+[33mbbcaf06[m Agrega configuración inicial de frontend con package.json
+[33mc23a9c6[m Agrega archivo requests.http para pruebas de API
+[33m5ebd242[m Limpieza: elimina node_modules, .env y lockfiles del repositorio
+[33m37a5d03[m Agrega README.md con descripción del proyecto
+[33m2b3c165[m Agrega README.md con descripción del proyecto
+[33me47439d[m Configura .gitignore para ignorar dependencias y archivos sensibles
+[33mf95e1fe[m Elimina archivo mal nombrado db..js
+[33m899e8f6[m Corrige duplicados y usa db.js como conexión
+[33m0a89eee[m Commit inicial: Proyecto aplicación conocimiento ganadería
