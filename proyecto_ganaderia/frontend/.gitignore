@@ -16,23 +16,27 @@ build/
 tailwind.config.js
 postcss.config.js
 
-# Backend
+# Backend - Seguridad
 .env
-.env.local
-.env.development
-.env.production
-.env.test
+.env.*
+*.env
+*.secret
+*.key
+*.pem
+*.crt
 
 # Prisma
-prisma/migrations/
 prisma/dev.db
+# ⚠️ Mantén migrations si quieres historial de DB en producción
+# Si no, ignóralas también
+# prisma/migrations/
 
 # Docker
 docker-compose.override.yml
 Dockerfile.local
 
 # Logs
-logs
+logs/
 *.log
 *.log.*
 pids
@@ -49,5 +53,9 @@ pids
 .DS_Store
 Thumbs.db
 
-# Data
+# Data / Backups
 data/
+backup/
+*.bak
+*.sql
+*.dump
