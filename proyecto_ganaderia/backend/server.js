@@ -1,28 +1,28 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-require("dotenv").config();
-
-const usuarios = require("./controllers/usuarios");
-const ganado = require("./controllers/ganado");
+const pool = require("./models/db");
 
 const app = express();
-app.use(cors());
+
+// ✅ habilitar CORS para tu frontend
+app.use(cors({
+  origin: "http://localhost:8080",   // autoriza solo tu frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
-// Servir frontend (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, "frontend")));
+// Ruta de prueba para verificar conexión
+app.get("/db-check", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json({ status: "✅ Conexión OK", time: result.rows[0].now });
+  } catch (err) {
+    res.status(500).json({ status: "❌ Error de conexión", error: err.message });
+  }
+});
 
-// Rutas de usuarios
-app.post("/register", usuarios.registro);   // Registro de usuario
-app.post("/login", usuarios.login);         // Login de usuario
-
-// Rutas de ganado
-app.post("/ganado", ganado.ingreso);        // Ingreso de ganado
-app.put("/ganado/bloquear/:id", ganado.bloquear);   // Bloquear registro por ID
-app.get("/ganado/chapeta/:chapeta", ganado.buscarPorChapeta); // Buscar ganado por chapeta
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor en http://localhost:${PORT}`);
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`Servidor corriendo en puerto ${process.env.PORT || 8000}`);
 });

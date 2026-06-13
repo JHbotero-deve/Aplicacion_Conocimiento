@@ -14,23 +14,24 @@ const seed = async () => {
     const hashUser = await bcrypt.hash("abcd", 10);
     await pool.query(
       "INSERT INTO usuarios (nombre_usuario, contrasena_hash, rol_usuario, fecha_creacion) VALUES ($1, $2, $3, NOW()) ON CONFLICT (nombre_usuario) DO NOTHING",
-      ["usuario1", hashUser, "usuario"]
+      ["usuario1", hashUser, "ganadero"]
     );
-await pool.query(
-  "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoica, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
-  [1, "CH-001", "Holstein", 5, 450.50, "2026-05-01", "activo", true, false]
-);
 
-await pool.query(
-  "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoica, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
-  [2, "CH-002", "Brahman", 3, 600.00, "2026-05-10", "activo", false, false]
-);
+    // 🔹 Ganado de prueba
+    await pool.query(
+      "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoICA, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (id) DO NOTHING",
+      [1, "CH-001", "Holstein", 5, 450.50, "2026-05-01", "activo", true, false]
+    );
 
-await pool.query(
-  "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoica, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
-  [3, "CH-003", "Jersey", 2, 200.00, "2026-05-15", "activo", true, false]
-);
+    await pool.query(
+      "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoICA, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (id) DO NOTHING",
+      [2, "CH-002", "Brahman", 3, 600.00, "2026-05-10", "activo", false, false]
+    );
 
+    await pool.query(
+      "INSERT INTO ganado (id, chapeta, raza, edad, peso, fecha_ingreso, estadoICA, certificado_ica, bloqueado) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT (id) DO NOTHING",
+      [3, "CH-003", "Jersey", 2, 200.00, "2026-05-15", "activo", true, false]
+    );
 
     console.log("✅ Seed completado: usuarios y ganado insertados");
     process.exit(0);

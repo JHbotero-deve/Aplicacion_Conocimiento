@@ -5,60 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro - Sistema Ganadero</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  
 </head>
 <body class="bg-gradient-to-br from-green-100 to-green-200 min-h-screen flex items-center justify-center">
 
   <form id="register" class="w-full max-w-md bg-white rounded-xl shadow-xl p-8 space-y-6">
     <h2 class="text-3xl font-bold text-center text-green-700">Registro de Usuario</h2>
     
+    <!-- Usuario -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Usuario</label>
       <input type="text" name="nombre_usuario" required
         class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
+    <!-- Contraseña -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Contraseña</label>
       <input type="password" name="contrasena" required
         class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
+    <!-- Rol -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Rol</label>
+      <select name="rol_usuario" required
+        class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="admin">Administrador</option>
+        <option value="veterinario">Veterinario</option>
+        <option value="ganadero">Ganadero</option>
+      </select>
+    </div>
+
+    <!-- Botones -->
     <button type="submit"
       class="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-600 transition">
       Registrarse
     </button>
-    <button onclick="window.history.back()"
-  class="bg-gray-500 text-white px-2 py-2 rounded-lg hover:bg-gray-600 transition">
-  ⬅️ Atrás
-</button>
-
+    <button type="button" onclick="window.history.back()"
+      class="bg-gray-500 text-white px-2 py-2 rounded-lg hover:bg-gray-600 transition">
+      ⬅️ Atrás
+    </button>
   </form>
 
   <script>
     const registerForm = document.getElementById('register');
-    console.log("Body recibido:", req.body);
 
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = {
         nombre_usuario: registerForm.nombre_usuario.value,
-        contrasena: registerForm.contrasena.value
+        contrasena: registerForm.contrasena.value,
+        rol_usuario: registerForm.rol_usuario.value
       };
       try {
-        const response = await fetch("http://localhost:3000/register", {
+        const response = await fetch("http://localhost:8000/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
+
+        const result = await response.json();
+
         if (response.ok) {
-          alert("Usuario registrado ✅");
+          alert("✅ Usuario registrado con éxito\nRol asignado: " + data.rol_usuario);
+          localStorage.setItem("token", result.token); // guardar JWT si backend lo devuelve
           window.location.href = "login.html";
         } else {
-          alert("Error en el registro");
+          alert("❌ Error en el registro\n" + (result.message || "Intenta nuevamente"));
         }
       } catch (error) {
-        alert("Error en la conexión con el servidor");
+        alert("❌ Error en la conexión con el servidor");
       }
     });
   </script>
