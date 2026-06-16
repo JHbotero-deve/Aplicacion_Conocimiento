@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id              Int      @id @default(autoincrement())
+  nombre_usuario  String   @unique @db.VarChar(50)
+  contrasena_hash String   @db.VarChar(255)
+  rol_usuario     String   @default("usuario") @db.VarChar(20)
+  fecha_creacion  DateTime @default(now())
+
+  @@map("usuarios")
+}
+
+model Ganado {
+  id              Int      @id @default(autoincrement())
+  chapeta         String   @unique @db.VarChar(20)
+  raza            String   @db.VarChar(30)
+  edad            Int
+  peso            Decimal  @db.Decimal(10, 2)
+  fecha_ingreso   DateTime @db.Date
+  estadoica       String   @default("pendiente") @db.VarChar(20)
+  certificado_ica Boolean  @default(false)
+  bloqueado       Boolean  @default(false)
+
+  @@map("ganado")
+}
