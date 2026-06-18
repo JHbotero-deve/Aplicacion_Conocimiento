@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingreso de Ganado - Sistema Ganadero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-green-200 min-h-screen flex items-center justify-center p-4">
+
+  <form id="ganado" class="w-full max-w-lg bg-white rounded-xl shadow-xl p-8 space-y-6">
+    <h2 class="text-3xl font-bold text-center text-green-700">Ingreso de Ganado</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Chapeta</label>
+        <input type="text" name="chapeta" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Raza</label>
+        <input type="text" name="raza" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Edad</label>
+        <input type="number" name="edad" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+        <input type="number" step="0.01" name="peso" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Fecha Ingreso</label>
+        <input type="date" name="fecha_ingreso" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Estado ICA</label>
+        <input type="text" name="estadoica" required
+          class="mt-1 w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
+    </div>
+
+    <button type="submit"
+      class="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-600 transition">
+      Registrar Ganado
+    </button>
+  </form>
+
+  <script>
+    const ganadoForm = document.getElementById('ganado');
+    ganadoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        chapeta: ganadoForm.chapeta.value,
+        raza: ganadoForm.raza.value,
+        edad: ganadoForm.edad.value,
+        peso: ganadoForm.peso.value,
+        fecha_ingreso: ganadoForm.fecha_ingreso.value,
+        estadoica: ganadoForm.estadoica.value
+      };
+      try {
+        const response = await fetch("http://localhost:3000/ganado", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          alert("Ganado registrado ✅");
+          ganadoForm.reset();
+        } else {
+          const error = await response.json();
+          alert("Error en el registro: " + (error.error || "desconocido"));
+        }
+      } catch (error) {
+        alert("Error en la conexión con el servidor");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ganaderia
+      DB_USER: ganaderia
+      DB_PASSWORD: 1100
+  
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ganaderia
+      POSTGRES_PASSWORD: 1100
+      POSTGRES_DB: ganaderia
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  frontend:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html

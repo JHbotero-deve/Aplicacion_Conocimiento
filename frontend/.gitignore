@@ -1,0 +1,61 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Build / dist
+dist/
+build/
+.tmp/
+
+# Frontend (Tailwind, PostCSS, etc.)
+*.css.map
+*.js.map
+tailwind.config.js
+postcss.config.js
+
+# Backend - Seguridad
+.env
+.env.*
+*.env
+*.secret
+*.key
+*.pem
+*.crt
+
+# Prisma
+prisma/dev.db
+# ⚠️ Mantén migrations si quieres historial de DB en producción
+# Si no, ignóralas también
+# prisma/migrations/
+
+# Docker
+docker-compose.override.yml
+Dockerfile.local
+
+# Logs
+logs/
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data / Backups
+data/
+backup/
+*.bak
+*.sql
+*.dump
