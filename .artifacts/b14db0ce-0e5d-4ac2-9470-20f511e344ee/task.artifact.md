@@ -1,8 +1,8 @@
-# Tareas de Consolidación y Documentación Final
+# Tareas de Rediseño Corporativo "Ganadería Pro"
 
-- `[x]` Actualizar `README.md` con guías de Docker, Voz e ICA
-- `[x]` Corregir `requests.http` con rutas, puertos y campos ICA actuales
-- `[x]` Migrar lógica de correos a `backend/services/emailService.js`
-- `[x]` Actualizar `scripts/autorevision.js` para usar la base de datos
-- `[x]` Refactorizar `frontend/alerts/alerts.js` con estilos Tailwind
-- `[x]` Verificación final de toda la documentación y flujos
+- `[ ]` Actualizar Landing Page (`index.html`) con diseño Hero y Bento
+- `[ ]` Rediseñar Dashboard Administrativo (`admin_dashboard.html`) con ApexCharts y Glassmorphism
+- `[ ]` Limpiar emojis y stickers de todos los formularios de campo
+- `[ ]` Implementar `dashboardAnalytics.js` para visualización de datos pro
+- `[ ]` Unificar iconografía FontAwesome en todo el sistema
+- `[ ]` Verificación visual en pantallas de alta resolución

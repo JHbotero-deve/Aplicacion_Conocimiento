@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Ganadería Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md space-y-6">
+        <button onclick="window.history.back()" class="inline-flex items-center text-slate-400 hover:text-emerald-600 transition font-bold text-sm">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Volver
+        </button>
+
+        <div class="bg-white rounded-3xl shadow-2xl p-10 space-y-8 border border-slate-100">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full mb-4">
+                    <i class="fa-solid fa-user-shield text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 tracking-tight">Seguridad de Cuenta</h2>
+                <p class="text-slate-400 mt-2 font-medium">Cambia tu contraseña de acceso</p>
+            </div>
+
+            <form id="formPerfil" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nueva Contraseña</label>
+                    <input type="password" id="nuevaClave" required placeholder="••••••••"
+                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-emerald-500 outline-none transition-all font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Confirmar Contraseña</label>
+                    <input type="password" id="confirmClave" required placeholder="••••••••"
+                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-emerald-500 outline-none transition-all font-bold">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-emerald-600 text-white py-4 rounded-2xl hover:bg-emerald-700 transition-all shadow-lg font-black text-lg uppercase tracking-widest">
+                    Actualizar Clave
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "login.html";
+
+        document.getElementById('formPerfil').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const clave = document.getElementById('nuevaClave').value;
+            const confirm = document.getElementById('confirmClave').value;
+
+            if (clave !== confirm) {
+                alert("Las contraseñas no coinciden ❌");
+                return;
+            }
+
+            const res = await fetch("/admin/usuarios/password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify({ id: null, nuevaContrasena: clave })
+            });
+
+            if (res.ok) {
+                alert("✅ Contraseña actualizada correctamente");
+                window.history.back();
+            } else {
+                alert("❌ Error al actualizar");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -38,7 +38,38 @@ const DICCIONARIO_GANADERO = {
     "holsten": "Holstein",
     "jolsten": "Holstein",
     "jersey": "Jersey",
-    "llersi": "Jersey"
+    "llersi": "Jersey",
+
+    // Salud y Tratamientos (Nuevos)
+    "fiebre": "Fiebre",
+    "mastitis": "Mastitis",
+    "antibiotico": "Antibiótico",
+    "vacuna": "Vacunación",
+    "purga": "Desparasitación",
+    "herida": "Herida",
+    "cojera": "Cojera",
+    "inyeccion": "Inyectable",
+    "tomado": "Oral",
+    "la vena": "Intravenosa",
+    "el musculo": "Intramuscular",
+
+    // Producción (Nuevos)
+    "leche": "Leche",
+    "pesaje": "Pesaje (Carne)",
+    "litros": "Litros",
+    "kilos": "Kilos",
+    "manana": "Mañana",
+    "tarde": "Tarde",
+
+    // Novedades (Nuevos)
+    "parto": "Parto",
+    "nacio": "Parto (Nacimiento)",
+    "muerte": "Muerte",
+    "se murio": "Muerte",
+    "venta": "Venta",
+    "se vendio": "Venta",
+    "traslado": "Traslado",
+    "cambio de finca": "Traslado"
 };
 
 class VoiceAssistant {

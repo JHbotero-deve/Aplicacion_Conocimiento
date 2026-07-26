@@ -6,6 +6,8 @@ require("dotenv").config();
 const usuarios = require("./controllers/usuarios" );
 const ganado = require("./controllers/ganado");
 const admin = require("./controllers/admin");
+const operaciones = require("./controllers/operaciones");
+const veterinario = require("./controllers/veterinario");
 const auth = require("./middleware/auth");
 const checkRole = require("./middleware/roleAuth");
 const auditor = require("./middleware/logger");
@@ -17,7 +19,9 @@ app.use(express.static(path.join(__dirname, "..", "frontend")));
 
 // Rutas públicas
 app.post("/register", usuarios.registro);
-app.post("/login", usuarios.login);        
+app.post("/login", usuarios.login);
+app.get("/recuperar/pregunta/:nombre_usuario", usuarios.obtenerPregunta);
+app.post("/recuperar/reset", usuarios.verificarRespuestaYResetear);
 
 // Middleware de auditoría para todas las rutas protegidas que cambian datos
 app.use(auth, auditor);
@@ -26,6 +30,18 @@ app.use(auth, auditor);
 app.post("/ganado", ganado.ingreso);
 app.put("/ganado/bloquear/:id", ganado.bloquear);
 app.get("/ganado/chapeta/:chapeta", ganado.buscarPorChapeta);
+
+// Rutas de Operación Diaria
+app.post("/operaciones/tratamiento", operaciones.registrarTratamiento);
+app.post("/operaciones/produccion", operaciones.registrarProduccion);
+app.post("/operaciones/novedad", operaciones.registrarNovedad);
+app.post("/operaciones/insumo", operaciones.registrarInsumo);
+
+// Rutas Veterinarias
+app.post("/salud/cita", checkRole(['veterinario', 'admin']), veterinario.programarCita);
+app.get("/salud/citas", checkRole(['veterinario', 'mayordomo', 'admin']), veterinario.listarCitas);
+app.post("/salud/campana", checkRole(['veterinario', 'admin']), veterinario.crearCampana);
+app.get("/salud/historial/:chapeta", checkRole(['veterinario', 'mayordomo', 'admin']), veterinario.historialClinico);
 
 // Rutas Administrativas (Solo Admin)
 app.get("/admin/stats", checkRole(['admin']), ganado.obtenerEstadisticas);

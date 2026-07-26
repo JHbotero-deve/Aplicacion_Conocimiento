@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock de Insumos | Ganadería Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
+
+    <div class="w-full max-w-4xl space-y-10">
+        <div class="flex justify-between items-center bg-white/5 p-8 rounded-[2rem] border border-white/5">
+            <div class="flex items-center gap-6">
+                <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-[#020617]">
+                    <i class="fa-solid fa-boxes-stacked text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Control de Suministros</h1>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Balance de Almacén BPG</p>
+                </div>
+            </div>
+            <a href="ganadero_dashboard.html" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Retornar</a>
+        </div>
+
+        <form id="formInventario" class="glass rounded-[3rem] p-10 md:p-16 space-y-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Nombre Comercial</label>
+                    <div class="relative">
+                        <input type="text" id="inv_nombre" name="nombre" required placeholder="DESCRIPCIÓN DEL PRODUCTO"
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-amber-500/50 transition-all font-bold text-white uppercase">
+                        <button type="button" onclick="activateVoice('inv_nombre')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-amber-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Tipo de Suministro</label>
+                    <select name="tipo" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-amber-500/50 transition-all font-bold text-white appearance-none">
+                        <option value="Alimento">NUTRICIÓN / SUPLEMENTO</option>
+                        <option value="Medicamento">FARMACOLOGÍA / VACUNA</option>
+                        <option value="Herramienta">EQUIPAMIENTO TÉCNICO</option>
+                    </select>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Volumen de Ingreso</label>
+                    <div class="flex gap-4">
+                        <input type="number" step="0.01" name="cantidad" required class="flex-1 bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-amber-500/50 font-black text-3xl text-white">
+                        <select name="unidad" class="w-40 bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 font-bold text-white appearance-none text-xs">
+                            <option value="Kilos">KILOGRAMOS</option>
+                            <option value="Bultos">BULTOS</option>
+                            <option value="ML">MILILITROS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Fecha de Caducidad</label>
+                    <input type="date" name="fecha_vencimiento" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-amber-500/50 font-bold text-slate-400">
+                </div>
+
+            </div>
+
+            <button type="submit" class="w-full bg-amber-600 text-[#020617] py-6 rounded-[2rem] font-black text-lg uppercase tracking-widest hover:bg-amber-500 transition-all shadow-2xl shadow-amber-900/20">
+                Registrar Entrada a Bodega
+            </button>
+        </form>
+    </div>
+
+    <script src="../services/voiceAssistant.js"></script>
+    <script>
+        function activateVoice(id) {
+            voiceAssistant.start((corrected) => document.getElementById(id).value = corrected);
+        }
+    </script>
+</body>
+</html>

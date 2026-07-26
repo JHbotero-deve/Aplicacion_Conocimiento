@@ -1,57 +1,62 @@
-# Plan de Consolidación: Documentación y Ajustes Finales
+# Plan de Seguridad Blindada y Protección de Datos "Anti-Fraude"
 
-Este plan detalla las tareas para actualizar la documentación técnica, los scripts de prueba y la integración de alertas, asegurando que todo el proyecto refleje las mejoras de seguridad e ICA realizadas.
+Este plan detalla la implementación de capas de seguridad avanzada para evitar caídas del sistema, robo de datos y, especialmente, la detección de anomalías en el ingreso de información (datos maliciosos o erróneos).
+
+## Estrategia de Seguridad 360°
+
+> [!IMPORTANT]
+> **Capa 1: Infraestructura Blindada**: Protección contra ataques de denegación de servicio (DoS) y fuerza bruta mediante límites de peticiones.
+> **Capa 2: Integridad de Datos (Cuarentena)**: Los datos que rompan las reglas de negocio (ej. vender más vacas de las que existen) no entrarán a la base de datos principal, sino a una "Zona de Cuarentena" para revisión del Admin.
+> **Capa 3: Prevención de Suplantación**: Refuerzo de tokens JWT y cabeceras de seguridad para evitar que un usuario se haga pasar por otro.
 
 ## Proposed Changes
 
 ---
 
-### 1. Documentación Técnica y Guías
+### 1. Seguridad de Servidor (Hardening)
 
-#### [MODIFY] [README.md](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/README.md)
-Actualizar con:
-- Instrucciones claras de Docker.
-- Descripción del Asistente de Voz y cumplimiento ICA.
-- Guía de roles (Admin, Veterinario, Ganadero).
-
-#### [MODIFY] [requests.http](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/requests.http)
-Actualizar todas las rutas para:
-- Usar el puerto **8000**.
-- Incluir los nuevos campos ICA en los ejemplos.
-- Añadir las rutas administrativas (`/admin/stats`, `/admin/auditoria`).
-- Corregir nombres de campos (ej. `contrasena`).
+#### [MODIFY] [server.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/server.js)
+- **Implementación de `helmet`**: Oculta detalles técnicos del servidor y previene ataques XSS y de inyección.
+- **Rate Limiting**: Limitar el número de peticiones por minuto para evitar que alguien intente "tumbar" el sistema.
+- **Validación de Esquema**: Uso de `express-validator` para asegurar que cada campo tenga el formato correcto antes de procesarlo.
 
 ---
 
-### 2. Auditoría y Alertas Automáticas
+### 2. Capa de Inteligencia y Cuarentena
 
-#### [MODIFY] [autorevision.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/scripts/autorevision.js)
-El script actual busca archivos de texto obsoletos. Se propone:
-- Actualizarlo para que consulte la tabla `auditoria` en PostgreSQL.
-- Detectar patrones de ataque directamente desde la base de datos.
+#### [MODIFY] [init.sql](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/models/init.sql)
+- **Nueva tabla `cuarentena`**: id, usuario_id, tipo_operacion, datos_json, motivo_sospecha, fecha.
+- Esta tabla guardará los intentos de ingreso de datos sospechosos.
 
-#### [NEW] [emailService.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/services/emailService.js)
-Mover la lógica de envío de correos a un servicio centralizado para que tanto el script de revisión como el middleware de auditoría puedan enviar alertas en tiempo real si se detecta algo grave.
-
----
-
-### 3. Limpieza de Frontend
-
-#### [MODIFY] [alerts.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/alerts/alerts.js)
-Asegurar que las alertas visuales usen los estilos de Tailwind CSS implementados.
+#### [NEW] [validatorMiddleware.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/validator.js)
+Un motor de reglas de negocio que intercepta los datos antes de guardarlos:
+- **Regla de Inventario**: Si se intenta vender/trasladar un animal que no existe o más animales de los que hay en la finca.
+- **Regla de Producción**: Si un registro de leche excede los 40 litros/día por vaca (dato atípico).
+- **Regla de Peso**: Cambios drásticos de peso (+/- 50kg) en menos de 24 horas.
 
 ---
 
-### 4. Revisión de Estructura "Bridge"
+### 3. Sistema de Alertas Rojas
 
-#### [REVISE] [bridge/](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/bridge/)
-Verificar si estos archivos son necesarios o si son restos de configuraciones anteriores de despliegue que deban ser documentados o eliminados.
+#### [MODIFY] [admin_dashboard.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html)
+- **Widget de "Incidentes de Seguridad"**: Un panel rojo que solo aparece si hay datos en cuarentena o intentos de acceso fallidos masivos.
+- **Botón de Decisión**: El Administrador podrá "Aprobar" o "Descartar" los datos en cuarentena.
+
+#### [MODIFY] [emailService.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/services/emailService.js)
+- Notificación inmediata al Admin cuando un dato entra en cuarentena por sospecha de fraude o error grave.
+
+---
+
+### 4. Blindaje contra Suplantación
+
+#### [MODIFY] [auth.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/auth.js)
+- Añadir verificación de `User-Agent` o IP para asegurar que el token no haya sido robado y usado desde otro dispositivo.
 
 ## Verification Plan
 
-### Pruebas de Documentación
-- Seguir paso a paso el `README.md` en un entorno limpio para asegurar que no falte nada.
-- Ejecutar todas las peticiones en `requests.http` y verificar que las respuestas sean exitosas.
+### Pruebas de "Ataque"
+- Intentar registrar la venta de 100 vacas en una finca que solo tiene 10. Verificar que el sistema envíe el dato a cuarentena y muestre una alerta roja al administrador.
+- Realizar 1000 peticiones en un segundo para verificar que el servidor bloquee la IP temporalmente.
 
-### Pruebas de Alerta
-- Simular un ataque (intentos fallidos) y verificar que el script `autorevision.js` detecte la anomalía en la base de datos.
+### Verificación de Datos
+- Comprobar que los datos en cuarentena no alteran los totales (litros, cabezas) del hato hasta que el administrador los apruebe.

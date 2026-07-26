@@ -1,250 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ingreso de Ganado - Sistema Ganadero</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Pecuario | Ganadería Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4 md:p-12 font-sans flex flex-col items-center">
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
 
-  <div class="w-full max-w-4xl space-y-8">
-    <!-- Header Navegación -->
-    <div class="flex justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
-                <i class="fa-solid fa-cow text-2xl"></i>
+    <div class="w-full max-w-5xl space-y-10">
+        <!-- Header Corporativo -->
+        <div class="flex justify-between items-center bg-white/5 p-8 rounded-[2rem] border border-white/5 backdrop-blur-md">
+            <div class="flex items-center gap-6">
+                <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-[#020617]">
+                    <i class="fa-solid fa-cow text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Registro Pecuario</h1>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Censo Oficial ICA 3-101</p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-xl font-black text-slate-800">Registrar Animal</h1>
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Entrada de Inventario</p>
+            <div class="flex gap-4">
+                <a href="admin_dashboard.html" class="hidden md:flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all border border-white/5">
+                    <i class="fa-solid fa-chart-pie-simple"></i> Dashboard
+                </a>
+                <button onclick="logout()" class="px-6 py-3 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase hover:bg-rose-500/20 transition-all">Salir</button>
             </div>
         </div>
-        <div class="flex gap-4">
-            <a href="admin_dashboard.html" class="hidden md:flex items-center text-slate-400 hover:text-emerald-600 transition font-bold text-sm">
-                <i class="fa-solid fa-chart-line mr-2"></i> Dashboard
-            </a>
-            <button onclick="logout()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl font-bold text-sm hover:bg-red-50 hover:text-red-600 transition">
-                Cerrar Sesión
+
+        <form id="ganado" class="glass-card rounded-[3rem] p-10 md:p-16 space-y-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                <!-- Inputs con Botón de Voz Minimalista -->
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Número de Identificación (Chapeta)</label>
+                    <div class="relative">
+                        <input type="text" id="chapeta" name="chapeta" required placeholder="ID-0000"
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-xl text-white">
+                        <button type="button" onclick="activateVoice('chapeta')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-[#020617] transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Especie Animal</label>
+                    <div class="relative">
+                        <select id="especie" name="especie" required
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-white appearance-none">
+                            <option value="Bovino">Bovino (Res)</option>
+                            <option value="Bufalino">Bufalino</option>
+                            <option value="Equino">Equino</option>
+                            <option value="Porcino">Porcino</option>
+                        </select>
+                        <button type="button" onclick="activateVoice('especie')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl hover:text-white transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Clasificación Etaria</label>
+                    <div class="relative">
+                        <select id="categoria_etaria" name="categoria_etaria" required
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-white appearance-none">
+                            <option value="Cría (0-12m)">Cría (Nivel 1)</option>
+                            <option value="Levante (1-2a)">Levante (Nivel 2)</option>
+                            <option value="Adulto (>2a)">Adulto (Nivel 3)</option>
+                        </select>
+                        <button type="button" onclick="activateVoice('categoria_etaria')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl hover:text-white transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Raza Predominante</label>
+                    <div class="relative">
+                        <input type="text" id="raza" name="raza" required placeholder="EJ: BRAHMAN"
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-white">
+                        <button type="button" onclick="activateVoice('raza')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Masa Corporal (Kg)</label>
+                    <div class="relative">
+                        <input type="number" id="peso" step="0.01" name="peso" required
+                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-black text-3xl text-emerald-400">
+                        <button type="button" onclick="activateVoice('peso')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Estado Sanitario (ICA)</label>
+                    <input type="text" name="estadoica" required placeholder="VIGENTE"
+                        class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-white uppercase">
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-emerald-600 text-[#020617] py-6 rounded-[2rem] hover:bg-emerald-500 transition-all shadow-2xl shadow-emerald-900/20 font-black text-lg uppercase tracking-[0.2em]">
+                Formalizar Registro ICA
             </button>
-        </div>
+        </form>
     </div>
 
-    <form id="ganado" class="bg-white rounded-3xl shadow-2xl p-10 space-y-8 border border-slate-100">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Chapeta con Voz -->
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Número de Chapeta</label>
-                <div class="relative">
-                    <input type="text" id="chapeta" name="chapeta" required placeholder="Ej: 1024"
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-bold text-lg">
-                    <button type="button" onclick="activateVoice('chapeta')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl hover:bg-emerald-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
+    <script src="../services/voiceAssistant.js"></script>
+    <script>
+        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
 
-            <!-- Especie (Select + Voz) -->
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Especie (ICA)</label>
-                <div class="relative">
-                    <select id="especie" name="especie" required
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-bold appearance-none bg-white">
-                        <option value="Bovino">Bovino (Vaca/Toro)</option>
-                        <option value="Bufalino">Bufalino</option>
-                        <option value="Equino">Equino (Caballo)</option>
-                        <option value="Porcino">Porcino (Cerdo)</option>
-                        <option value="Ovino">Ovino (Oveja)</option>
-                        <option value="Caprino">Caprino (Cabra)</option>
-                    </select>
-                    <button type="button" onclick="activateVoice('especie')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-blue-100 text-blue-600 rounded-xl hover:bg-blue-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
+        function activateVoice(fieldId) {
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            icon.className = 'fa-solid fa-circle-notch fa-spin';
 
-            <!-- Sexo -->
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Sexo</label>
-                <div class="relative">
-                    <select id="sexo" name="sexo" required
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-bold appearance-none bg-white">
-                        <option value="Hembra">Hembra</option>
-                        <option value="Macho">Macho</option>
-                    </select>
-                    <button type="button" onclick="activateVoice('sexo')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-purple-100 text-purple-600 rounded-xl hover:bg-purple-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Categoría Etaria (ICA) -->
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Etapa de Vida</label>
-                <div class="relative">
-                    <select id="categoria_etaria" name="categoria_etaria" required
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-bold appearance-none bg-white">
-                        <option value="Cría (0-12m)">Cría (0-12 meses)</option>
-                        <option value="Levante (1-2a)">Levante (1-2 años)</option>
-                        <option value="Adulto (>2a)">Adulto (Más de 2 años)</option>
-                    </select>
-                    <button type="button" onclick="activateVoice('categoria_etaria')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-amber-100 text-amber-600 rounded-xl hover:bg-amber-200 transition flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Raza / Tipo</label>
-                <div class="relative">
-                    <input type="text" id="raza" name="raza" required placeholder="Ej: Brahman"
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-medium">
-                    <button type="button" onclick="activateVoice('raza')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Peso Actual (kg)</label>
-                <div class="relative">
-                    <input type="number" id="peso" step="0.01" name="peso" required
-                        class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-bold text-xl">
-                    <button type="button" onclick="activateVoice('peso')" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Nro RUV (Vacunación)</label>
-                <input type="text" name="ruv_numero" placeholder="Ej: 998877"
-                    class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-medium">
-            </div>
-
-            <div class="space-y-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Marca o Hierro</label>
-                <input type="text" name="hierro_descripcion" placeholder="Describa la marca"
-                    class="w-full border-2 border-slate-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-emerald-500 transition-all font-medium">
-            </div>
-        </div>
-
-        <button type="submit"
-            class="w-full bg-emerald-600 text-white py-5 rounded-2xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200 font-black text-xl uppercase tracking-widest">
-            <i class="fa-solid fa-floppy-disk mr-2"></i> Guardar Registro ICA
-        </button>
-    </form>
-  </div>
-
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <script src="../services/voiceAssistant.js"></script>
-  <script>
-    function logout() {
-      localStorage.removeItem("token");
-      window.location.href = "login.html";
-    }
-
-    function activateVoice(fieldId) {
-        const btn = event.currentTarget;
-        const icon = btn.querySelector('i');
-
-        // Feedback visual de escucha
-        icon.classList.remove('fa-microphone');
-        icon.classList.add('fa-spinner', 'fa-spin');
-        btn.classList.add('bg-red-100', 'text-red-600');
-
-        voiceAssistant.start((corrected, original) => {
-            const input = document.getElementById(fieldId);
-            if (input.tagName === 'SELECT') {
-                // Buscar opción que coincida con el término corregido
-                for (let i = 0; i < input.options.length; i++) {
-                    if (input.options[i].text.toLowerCase().includes(corrected.toLowerCase()) ||
-                        input.options[i].value.toLowerCase().includes(corrected.toLowerCase())) {
-                        input.selectedIndex = i;
-                        break;
+            voiceAssistant.start((corrected) => {
+                const input = document.getElementById(fieldId);
+                if (input.tagName === 'SELECT') {
+                    for (let i = 0; i < input.options.length; i++) {
+                        if (input.options[i].text.toLowerCase().includes(corrected.toLowerCase()) ||
+                            input.options[i].value.toLowerCase().includes(corrected.toLowerCase())) {
+                            input.selectedIndex = i;
+                            break;
+                        }
                     }
+                } else { input.value = corrected; }
+                icon.className = 'fa-solid fa-microphone';
+            }, () => {
+                icon.className = 'fa-solid fa-microphone';
+                alert("ERROR: NO SE HA PODIDO DECODIFICAR EL AUDIO");
+            });
+        }
+
+        const ganadoForm = document.getElementById('ganado');
+        ganadoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(ganadoForm);
+            const data = Object.fromEntries(formData.entries());
+            try {
+                const response = await fetch("/ganado", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + localStorage.getItem("token") },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert("SISTEMA: REGISTRO GUARDADO EXITOSAMENTE ✅");
+                    ganadoForm.reset();
+                } else {
+                    alert("ERROR: VERIFIQUE LOS DATOS TÉCNICOS");
                 }
-            } else {
-                input.value = corrected;
+            } catch (error) {
+                alert("ERROR: SIN CONEXIÓN CON EL SERVIDOR");
             }
-
-            // Volver estado normal
-            icon.classList.remove('fa-spinner', 'fa-spin');
-            icon.classList.add('fa-microphone');
-            btn.classList.remove('bg-red-100', 'text-red-600');
-
-            // Animación de éxito
-            input.classList.add('border-emerald-500', 'bg-emerald-50');
-            setTimeout(() => input.classList.remove('bg-emerald-50'), 1000);
-
-        }, (err) => {
-            icon.classList.remove('fa-spinner', 'fa-spin');
-            icon.classList.add('fa-microphone');
-            btn.classList.remove('bg-red-100', 'text-red-600');
-            alert("No se pudo escuchar bien. Intenta de nuevo.");
         });
-    }
-
-    const ganadoForm = document.getElementById('ganado');
-    ganadoForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(ganadoForm);
-      const data = Object.fromEntries(formData.entries());
-
-      try {
-        const response = await fetch("/ganado", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          alert("Registro ICA guardado exitosamente ✅");
-          ganadoForm.reset();
-        } else {
-          const error = await response.json();
-          alert("Error: " + (error.error || "Datos incompletos"));
-        }
-      } catch (error) {
-        alert("Sin conexión al servidor");
-      }
-    });
-  </script>
-
-  <script>
-    const ganadoForm = document.getElementById('ganado');
-    ganadoForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = {
-        chapeta: ganadoForm.chapeta.value,
-        raza: ganadoForm.raza.value,
-        edad: ganadoForm.edad.value,
-        peso: ganadoForm.peso.value,
-        fecha_ingreso: ganadoForm.fecha_ingreso.value,
-        estadoica: ganadoForm.estadoica.value
-      };
-      try {
-        const response = await fetch("/ganado", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          alert("Ganado registrado ✅");
-          ganadoForm.reset();
-        } else {
-          const error = await response.json();
-          alert("Error en el registro: " + (error.error || "desconocido"));
-        }
-      } catch (error) {
-        alert("Error en la conexión con el servidor");
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
