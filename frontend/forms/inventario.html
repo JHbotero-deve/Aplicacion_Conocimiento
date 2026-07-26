@@ -10,6 +10,7 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        select option { background-color: #0f172a; color: white; }
     </style>
 </head>
 <body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
@@ -25,7 +26,7 @@
                     <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Balance de Almacén BPG</p>
                 </div>
             </div>
-            <a href="ganadero_dashboard.html" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Retornar</a>
+            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Retornar</button>
         </div>
 
         <form id="formInventario" class="glass rounded-[3rem] p-10 md:p-16 space-y-12">
@@ -74,6 +75,7 @@
         </form>
     </div>
 
+    <script src="../services/navigation.js"></script>
     <script src="../services/voiceAssistant.js"></script>
     <script>
         function activateVoice(id) {

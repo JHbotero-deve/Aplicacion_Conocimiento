@@ -25,7 +25,7 @@
                     <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Producción Diaria de Hato</p>
                 </div>
             </div>
-            <a href="ganadero_dashboard.html" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Dashboard</a>
+            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Dashboard</button>
         </div>
 
         <form id="formProduccion" class="glass rounded-[3rem] p-10 md:p-16 space-y-12 text-center">
@@ -63,6 +63,7 @@
         </form>
     </div>
 
+    <script src="../services/navigation.js"></script>
     <script src="../services/voiceAssistant.js"></script>
     <script>
         function setType(t) {

@@ -1,61 +1,51 @@
-# Plan de Optimización y Blindaje Total: Versión "Steel Edge"
+# Plan de Auditoría y Navegación "Irrompible"
 
-Este plan aborda tanto los problemas visuales detectados como las vulnerabilidades "silenciosas" (comunes y no tan comunes) que pueden comprometer la estabilidad y privacidad del sistema.
+Este plan detalla la revisión exhaustiva y corrección de todos los flujos de navegación, botones y conexiones API del sistema para asegurar una experiencia de usuario fluida y profesional.
 
-## 🛡️ Resumen de Errores Detectados (Protocolo Security Edge)
+## Objetivos de la Auditoría
 
-> [!CAUTION]
-> **Error Crítico de Visualización**: Las políticas de seguridad CSP están bloqueando CDNs, dejando la interfaz sin estilos (Corregido en el servidor, pendiente en UI).
-> **Falla de Privacidad (ID Enumeration)**: El uso de IDs secuenciales (#1, #2...) permite a un atacante adivinar cuántos animales o usuarios tienes. Proponemos usar identificadores aleatorios.
-> **Falla de Seguridad (CSRF)**: Falta protección contra falsificación de peticiones en sitios cruzados.
+> [!IMPORTANT]
+> **Navegación Contextual**: Los botones "Volver" deben llevar al usuario a su dashboard específico según su rol (Admin, Mayordomo, Veterinario, Ganadero).
+> **Blindaje de Sesión**: Todas las páginas protegidas deben verificar la existencia del token al cargar.
+> **Unificación de Interfaz**: Estandarizar el comportamiento del Menú Hamburguesa en todos los dispositivos móviles.
 
 ---
 
 ## Proposed Changes
 
-### 1. Blindaje Visual y Responsividad (Mobile-First)
+### 1. Estandarización de Navegación (Frontend)
 
-#### [MODIFY] [admin_dashboard.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html)
-- **Menú Hamburguesa**: Implementar sidebar colapsable para que el administrador pueda operar desde su celular en el potrero sin que el menú tape la pantalla.
-- **Tablas Adaptativas**: Añadir contenedores con `overflow-x-auto` para que las tablas de ganado no rompan el diseño en pantallas pequeñas.
+#### [MODIFY] [Todos los Dashboards](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/)
+- Implementar la función `toggleSidebar()` de forma idéntica en Admin, Veterinario y Mayordomo.
+- Asegurar que el botón de "Cerrar Sesión" limpie el `localStorage` y redirija a `login.html`.
 
-#### [MODIFY] [Todos los Formularios]
-- Ajustar márgenes y tamaños de botones de voz para evitar solapamientos en dispositivos de baja resolución.
+#### [MODIFY] [Formularios Operativos](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/)
+- Actualizar el botón "Volver" en `tratamientos.html`, `produccion.html`, `inventario.html` y `novedades.html`.
+- **Lógica Inteligente**: El botón detectará el rol del usuario guardado en el token y lo regresará a su dashboard correspondiente en lugar de un archivo fijo.
 
-### 2. Corrección de Vulnerabilidades Comunes
-
-#### [MODIFY] [init.sql](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/models/init.sql)
-- **Migración a UUID**: Cambiar los IDs secuenciales de la tabla `usuarios` y `ganado` por `UUID`. Esto evita que alguien deduzca el tamaño de tu inventario solo mirando la URL.
-- **Índices de Rendimiento**: Añadir índices en columnas de búsqueda (chapeta, usuario_id) para evitar caídas del sistema cuando la base de datos crezca a miles de registros.
-
-#### [MODIFY] [package.json](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/package.json)
-- Añadir `csurf` o lógica similar para proteger contra ataques CSRF.
-
-### 3. Fortalecimiento de Infraestructura
-
-#### [MODIFY] [backend/Dockerfile](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/Dockerfile)
-- **Usuario No-Root**: Configurar Docker para que el proceso de Node.js no corra como administrador (root), limitando el daño en caso de que alguien logre entrar al contenedor.
+### 2. Blindaje de Conexión API
 
 #### [MODIFY] [server.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/server.js)
-- **Manejo de Errores Silencioso**: Asegurar que los errores 500 nunca devuelvan información técnica (stack traces) al usuario, sino un código de incidente único.
+- Re-activar y ajustar la **Content Security Policy (CSP)** de Helmet de forma equilibrada para permitir Tailwind y FontAwesome sin comprometer la seguridad.
+- Asegurar que todas las rutas estáticas se sirvan correctamente.
 
-### 4. Limpieza de "Basura" y Codificación
+### 3. Verificación de Rutas y Botones
 
-#### [DELETE] [Archivos Temporales]
-- Limpiar archivos `.log` o carpetas de configuración antiguas detectadas en la raíz.
+#### [REVISE] [registro_ganado.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/registro_ganado.html)
+- Corregir el script de envío para que use la misma lógica de "Respuesta del Sistema" que el login.
+- Eliminar bloques de script duplicados detectados.
 
 ---
 
 ## Verification Plan
 
-### Pruebas de Estrés y Carga
-- Simular el crecimiento de la base de datos a 10,000 animales para verificar que los nuevos índices mantienen el sistema rápido.
+### Pruebas de Flujo Completo
+- Entrar como **Ganadero**, registrar una novedad, y pulsar "Volver" (debe ir a `ganadero_dashboard.html`).
+- Entrar como **Veterinario**, registrar un tratamiento, y pulsar "Volver" (debe ir a `veterinario_dashboard.html`).
+- Intentar entrar a un dashboard pegando la URL directamente sin estar logueado (debe redirigir a `login.html`).
 
-### Prueba de Penetración (Pentest)
-- Intentar adivinar un ID de usuario sumando +1 al actual y verificar que el sistema de UUID lo hace imposible.
-
-### Verificación UI
-- Probar la navegación completa usando un solo dedo en un dispositivo móvil (emulación de campo).
+### Verificación de Consola
+- Confirmar que no hay errores 404 de archivos CSS/JS ni errores de CORS/CSP al navegar entre secciones.
 
 ## Resumen de Commits (VCS)
-- Se realizará el commit en español: `Seguridad Pro: Implementación de IDs únicos (UUID), Docker Hardening y UI Responsiva total`.
+- Se realizará el commit: `Arquitectura: Unificación de flujos de navegación, protección de rutas y corrección de enlaces contextuales`.

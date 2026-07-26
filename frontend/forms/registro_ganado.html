@@ -10,6 +10,7 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
         .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        select option { background-color: #0f172a; color: white; }
     </style>
 </head>
 <body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
@@ -27,10 +28,10 @@
                 </div>
             </div>
             <div class="flex gap-4">
-                <a href="admin_dashboard.html" class="hidden md:flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all border border-white/5">
+                <button onclick="navigation.goBack()" class="hidden md:flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all border border-white/5">
                     <i class="fa-solid fa-chart-pie-simple"></i> Dashboard
-                </a>
-                <button onclick="logout()" class="px-6 py-3 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase hover:bg-rose-500/20 transition-all">Salir</button>
+                </button>
+                <button onclick="navigation.logout()" class="px-6 py-3 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase hover:bg-rose-500/20 transition-all">Salir</button>
             </div>
         </div>
 
@@ -115,10 +116,9 @@
         </form>
     </div>
 
+    <script src="../services/navigation.js"></script>
     <script src="../services/voiceAssistant.js"></script>
     <script>
-        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
-
         function activateVoice(fieldId) {
             const btn = event.currentTarget;
             const icon = btn.querySelector('i');
@@ -157,7 +157,8 @@
                     alert("SISTEMA: REGISTRO GUARDADO EXITOSAMENTE ✅");
                     ganadoForm.reset();
                 } else {
-                    alert("ERROR: VERIFIQUE LOS DATOS TÉCNICOS");
+                    const error = await response.json();
+                    alert("ERROR: " + (error.error || "VERIFIQUE LOS DATOS TÉCNICOS"));
                 }
             } catch (error) {
                 alert("ERROR: SIN CONEXIÓN CON EL SERVIDOR");

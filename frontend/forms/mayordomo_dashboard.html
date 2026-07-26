@@ -12,10 +12,13 @@
         .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
-<body class="min-h-screen flex text-slate-400">
+<body class="min-h-screen flex text-slate-400 relative overflow-hidden">
+
+    <!-- Overlay para móvil -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
     <!-- Sidebar Supervisión -->
-    <aside class="w-72 border-r border-white/5 flex flex-col z-20">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-[#020617] border-r border-white/5 flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="p-8 flex items-center gap-3">
             <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
                 <i class="fa-solid fa-mountain-sun text-xl"></i>
@@ -31,17 +34,22 @@
             </button>
         </nav>
         <div class="p-6 border-t border-white/5">
-            <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
+            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
                 <i class="fa-solid fa-power-off"></i> Cierre de Turno
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 p-12 space-y-10 overflow-y-auto h-screen">
+    <main class="flex-1 p-8 md:p-12 space-y-10 overflow-y-auto h-screen">
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-10 rounded-[2.5rem] gap-8">
-            <div>
-                <h2 class="text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Control Predial</h2>
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-2">Protocolo de Supervisión Técnica</p>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-xl border border-white/10">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Control Predial</h2>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-2">Protocolo de Supervisión Técnica</p>
+                </div>
             </div>
             <div class="text-right">
                 <p id="fincaNombre" class="text-xl font-black text-amber-500 tracking-tight leading-none mb-2 uppercase">Unidad de Producción</p>
@@ -70,9 +78,23 @@
         </section>
     </main>
 
+    <script src="../services/navigation.js"></script>
     <script>
         const token = localStorage.getItem("token");
-        if (!token) window.location.href = "login.html";
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+
+            if (isHidden) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
 
         async function cargarStock() {
             try {

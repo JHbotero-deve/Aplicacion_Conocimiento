@@ -17,31 +17,32 @@ const securityValidator = require("./middleware/businessValidator");
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 // --- CAPA DE SEGURIDAD (SECURITY EDGE) ---
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "data:", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
             imgSrc: ["'self'", "data:", "blob:"],
-            connectSrc: ["'self'", "https://cdn.tailwindcss.com"]
+            connectSrc: ["'self'", "http://localhost:*", "ws://localhost:*", "https://cdn.tailwindcss.com"]
         }
     }
 }));
 app.disable('x-powered-by');
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100, // Límite de 100 peticiones por IP
+    windowMs: 15 * 60 * 1000,
+    max: 100,
     message: { error: "DEMASIADAS PETICIONES", message: "Su acceso ha sido limitado temporalmente por seguridad." }
 });
-app.use("/login", limiter); // Proteger especialmente el login contra fuerza bruta
+app.use("/login", limiter);
 app.use("/register", limiter);
 
-app.use(cors());
-app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 
 // Rutas públicas

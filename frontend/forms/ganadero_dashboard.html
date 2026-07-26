@@ -26,7 +26,7 @@
                     <p id="userNameDisplay" class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Operador Activo</p>
                 </div>
             </div>
-            <button onclick="logout()" class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500/20 transition-all flex items-center justify-center">
+            <button onclick="navigation.logout()" class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500/20 transition-all flex items-center justify-center">
                 <i class="fa-solid fa-power-off text-xl"></i>
             </button>
         </header>
@@ -78,8 +78,9 @@
         </a>
     </nav>
 
+    <script src="../services/navigation.js"></script>
     <script>
-        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
+        // navigation.js ya maneja el logout y checkAuth
     </script>
 </body>
 </html>

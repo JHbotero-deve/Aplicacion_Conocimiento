@@ -1,9 +1,8 @@
-# Tareas de Optimización "Steel Edge" y Blindaje Total
+# Tareas de Navegación y Estabilidad Pro
 
-- `[x]` Migrar IDs de tablas a UUID para privacidad (`init.sql`)
-- `[x]` Añadir índices de rendimiento en DB
-- `[x]` Implementar Sidebar Colapsable y UI Responsive en Admin Dashboard
-- `[x]` Configurar usuario No-Root en `backend/Dockerfile`
-- `[x]` Implementar manejo de errores silencioso y protección CSRF básica
-- `[ ]` Asegurar responsividad en todos los formularios de campo
-- `[ ]` Verificación final: Pruebas en dispositivos móviles y estrés de IDs
+- `[ ]` Unificar lógica de Sidebar y Auth Guard en todos los Dashboards
+- `[ ]` Implementar "Volver Contextual" en todos los formularios operativos
+- `[ ]` Corregir scripts duplicados y rutas en `registro_ganado.html`
+- `[ ]` Re-ajustar CSP de Helmet en `server.js` para estabilidad visual
+- `[ ]` Verificación: Prueba de navegación cruzada entre roles
+- `[ ]` Commit final de arquitectura de flujos

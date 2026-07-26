@@ -10,7 +10,7 @@
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
 
     <div class="w-full max-w-md space-y-6">
-        <button onclick="window.history.back()" class="inline-flex items-center text-slate-400 hover:text-emerald-600 transition font-bold text-sm">
+        <button onclick="navigation.goBack()" class="inline-flex items-center text-slate-400 hover:text-emerald-600 transition font-bold text-sm">
             <i class="fa-solid fa-arrow-left mr-2"></i> Volver
         </button>
 
@@ -43,9 +43,10 @@
         </div>
     </div>
 
+    <script src="../services/navigation.js"></script>
     <script>
         const token = localStorage.getItem("token");
-        if (!token) window.location.href = "login.html";
+        // navigation.js ya maneja el checkAuth()
 
         document.getElementById('formPerfil').addEventListener('submit', async (e) => {
             e.preventDefault();
