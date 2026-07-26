@@ -1,63 +1,61 @@
-# Plan de Implementación: Lanzador "Un Solo Clic" para Usuarios No Técnicos
+# Plan de Optimización y Blindaje Total: Versión "Steel Edge"
 
-Este plan detalla la creación de un sistema de arranque automatizado que elimina la necesidad de usar la terminal, pensando en ganaderos y administradores que no tienen conocimientos de programación.
+Este plan aborda tanto los problemas visuales detectados como las vulnerabilidades "silenciosas" (comunes y no tan comunes) que pueden comprometer la estabilidad y privacidad del sistema.
 
-## Decisiones de Diseño
+## 🛡️ Resumen de Errores Detectados (Protocolo Security Edge)
 
-> [!IMPORTANT]
-> **Arranque Automatizado**: Se crearán archivos ejecutables (`.bat` para Windows) que realicen todo el trabajo sucio: verificar Docker, descargar dependencias, levantar el servidor y abrir el navegador.
-> **Instalación Transparente**: Docker se encargará de todas las librerías internamente sin que el usuario vea mensajes de error de Node.js o npm.
+> [!CAUTION]
+> **Error Crítico de Visualización**: Las políticas de seguridad CSP están bloqueando CDNs, dejando la interfaz sin estilos (Corregido en el servidor, pendiente en UI).
+> **Falla de Privacidad (ID Enumeration)**: El uso de IDs secuenciales (#1, #2...) permite a un atacante adivinar cuántos animales o usuarios tienes. Proponemos usar identificadores aleatorios.
+> **Falla de Seguridad (CSRF)**: Falta protección contra falsificación de peticiones en sitios cruzados.
+
+---
 
 ## Proposed Changes
 
+### 1. Blindaje Visual y Responsividad (Mobile-First)
+
+#### [MODIFY] [admin_dashboard.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html)
+- **Menú Hamburguesa**: Implementar sidebar colapsable para que el administrador pueda operar desde su celular en el potrero sin que el menú tape la pantalla.
+- **Tablas Adaptativas**: Añadir contenedores con `overflow-x-auto` para que las tablas de ganado no rompan el diseño en pantallas pequeñas.
+
+#### [MODIFY] [Todos los Formularios]
+- Ajustar márgenes y tamaños de botones de voz para evitar solapamientos en dispositivos de baja resolución.
+
+### 2. Corrección de Vulnerabilidades Comunes
+
+#### [MODIFY] [init.sql](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/models/init.sql)
+- **Migración a UUID**: Cambiar los IDs secuenciales de la tabla `usuarios` y `ganado` por `UUID`. Esto evita que alguien deduzca el tamaño de tu inventario solo mirando la URL.
+- **Índices de Rendimiento**: Añadir índices en columnas de búsqueda (chapeta, usuario_id) para evitar caídas del sistema cuando la base de datos crezca a miles de registros.
+
+#### [MODIFY] [package.json](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/package.json)
+- Añadir `csurf` o lógica similar para proteger contra ataques CSRF.
+
+### 3. Fortalecimiento de Infraestructura
+
+#### [MODIFY] [backend/Dockerfile](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/Dockerfile)
+- **Usuario No-Root**: Configurar Docker para que el proceso de Node.js no corra como administrador (root), limitando el daño en caso de que alguien logre entrar al contenedor.
+
+#### [MODIFY] [server.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/server.js)
+- **Manejo de Errores Silencioso**: Asegurar que los errores 500 nunca devuelvan información técnica (stack traces) al usuario, sino un código de incidente único.
+
+### 4. Limpieza de "Basura" y Codificación
+
+#### [DELETE] [Archivos Temporales]
+- Limpiar archivos `.log` o carpetas de configuración antiguas detectadas en la raíz.
+
 ---
-
-### 1. Lanzadores Inteligentes (Windows)
-
-#### [NEW] [INICIAR_SISTEMA.bat](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/INICIAR_SISTEMA.bat)
-Script de un solo clic que:
-1. Verifica si Docker está activo.
-2. Ejecuta `docker-compose up -d --build`.
-3. Espera 10 segundos a que la base de datos despierte.
-4. Ejecuta el `seed` (usuario admin) automáticamente.
-5. Abre el navegador en `http://localhost:8000`.
-
-#### [NEW] [REINICIAR_SISTEMA.bat](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/REINICIAR_SISTEMA.bat)
-Script de mantenimiento para solucionar errores técnicos limpiando la caché de Docker.
-
----
-
-### 2. Integración Continua (GitHub Actions)
-
-#### [NEW] [verify.yml](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/.github/workflows/verify.yml)
-Workflow automatizado que se activa al subir código a GitHub:
-- **Linting**: Verifica que el código no tenga errores de sintaxis.
-- **Build Test**: Intenta construir la imagen Docker del backend para asegurar que no falten dependencias (como pasó con `nodemailer`).
-- **Security Audit**: Escanea las dependencias en busca de vulnerabilidades conocidas.
-
----
-
-### 3. Automatización del Primer Uso
-
-#### [MODIFY] [docker-compose.yml](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/docker-compose.yml)
-- Configurar un `healthcheck` para la base de datos, asegurando que el backend espere a que la DB esté 100% lista antes de intentar conectar.
-
----
-
-### 3. Documentación Visual "Para Humanos"
-
-#### [MODIFY] [README.md](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/README.md)
-Añadir una sección de "Inicio Rápido" con iconos:
-- Paso 1: Abrir Docker Desktop.
-- Paso 2: Doble clic en `INICIAR_SISTEMA.bat`.
-- Paso 3: Trabajar.
 
 ## Verification Plan
 
-### Prueba de "Usuario Final"
-- Cerrar todas las terminales y navegadores.
-- Hacer doble clic en el nuevo archivo `.bat`.
-- Verificar que el navegador se abra solo y el sistema funcione sin haber tocado el teclado.
+### Pruebas de Estrés y Carga
+- Simular el crecimiento de la base de datos a 10,000 animales para verificar que los nuevos índices mantienen el sistema rápido.
 
-### Resiliencia
-- Intentar ejecutar el script con Docker apagado y verificar que dé una instrucción clara al usuario: "Por favor, abra Docker Desktop primero".
+### Prueba de Penetración (Pentest)
+- Intentar adivinar un ID de usuario sumando +1 al actual y verificar que el sistema de UUID lo hace imposible.
+
+### Verificación UI
+- Probar la navegación completa usando un solo dedo en un dispositivo móvil (emulación de campo).
+
+## Resumen de Commits (VCS)
+- Se realizará el commit en español: `Seguridad Pro: Implementación de IDs únicos (UUID), Docker Hardening y UI Responsiva total`.

@@ -1,8 +1,9 @@
-# Tareas de Automatización "Un Clic" y GitHub CI
+# Tareas de Optimización "Steel Edge" y Blindaje Total
 
-- `[x]` Crear lanzador de sistema para Windows (`INICIAR_SISTEMA.bat`)
-- `[x]` Crear script de mantenimiento y limpieza (`REINICIAR_SISTEMA.bat`)
-- `[x]` Configurar GitHub Actions para verificación automática (`verify.yml`)
-- `[x]` Añadir Healthchecks al `docker-compose.yml` para robustez
-- `[x]` Actualizar `README.md` con guía visual de inicio rápido
-- `[x]` Verificación: Ejecutar arranque desde el archivo .bat
+- `[x]` Migrar IDs de tablas a UUID para privacidad (`init.sql`)
+- `[x]` Añadir índices de rendimiento en DB
+- `[x]` Implementar Sidebar Colapsable y UI Responsive en Admin Dashboard
+- `[x]` Configurar usuario No-Root en `backend/Dockerfile`
+- `[x]` Implementar manejo de errores silencioso y protección CSRF básica
+- `[ ]` Asegurar responsividad en todos los formularios de campo
+- `[ ]` Verificación final: Pruebas en dispositivos móviles y estrés de IDs

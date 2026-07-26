@@ -17,10 +17,13 @@
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
-<body class="text-slate-400 flex min-h-screen overflow-hidden">
+<body class="text-slate-400 flex min-h-screen overflow-hidden relative">
 
-    <!-- Sidebar Corporativa -->
-    <aside class="w-72 bg-[#020617] border-r border-white/5 flex flex-col z-20">
+    <!-- Overlay para móvil cuando el sidebar está abierto -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+    <!-- Sidebar Corporativa Adaptativa -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-[#020617] border-r border-white/5 flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="p-8 flex items-center gap-3">
             <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-emerald-500/20">
                 <i class="fa-solid fa-layer-group text-xl"></i>
@@ -59,8 +62,13 @@
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto">
         <!-- Dashboard Header -->
-        <header class="sticky top-0 z-10 px-10 py-6 border-b border-white/5 flex justify-between items-center bg-[#020617]/80 backdrop-blur-md">
-            <h2 id="sectionTitle" class="text-2xl font-bold text-white tracking-tight uppercase">Resumen Ejecutivo</h2>
+        <header class="sticky top-0 z-10 px-6 lg:px-10 py-6 border-b border-white/5 flex justify-between items-center bg-[#020617]/80 backdrop-blur-md">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-xl border border-white/10">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+                <h2 id="sectionTitle" class="text-xl lg:text-2xl font-bold text-white tracking-tight uppercase">Resumen Ejecutivo</h2>
+            </div>
             <div class="flex items-center gap-6">
                 <div class="text-right">
                     <p class="text-xs font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Administrador Global</p>
@@ -191,8 +199,8 @@
                         </div>
                     </div>
 
-                    <div class="overflow-hidden rounded-[1.5rem] border border-white/5">
-                        <table class="w-full text-left">
+                    <div class="overflow-x-auto rounded-[1.5rem] border border-white/5 bg-white/[0.01]">
+                        <table class="w-full text-left min-w-[600px]">
                             <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-widest border-b border-white/5">
                                 <tr>
                                     <th class="p-6">ID</th>
@@ -264,7 +272,23 @@
 
         let prodChart;
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+
+            if (isHidden) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
         function showSection(id) {
+            if (window.innerWidth < 1024) toggleSidebar();
+
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
 

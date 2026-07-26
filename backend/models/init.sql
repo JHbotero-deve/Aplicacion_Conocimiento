@@ -1,8 +1,11 @@
--- Sistema Ganadero Profesional - Ecosistema Operativo Integral (ICA/BPG)
+-- Sistema Ganadero Profesional - Edición "Steel Edge" (Seguridad Blindada)
+
+-- Habilitar extensión para UUID
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- 1. Tabla de Fincas (RSPP)
 CREATE TABLE IF NOT EXISTS fincas (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre VARCHAR(100) NOT NULL,
     matricula_inmobiliaria VARCHAR(50),
     extension DECIMAL(10,2),
@@ -15,9 +18,9 @@ CREATE TABLE IF NOT EXISTS fincas (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Tabla de Usuarios (Actualizada con Seguridad Offline)
+-- 2. Tabla de Usuarios (Actualizada con UUID y Seguridad Offline)
 CREATE TABLE IF NOT EXISTS usuarios (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     contrasena_hash TEXT NOT NULL,
     rol_usuario VARCHAR(20) NOT NULL,
@@ -30,14 +33,14 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- 3. Relación Usuario-Finca
 CREATE TABLE IF NOT EXISTS usuario_finca (
-    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    finca_id UUID REFERENCES fincas(id) ON DELETE CASCADE,
     PRIMARY KEY (usuario_id, finca_id)
 );
 
--- 4. Tabla de Ganado (Censo Pecuario Oficial)
+-- 4. Tabla de Ganado (Censo Pecuario Oficial con UUID)
 CREATE TABLE IF NOT EXISTS ganado (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     chapeta VARCHAR(50) UNIQUE NOT NULL,
     especie VARCHAR(50) DEFAULT 'Bovino',
     sexo VARCHAR(10),
@@ -50,106 +53,101 @@ CREATE TABLE IF NOT EXISTS ganado (
     ruv_numero VARCHAR(50),
     hierro_descripcion TEXT,
     bloqueado INTEGER DEFAULT 0,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE SET NULL
+    finca_id UUID REFERENCES fincas(id) ON DELETE SET NULL
 );
 
 -- 5. Tratamientos Veterinarios (BPG)
 CREATE TABLE IF NOT EXISTS tratamientos (
-    id SERIAL PRIMARY KEY,
-    ganado_id INTEGER REFERENCES ganado(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    ganado_id UUID REFERENCES ganado(id) ON DELETE CASCADE,
     fecha DATE DEFAULT CURRENT_DATE,
     diagnostico TEXT,
     producto VARCHAR(100),
     lote VARCHAR(50),
     dosis VARCHAR(50),
-    via_administracion VARCHAR(50), -- Intramuscular, Oral, etc.
+    via_administracion VARCHAR(50),
     tiempo_retiro_dias INTEGER DEFAULT 0,
-    responsable_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL
+    responsable_id UUID REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
 -- 6. Producción Diaria (Leche/Pesaje)
 CREATE TABLE IF NOT EXISTS produccion (
-    id SERIAL PRIMARY KEY,
-    ganado_id INTEGER REFERENCES ganado(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    ganado_id UUID REFERENCES ganado(id) ON DELETE CASCADE,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    tipo VARCHAR(20), -- Leche, Carne (Pesaje)
+    tipo VARCHAR(20),
     cantidad DECIMAL(10,2),
-    unidad VARCHAR(10) DEFAULT 'Litros', -- Litros, Kilos
+    unidad VARCHAR(10) DEFAULT 'Litros',
     observaciones TEXT
 );
 
 -- 7. Inventario de Insumos
 CREATE TABLE IF NOT EXISTS insumos (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50), -- Medicamento, Alimento, Herramienta
+    tipo VARCHAR(50),
     registro_ica VARCHAR(50),
     cantidad_actual DECIMAL(10,2),
     unidad_medida VARCHAR(20),
     fecha_vencimiento DATE,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE
+    finca_id UUID REFERENCES fincas(id) ON DELETE CASCADE
 );
 
--- 8. Novedades (Partos, Muertes, Ventas)
+-- 8. Novedades
 CREATE TABLE IF NOT EXISTS novedades (
-    id SERIAL PRIMARY KEY,
-    ganado_id INTEGER REFERENCES ganado(id) ON DELETE CASCADE,
-    tipo_novedad VARCHAR(50), -- Parto, Muerte, Venta, Traslado
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    ganado_id UUID REFERENCES ganado(id) ON DELETE CASCADE,
+    tipo_novedad VARCHAR(50),
     fecha DATE DEFAULT CURRENT_DATE,
     descripcion TEXT,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE
+    finca_id UUID REFERENCES fincas(id) ON DELETE CASCADE
 );
 
--- 9. Tabla de Cuarentena (Anti-Fraude y Anomalías)
+-- 9. Tabla de Cuarentena (Anti-Fraude)
 CREATE TABLE IF NOT EXISTS cuarentena (
-    id SERIAL PRIMARY KEY,
-    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE SET NULL,
-    tipo_accion VARCHAR(100) NOT NULL, -- Ej: Registro Producción, Venta
-    datos_json JSONB NOT NULL, -- Los datos sospechosos originales
-    motivo_bloqueo TEXT, -- Ej: Supera promedio histórico (Litros > 50)
-    estado VARCHAR(20) DEFAULT 'Pendiente', -- Pendiente, Aprobado, Descartado
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
+    finca_id UUID REFERENCES fincas(id) ON DELETE SET NULL,
+    tipo_accion VARCHAR(100) NOT NULL,
+    datos_json JSONB NOT NULL,
+    motivo_bloqueo TEXT,
+    estado VARCHAR(20) DEFAULT 'Pendiente',
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 10. Citas Veterinarias
 CREATE TABLE IF NOT EXISTS citas_veterinarias (
-    id SERIAL PRIMARY KEY,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE,
-    veterinario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
-    animal_id INTEGER REFERENCES ganado(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    finca_id UUID REFERENCES fincas(id) ON DELETE CASCADE,
+    veterinario_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
+    animal_id UUID REFERENCES ganado(id) ON DELETE CASCADE,
     fecha_programada TIMESTAMP NOT NULL,
-    motivo VARCHAR(100), -- Vacunación, Chequeo, Cirugía, Urgencia
-    estado VARCHAR(20) DEFAULT 'Pendiente', -- Pendiente, Completada, Cancelada
+    motivo VARCHAR(100),
+    estado VARCHAR(20) DEFAULT 'Pendiente',
     observaciones TEXT
 );
 
--- 10. Campañas de Vacunación (Masivas)
-CREATE TABLE IF NOT EXISTS campanas_vacunacion (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    especie_objetivo VARCHAR(50),
-    insumo_id INTEGER REFERENCES insumos(id) ON DELETE SET NULL,
-    estado VARCHAR(20) DEFAULT 'Programada' -- Programada, En Curso, Finalizada
-);
-
--- 11. Recetas y Prescripciones Médicas
+-- 11. Recetas Médicas
 CREATE TABLE IF NOT EXISTS recetas_medicas (
-    id SERIAL PRIMARY KEY,
-    tratamiento_id INTEGER REFERENCES tratamientos(id) ON DELETE CASCADE,
-    veterinario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tratamiento_id UUID REFERENCES tratamientos(id) ON DELETE CASCADE,
+    veterinario_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
     instrucciones_detalladas TEXT,
     fecha_prescripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 12. Tabla de Auditoría (Ya existe, aseguramos que esté al final)
+-- 12. Tabla de Auditoría
 CREATE TABLE IF NOT EXISTS auditoria (
-    id SERIAL PRIMARY KEY,
-    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
     accion VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    finca_id INTEGER REFERENCES fincas(id) ON DELETE SET NULL,
+    finca_id UUID REFERENCES fincas(id) ON DELETE SET NULL,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ÍNDICES DE RENDIMIENTO (Optimización Steel Edge)
+CREATE INDEX IF NOT EXISTS idx_ganado_chapeta ON ganado(chapeta);
+CREATE INDEX IF NOT EXISTS idx_produccion_fecha ON produccion(fecha);
+CREATE INDEX IF NOT EXISTS idx_auditoria_fecha ON auditoria(fecha);
+CREATE INDEX IF NOT EXISTS idx_ganado_finca ON ganado(finca_id);

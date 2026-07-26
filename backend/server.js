@@ -80,6 +80,17 @@ app.get("/admin/auditoria", checkRole(['admin']), admin.obtenerAuditoria);
 app.get("/admin/cuarentena", checkRole(['admin']), admin.listarCuarentena);
 app.post("/admin/cuarentena/procesar", checkRole(['admin']), admin.procesarCuarentena);
 
+// --- MANEJO DE ERRORES CENTRALIZADO (STEEL EDGE) ---
+app.use((err, req, res, next) => {
+    console.error("INCIDENTE DE SEGURIDAD/SISTEMA:", err.stack);
+    // No revelamos detalles técnicos al usuario final
+    res.status(500).json({
+        error: "ERROR INTERNO DEL NODO",
+        message: "Se ha generado un reporte de incidencia automático. El administrador ha sido notificado.",
+        incident_id: Date.now()
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);
