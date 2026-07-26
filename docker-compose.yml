@@ -5,13 +5,15 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./frontend:/frontend
     environment:
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: ganaderia
       DB_USER: ganaderia
       DB_PASSWORD: 1100
-  
+      JWT_SECRET: clave_secreta_ganaderia_2026
+      PORT: 8000
 
   db:
     image: postgres:14
@@ -23,10 +25,4 @@ services:
       - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
-
-  frontend:
-    image: nginx:latest
-    ports:
-      - "8080:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./backend/models/init.sql:/docker-entrypoint-initdb.d/init.sql

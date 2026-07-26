@@ -1,0 +1,51 @@
+#! db-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: db
+    namespace: proyecto-ganaderia
+    labels:
+        com.docker.compose.project: proyecto_ganaderia
+        com.docker.compose.service: db
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: proyecto_ganaderia
+            com.docker.compose.service: db
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: proyecto_ganaderia
+                com.docker.compose.service: db
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: db
+                  image: postgres:14
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: POSTGRES_DB
+                      value: "ganaderia"
+                    - name: POSTGRES_PASSWORD
+                      value: "1100"
+                    - name: POSTGRES_USER
+                      value: "ganaderia"
+                  ports:
+                    - name: db-5432
+                      containerPort: 5432
+                  volumeMounts:
+                    - name: var-lib-postgresql-data
+                      mountPath: /var/lib/postgresql/data
+                    - name: docker-entrypoint-initdb-d-init-sql
+                      mountPath: /docker-entrypoint-initdb.d/init.sql
+            volumes:
+                - name: var-lib-postgresql-data
+                  hostPath:
+                    path: C:\Workspace_Dev\1_Proyectos\proyecto_ganaderia\data
+                - name: docker-entrypoint-initdb-d-init-sql
+                  hostPath:
+                    path: C:\Workspace_Dev\1_Proyectos\proyecto_ganaderia\backend\models\init.sql

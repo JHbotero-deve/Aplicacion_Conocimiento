@@ -1,50 +1,53 @@
-const fs = require("fs");
-const path = require("path");
-const nodemailer = require("nodemailer");
+/**
+ * Script de Auditoría Inteligente - Ganadería Pro
+ * Ejecuta revisiones automáticas sobre la base de datos para detectar ataques.
+ */
 
-// Definimos rutas absolutas basadas en la ubicación de este script
-const LOG_PATH = path.join(__dirname, "..", "backend", "logs", "access.log");
-const ALERTS_PATH = path.join(__dirname, "..", "backend", "logs", "alertas.log");
+const pool = require("../backend/models/db");
+const emailService = require("../backend/services/emailService");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: { user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS }
-});
+async function revisarAuditoria() {
+    try {
+        console.log("🔍 Iniciando revisión de auditoría...");
 
-async function autoRevision() {
-  try {
-    // Usamos path.join para asegurar que la ruta sea correcta desde la raíz del proyecto
-    const logFile = path.join(__dirname, "../backend/logs/access.log");
-    const alertFile = path.join(__dirname, "../backend/logs/alertas.log");
+        // 1. Buscar intentos de fuerza bruta en la tabla de usuarios
+        const bloqueoRes = await pool.query(
+            "SELECT nombre_usuario, intentos_fallidos FROM usuarios WHERE intentos_fallidos >= 5 AND bloqueado_hasta > NOW()"
+        );
 
-    if (!fs.existsSync(logFile)) return;
+        if (bloqueoRes.rows.length > 0) {
+            for (const usuario of bloqueoRes.rows) {
+                await emailService.enviarAlertaSeguridad({
+                    evento: "Bloqueo de Cuenta",
+                    descripcion: `El usuario '${usuario.nombre_usuario}' ha sido bloqueado tras 5 intentos fallidos.`
+                });
+            }
+        }
 
-    const accessLog = await fs.promises.readFile(logFile, "utf8");
-    const intentosFallidos = accessLog.split("\n").filter(linea =>
-      linea.includes("Token inválido") || linea.includes("Intento sin token")
-    );
-    if (intentosFallidos.length >= 5) {
-      await fs.promises.appendFile(alertFile, `ALERTA: múltiples intentos fallidos el ${new Date().toISOString()}\n`);
-      await enviarCorreo();
-      // Limpiar el log después de la alerta para evitar correos duplicados
-      await fs.promises.writeFile(logFile, "");
+        // 2. Buscar patrones de acceso no autorizado en logs de auditoría (últimas 2 horas)
+        const auditoriaRes = await pool.query(`
+            SELECT a.*, u.nombre_usuario
+            FROM auditoria a
+            LEFT JOIN usuarios u ON a.usuario_id = u.id
+            WHERE a.fecha > NOW() - INTERVAL '2 hours'
+            AND a.accion LIKE '%403%' OR a.accion LIKE '%401%'
+        `);
+
+        if (auditoriaRes.rows.length >= 10) {
+            await emailService.enviarAlertaSeguridad({
+                evento: "Múltiples Accesos Denegados",
+                descripcion: `Se han detectado ${auditoriaRes.rows.length} intentos de acceso denegado en las últimas 2 horas. Posible escaneo de vulnerabilidades.`
+            });
+        }
+
+        console.log("✅ Revisión completada.");
+    } catch (error) {
+        console.error("❌ Error en el script de revisión:", error);
     }
-  } catch (error) {
-    console.error("Error en la revisión automática:", error);
-  }
 }
 
-async function enviarCorreo() {
-  try {
-    await transporter.sendMail({
-      from: process.env.ADMIN_EMAIL,
-      to: process.env.ADMIN_EMAIL,
-      subject: "Alerta de seguridad",
-      text: "Se detectaron múltiples intentos fallidos en el sistema."
-    });
-  } catch (error) {
-    console.error("Error enviando correo de alerta:", error);
-  }
-}
+// Ejecutar cada 15 minutos
+setInterval(revisarAuditoria, 15 * 60 * 1000);
 
-setInterval(autoRevision,5*60*1000);
+// Ejecución inmediata al iniciar
+revisarAuditoria();

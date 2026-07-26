@@ -1,37 +1,73 @@
-### Registro de usuario
-POST http://localhost:3000/register
+### 1. AUTENTICACIÓN
+
+#### Registro de nuevo usuario
+POST http://localhost:8000/register
 Content-Type: application/json
 
 {
-  "nombre_usuario": "jorge",
-  "contraseña": "123456"
+  "nombre_usuario": "ganadero_vereda",
+  "contrasena": "clave123",
+  "rol_usuario": "usuario"
 }
 
-### Login de usuario
-POST http://localhost:3000/login
+#### Login de usuario (Obtener Token)
+POST http://localhost:8000/login
 Content-Type: application/json
 
 {
-  "nombre_usuario": "jorge",
-  "contraseña": "123456"
+  "nombre_usuario": "admin",
+  "contrasena": "admin123"
 }
 
-### Ingreso de ganado
-POST http://localhost:3000/ganado
+### 2. GESTIÓN DE GANADO (Requiere Token en Authorization)
+
+#### Registrar animal (Campos ICA)
+POST http://localhost:8000/ganado
+Authorization: Bearer <TOKEN_AQUI>
 Content-Type: application/json
 
 {
-  "chapeta": "12345",
+  "chapeta": "9988-X",
+  "especie": "Bovino",
+  "sexo": "Hembra",
   "raza": "Brahman",
-  "edad": 3,
-  "peso": 450.50,
-  "fecha_ingreso": "2026-05-17",
-  "estadoICA": "Sano"
+  "categoria_etaria": "Levante (1-2a)",
+  "edad": 18,
+  "peso": 380.50,
+  "fecha_ingreso": "2026-07-26",
+  "estadoica": "Registrado",
+  "ruv_numero": "RUV-5544",
+  "hierro_descripcion": "Marca en pierna derecha",
+  "finca_id": 1
 }
 
-### Bloquear registro de ganado
-PUT http://localhost:3000/ganado/bloquear/1
+#### Buscar ganado por chapeta
+GET http://localhost:8000/ganado/chapeta/9988-X
+Authorization: Bearer <TOKEN_AQUI>
+
+### 3. ADMINISTRACIÓN (Solo Rol: Admin)
+
+#### Ver Estadísticas Globales
+GET http://localhost:8000/admin/stats
+Authorization: Bearer <TOKEN_AQUI>
+
+#### Listar Usuarios y Estados
+GET http://localhost:8000/admin/usuarios
+Authorization: Bearer <TOKEN_AQUI>
+
+#### Ver Auditoría (Logs de Actividad)
+GET http://localhost:8000/admin/auditoria
+Authorization: Bearer <TOKEN_AQUI>
+
+#### Crear Nueva Finca (RSPP - ICA)
+POST http://localhost:8000/admin/fincas
+Authorization: Bearer <TOKEN_AQUI>
 Content-Type: application/json
 
-### Buscar ganado por chapeta
-GET http://localhost:3000/ganado/chapeta/12345
+{
+  "nombre": "Finca La Esperanza",
+  "matricula": "123-45678",
+  "extension": 50.5,
+  "vereda": "El Mirador",
+  "municipio": "Facatativá"
+}

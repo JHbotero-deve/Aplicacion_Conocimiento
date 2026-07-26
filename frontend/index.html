@@ -7,31 +7,54 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./dist/output.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-green-100 to-green-200 min-h-screen flex items-center justify-center">
+<body class="bg-slate-50 min-h-screen flex items-center justify-center font-sans">
 
-  <!-- Tarjeta principal -->
-  <div class="bg-white shadow-2xl rounded-xl p-10 w-full max-w-lg text-center space-y-6 border border-green-300">
-    <h1 class="text-4xl font-bold text-green-700">
-      🐄 Sistema de Gestión Ganadera
-    </h1>
-    <p class="text-gray-600 text-lg">
-      Bienvenido al sistema de control y registro de tu finca ganadera.
-    </p>
+  <!-- Tarjeta principal Estilo Pro -->
+  <div class="bg-white shadow-2xl rounded-3xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row border border-slate-200">
 
-    <!-- Botones de navegación -->
-    <div class="flex flex-col gap-4 mt-6">
-      <a href="./forms/login.html" 
-         class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition font-semibold">
-        Ingresar al Sistema
-      </a>
-      <a href="./forms/registro.html" 
-         class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold">
-        Registrarse como Usuario
-      </a>
-      
- 
+    <!-- Lado Izquierdo: Imagen/Color -->
+    <div class="md:w-1/2 bg-emerald-700 p-12 text-white flex flex-col justify-center relative overflow-hidden">
+        <div class="relative z-10">
+            <h1 class="text-5xl font-black leading-tight">Ganadería<br><span class="text-emerald-300 italic">Inteligente</span></h1>
+            <p class="mt-6 text-emerald-100 text-lg opacity-80 leading-relaxed">
+                Control total de tu finca, registros sanitarios y auditoría profesional en una sola plataforma.
+            </p>
+        </div>
+        <i class="fa-solid fa-cow absolute -right-8 -bottom-8 text-emerald-600 text-[15rem] opacity-20 transform -rotate-12"></i>
+    </div>
+
+    <!-- Lado Derecho: Acciones -->
+    <div class="md:w-1/2 p-12 flex flex-col justify-center space-y-8 bg-white">
+        <div class="space-y-2">
+            <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Bienvenido</h2>
+            <p class="text-slate-400 font-medium">Selecciona una opción para continuar</p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <a href="./forms/login.html"
+               class="flex items-center justify-between bg-emerald-600 text-white px-6 py-4 rounded-2xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200 group">
+                <span class="font-bold text-lg">Ingresar al Sistema</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+            </a>
+
+            <a href="./forms/registro.html"
+               class="flex items-center justify-between border-2 border-slate-200 text-slate-600 px-6 py-4 rounded-2xl hover:border-emerald-500 hover:text-emerald-600 transition-all group font-bold">
+                <span>Registrarse</span>
+                <i class="fa-solid fa-user-plus group-hover:scale-110 transition"></i>
+            </a>
+        </div>
+
+        <div class="pt-8 border-t border-slate-100 flex justify-between items-center text-xs text-slate-400 font-bold uppercase tracking-widest">
+            <span>© 2026 Ganadería Pro</span>
+            <div class="flex gap-4">
+                <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                <i class="fa-solid fa-network-wired text-blue-500"></i>
+            </div>
+        </div>
     </div>
   </div>
 
+  <!-- Font Awesome para los iconos -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </body>
 </html>

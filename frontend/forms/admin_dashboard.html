@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Ganadero Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 font-sans flex min-h-screen">
+
+    <!-- Sidebar Estilo Jira -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl">
+        <div class="p-6 border-b border-slate-800">
+            <h1 class="text-2xl font-bold text-emerald-400"><i class="fa-solid fa-cow mr-2"></i>Ganadería</h1>
+            <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest">Panel Administrativo</p>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+            <button onclick="showSection('resumen')" class="w-full flex items-center p-3 rounded-lg hover:bg-slate-800 transition text-slate-300 hover:text-white group">
+                <i class="fa-solid fa-chart-line w-6 text-emerald-500 group-hover:scale-110 transition"></i>
+                <span class="font-medium">Resumen General</span>
+            </button>
+            <button onclick="showSection('usuarios')" class="w-full flex items-center p-3 rounded-lg hover:bg-slate-800 transition text-slate-300 hover:text-white group">
+                <i class="fa-solid fa-users w-6 text-blue-400 group-hover:scale-110 transition"></i>
+                <span class="font-medium">Usuarios y Permisos</span>
+            </button>
+            <button onclick="showSection('fincas')" class="w-full flex items-center p-3 rounded-lg hover:bg-slate-800 transition text-slate-300 hover:text-white group">
+                <i class="fa-solid fa-mountain-sun w-6 text-amber-500 group-hover:scale-110 transition"></i>
+                <span class="font-medium">Gestión de Fincas</span>
+            </button>
+            <button onclick="showSection('auditoria')" class="w-full flex items-center p-3 rounded-lg hover:bg-slate-800 transition text-slate-300 hover:text-white group">
+                <i class="fa-solid fa-clipboard-list w-6 text-purple-400 group-hover:scale-110 transition"></i>
+                <span class="font-medium">Auditoría / Logs</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <a href="../index.html" class="flex items-center p-3 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-house w-6"></i>
+                <span>Inicio Público</span>
+            </a>
+            <button onclick="logout()" class="w-full flex items-center p-3 text-red-400 hover:text-red-300 transition mt-2">
+                <i class="fa-solid fa-right-from-bracket w-6"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 flex flex-col">
+        <!-- Header Superior -->
+        <header class="bg-white shadow-sm p-6 flex justify-between items-center border-b border-slate-200">
+            <h2 id="sectionTitle" class="text-xl font-bold text-slate-800 uppercase tracking-tight">Resumen General</h2>
+            <div class="flex items-center gap-4">
+                <span id="adminName" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">Admin: <span class="text-emerald-600">Conectado</span></span>
+            </div>
+        </header>
+
+        <!-- Secciones -->
+        <div id="content" class="p-8">
+
+            <!-- SECCIÓN RESUMEN -->
+            <section id="resumen" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Ganado Total</p>
+                        <h3 id="statCabezas" class="text-4xl font-extrabold text-slate-800 mt-1">0</h3>
+                        <div class="text-emerald-500 text-xs mt-2 font-bold"><i class="fa-solid fa-arrow-up mr-1"></i>Activo</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Peso Total</p>
+                        <h3 id="statPesoTotal" class="text-4xl font-extrabold text-slate-800 mt-1">0 <span class="text-lg">kg</span></h3>
+                        <div class="text-slate-400 text-xs mt-2 italic text-slate-400">Total en fincas</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Peso Promedio</p>
+                        <h3 id="statPesoProm" class="text-4xl font-extrabold text-slate-800 mt-1">0 <span class="text-lg">kg</span></h3>
+                        <div class="text-blue-500 text-xs mt-2 font-bold">Por animal</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Bloqueos / ICA</p>
+                        <h3 id="statBloqueados" class="text-4xl font-extrabold text-red-600 mt-1">0</h3>
+                        <div class="text-red-400 text-xs mt-2 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Requerida atención</div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-700 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="text-2xl font-bold">¡Bienvenido al Panel Pro!</h4>
+                        <p class="text-emerald-100 mt-2 max-w-md">Ahora puedes gestionar múltiples fincas y supervisar la auditoría en tiempo real. Usa el menú lateral para navegar.</p>
+                        <button onclick="cargarResumen()" class="mt-6 bg-white text-emerald-700 px-6 py-2 rounded-lg font-bold hover:bg-emerald-50 transition shadow-md">
+                            <i class="fa-solid fa-rotate mr-2"></i>Actualizar Indicadores
+                        </button>
+                    </div>
+                    <i class="fa-solid fa-cow absolute -right-4 -bottom-4 text-emerald-600 text-9xl opacity-20 transform -rotate-12"></i>
+                </div>
+            </section>
+
+            <!-- SECCIÓN USUARIOS -->
+            <section id="usuarios" class="hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-700">Listado de Personal</h3>
+                    <a href="registro.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-sm font-bold text-sm">
+                        <i class="fa-solid fa-plus mr-2"></i>Nuevo Usuario
+                    </a>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-xs font-bold">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Usuario</th>
+                                <th class="p-4">Rol</th>
+                                <th class="p-4">Fecha Creación</th>
+                                <th class="p-4">Estado</th>
+                                <th class="p-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaUsuarios" class="divide-y divide-slate-100 text-sm text-slate-600">
+                            <!-- Datos dinámicos -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECCIÓN FINCAS -->
+            <section id="fincas" class="hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-700">Gestión de Predios</h3>
+                    <button onclick="openModal('modalFinca')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition shadow-sm font-bold text-sm">
+                        <i class="fa-solid fa-plus mr-2"></i>Nueva Finca
+                    </button>
+                </div>
+                <div id="gridFincas" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-700 font-medium">
+                    <!-- Cards dinámicas -->
+                </div>
+            </section>
+
+            <!-- SECCIÓN AUDITORÍA -->
+            <section id="auditoria" class="hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-700">Registro de Actividad (Auditoría)</h3>
+                    <button onclick="cargarAuditoria()" class="text-slate-500 hover:text-emerald-600 transition font-bold text-sm">
+                        <i class="fa-solid fa-rotate mr-1"></i>Refrescar logs
+                    </button>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-xs font-bold">
+                            <tr>
+                                <th class="p-4">Fecha</th>
+                                <th class="p-4">Usuario</th>
+                                <th class="p-4">Acción</th>
+                                <th class="p-4">Descripción</th>
+                                <th class="p-4">Finca</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAuditoria" class="divide-y divide-slate-100 text-xs text-slate-500">
+                            <!-- Datos dinámicos -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Modal Fincas -->
+    <div id="modalFinca" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg">
+            <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-file-signature text-emerald-500 mr-2"></i> Registro RSPP (ICA)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-2">
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Nombre del Predio</label>
+                    <input id="fincaNombre" type="text" placeholder="Ej: Finca La Esperanza" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Matrícula Inmobiliaria</label>
+                    <input id="fincaMatricula" type="text" class="w-full border border-slate-200 p-2 rounded-lg outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Extensión (Has)</label>
+                    <input id="fincaExtension" type="number" class="w-full border border-slate-200 p-2 rounded-lg outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Vereda / Ubicación</label>
+                    <div class="relative">
+                        <input id="fincaVereda" type="text" class="w-full border border-slate-200 p-2 rounded-lg outline-none pr-10">
+                        <button onclick="activateVoice('fincaVereda')" class="absolute right-1 top-1/2 -translate-y-1/2 text-emerald-500 hover:scale-110 transition p-2">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Municipio</label>
+                    <input id="fincaMunicipio" type="text" class="w-full border border-slate-200 p-2 rounded-lg outline-none">
+                </div>
+            </div>
+            <div class="flex gap-4 mt-8">
+                <button onclick="closeModal('modalFinca')" class="flex-1 border border-slate-200 text-slate-500 p-3 rounded-xl font-bold hover:bg-slate-50">Cancelar</button>
+                <button onclick="guardarFinca()" class="flex-1 bg-emerald-600 text-white p-3 rounded-xl font-bold hover:bg-emerald-700 shadow-lg shadow-emerald-100">Registrar RSPP</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../services/voiceAssistant.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "login.html";
+
+        function activateVoice(fieldId) {
+            voiceAssistant.start((corrected) => {
+                document.getElementById(fieldId).value = corrected;
+            });
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+
+            const titles = {
+                'resumen': 'Resumen General',
+                'usuarios': 'Usuarios y Permisos',
+                'fincas': 'Gestión de Fincas',
+                'auditoria': 'Auditoría / Logs'
+            };
+            document.getElementById('sectionTitle').innerText = titles[id];
+
+            if(id === 'resumen') cargarResumen();
+            if(id === 'usuarios') cargarUsuarios();
+            if(id === 'fincas') cargarFincas();
+            if(id === 'auditoria') cargarAuditoria();
+        }
+
+        async function cargarResumen() {
+            try {
+                const res = await fetch("/admin/stats", { headers: { "Authorization": "Bearer " + token } });
+                const stats = await res.json();
+                document.getElementById('statCabezas').innerText = stats.totalCabezas;
+                document.getElementById('statPesoTotal').innerText = stats.pesoTotal;
+                document.getElementById('statPesoProm').innerText = stats.pesoPromedio;
+                document.getElementById('statBloqueados').innerText = stats.bloqueados;
+            } catch(e) {}
+        }
+
+        async function cargarUsuarios() {
+            const res = await fetch("/admin/usuarios", { headers: { "Authorization": "Bearer " + token } });
+            const users = await res.json();
+            const tbody = document.getElementById('tablaUsuarios');
+            tbody.innerHTML = users.map(u => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-4 font-mono text-slate-400">#${u.id}</td>
+                    <td class="p-4 font-bold text-slate-800">${u.nombre_usuario}</td>
+                    <td class="p-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">${u.rol_usuario}</span></td>
+                    <td class="p-4">${new Date(u.fecha_creacion).toLocaleDateString()}</td>
+                    <td class="p-4">
+                        ${u.bloqueado_hasta && new Date(u.bloqueado_hasta) > new Date()
+                          ? '<span class="text-red-500 flex items-center"><i class="fa-solid fa-lock mr-1"></i>Bloqueado</span>'
+                          : '<span class="text-emerald-500 flex items-center"><i class="fa-solid fa-check-circle mr-1"></i>Activo</span>'}
+                    </td>
+                    <td class="p-4">
+                        <button onclick="resetPass(${u.id})" class="text-slate-400 hover:text-blue-600 transition mr-2" title="Resetear Clave"><i class="fa-solid fa-key"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function cargarFincas() {
+            const res = await fetch("/admin/fincas", { headers: { "Authorization": "Bearer " + token } });
+            const fincas = await res.json();
+            const grid = document.getElementById('gridFincas');
+            grid.innerHTML = fincas.map(f => `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 group hover:border-emerald-500 transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-emerald-100 p-3 rounded-lg text-emerald-600"><i class="fa-solid fa-map-location-dot text-xl"></i></div>
+                        <span class="text-xs text-slate-400 font-bold">ICA: ${f.matricula_inmobiliaria || 'S.N.'}</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-800">${f.nombre}</h4>
+                    <p class="text-slate-500 text-sm mt-1 mb-2 font-medium"><i class="fa-solid fa-location-dot mr-1 text-emerald-500"></i>${f.vereda || 'Vereda no asignada'}, ${f.municipio || ''}</p>
+                    <p class="text-xs text-slate-400 mb-4"><i class="fa-solid fa-ruler-combined mr-1"></i>Extensión: ${f.extension || 0} ${f.unidad_medida}</p>
+                    <button class="w-full bg-slate-100 text-slate-600 py-2 rounded-lg text-sm font-bold group-hover:bg-emerald-600 group-hover:text-white transition">Administrar Inventario</button>
+                </div>
+            `).join('');
+        }
+
+        async function cargarAuditoria() {
+            const res = await fetch("/admin/auditoria", { headers: { "Authorization": "Bearer " + token } });
+            const logs = await res.json();
+            const tbody = document.getElementById('tablaAuditoria');
+            tbody.innerHTML = logs.map(l => `
+                <tr>
+                    <td class="p-4 text-slate-400">${new Date(l.fecha).toLocaleString()}</td>
+                    <td class="p-4 font-bold text-slate-700">${l.nombre_usuario || 'Sistema'}</td>
+                    <td class="p-4"><span class="text-blue-600">${l.accion}</span></td>
+                    <td class="p-4 truncate max-w-xs">${l.descripcion}</td>
+                    <td class="p-4 italic">${l.nombre_finca || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function guardarFinca() {
+            const data = {
+                nombre: document.getElementById('fincaNombre').value,
+                matricula: document.getElementById('fincaMatricula').value,
+                extension: document.getElementById('fincaExtension').value,
+                vereda: document.getElementById('fincaVereda').value,
+                municipio: document.getElementById('fincaMunicipio').value
+            };
+
+            const res = await fetch("/admin/fincas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert("Finca registrada correctamente ✅");
+                closeModal('modalFinca');
+                cargarFincas();
+            } else {
+                alert("Error al registrar predio");
+            }
+        }
+
+        async function resetPass(id) {
+            const pass = prompt("Nueva contraseña:");
+            if(!pass) return;
+            await fetch("/admin/usuarios/password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify({ id, nuevaContrasena: pass })
+            });
+            alert("Contraseña actualizada");
+            cargarUsuarios();
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
+
+        // Inicio
+        cargarResumen();
+    </script>
+</body>
+</html>

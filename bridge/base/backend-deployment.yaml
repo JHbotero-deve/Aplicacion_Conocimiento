@@ -1,0 +1,54 @@
+#! backend-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend
+    namespace: proyecto-ganaderia
+    labels:
+        com.docker.compose.project: proyecto_ganaderia
+        com.docker.compose.service: backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: proyecto_ganaderia
+            com.docker.compose.service: backend
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: proyecto_ganaderia
+                com.docker.compose.service: backend
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: backend
+                  image: proyecto_ganaderia-backend
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: DB_HOST
+                      value: "db"
+                    - name: DB_NAME
+                      value: "ganaderia"
+                    - name: DB_PASSWORD
+                      value: "1100"
+                    - name: DB_PORT
+                      value: "5432"
+                    - name: DB_USER
+                      value: "ganaderia"
+                    - name: JWT_SECRET
+                      value: "clave_secreta_ganaderia_2026"
+                    - name: PORT
+                      value: "8000"
+                  ports:
+                    - name: backend-8000
+                      containerPort: 8000
+                  volumeMounts:
+                    - name: app
+                      mountPath: /app
+            volumes:
+                - name: app
+                  hostPath:
+                    path: C:\Workspace_Dev\1_Proyectos\proyecto_ganaderia\backend
