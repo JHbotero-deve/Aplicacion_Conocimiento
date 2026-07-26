@@ -1,8 +1,9 @@
-# Tareas de Rediseño Corporativo "Ganadería Pro"
+# Tareas de Seguridad Security Edge Pro
 
-- `[ ]` Actualizar Landing Page (`index.html`) con diseño Hero y Bento
-- `[ ]` Rediseñar Dashboard Administrativo (`admin_dashboard.html`) con ApexCharts y Glassmorphism
-- `[ ]` Limpiar emojis y stickers de todos los formularios de campo
-- `[ ]` Implementar `dashboardAnalytics.js` para visualización de datos pro
-- `[ ]` Unificar iconografía FontAwesome en todo el sistema
-- `[ ]` Verificación visual en pantallas de alta resolución
+- `[ ]` Implementar Escudo de Cabeceras y Rate Limit (`server.js`)
+- `[ ]` Crear Tabla de Cuarentena en DB (`init.sql`)
+- `[ ]` Desarrollar Motor de Validación Anti-Fraude (`businessValidator.js`)
+- `[ ]` Integrar Alertas Rojas en Servicio de Correo (`emailService.js`)
+- `[ ]` Crear Módulo de Centro de Seguridad en Dashboard de Admin
+- `[ ]` Verificación: Inyección de datos anómalos y bloqueo de IP
+- `[ ]` Informe Final de Errores Corregidos (Protocolo Edge)

@@ -1,62 +1,64 @@
-# Plan de Seguridad Blindada y Protección de Datos "Anti-Fraude"
+# Plan de Implementación: Ganadería Pro "Security Edge Edition"
 
-Este plan detalla la implementación de capas de seguridad avanzada para evitar caídas del sistema, robo de datos y, especialmente, la detección de anomalías en el ingreso de información (datos maliciosos o erróneos).
+Este plan detalla la implementación del sistema de blindaje de seguridad, protección de datos y el protocolo de revisión estricta solicitado.
 
-## Estrategia de Seguridad 360°
+## User Review Required: Security Edge Protocol
 
-> [!IMPORTANT]
-> **Capa 1: Infraestructura Blindada**: Protección contra ataques de denegación de servicio (DoS) y fuerza bruta mediante límites de peticiones.
-> **Capa 2: Integridad de Datos (Cuarentena)**: Los datos que rompan las reglas de negocio (ej. vender más vacas de las que existen) no entrarán a la base de datos principal, sino a una "Zona de Cuarentena" para revisión del Admin.
-> **Capa 3: Prevención de Suplantación**: Refuerzo de tokens JWT y cabeceras de seguridad para evitar que un usuario se haga pasar por otro.
+Cada entrega de esta versión seguirá el orden de revisión establecido:
+1. **Resumen de errores** (Críticos, Advertencias, Recomendaciones).
+2. **Compilación y Dependencias**.
+3. **Compatibilidad** (Windows, Linux, Android/Termux).
+4. **Documentación** (UTF-8, Ortografía, Markdown).
+5. **Calidad de Código** (Lógica, Nomenclatura, Arquitectura).
+6. **Git y GitHub** (Commits limpios, .gitignore).
+7. **Seguridad** (Inyección, XSS, Fraude de Datos).
+
+---
+
+## Hallazgos de Revisión Previa (Baseline)
+
+> [!WARNING]
+> **Riesgo de Datos Incoherentes**: Actualmente el sistema permite registrar cualquier valor numérico (ej. 10,000 litros de leche), lo cual corrompe las estadísticas.
+> **Exposición de Servidor**: El servidor Express revela que usa `X-Powered-By: Express`, facilitando ataques dirigidos.
+> **Sin Límite de Peticiones**: Una sola IP podría saturar el sistema y dejarlo fuera de servicio.
+
+---
 
 ## Proposed Changes
 
----
-
-### 1. Seguridad de Servidor (Hardening)
+### 1. Blindaje de Infraestructura (Hardening)
 
 #### [MODIFY] [server.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/server.js)
-- **Implementación de `helmet`**: Oculta detalles técnicos del servidor y previene ataques XSS y de inyección.
-- **Rate Limiting**: Limitar el número de peticiones por minuto para evitar que alguien intente "tumbar" el sistema.
-- **Validación de Esquema**: Uso de `express-validator` para asegurar que cada campo tenga el formato correcto antes de procesarlo.
+- Implementar **Helmet** para proteger cabeceras HTTP.
+- Configurar **Rate Limiting** para prevenir ataques DoS (100 peticiones por 15 min).
 
----
-
-### 2. Capa de Inteligencia y Cuarentena
+### 2. Motor de Validación y Cuarentena (Anti-Fraude)
 
 #### [MODIFY] [init.sql](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/models/init.sql)
-- **Nueva tabla `cuarentena`**: id, usuario_id, tipo_operacion, datos_json, motivo_sospecha, fecha.
-- Esta tabla guardará los intentos de ingreso de datos sospechosos.
+- **Nueva tabla `cuarentena`**: Almacenará registros sospechosos para auditoría manual.
 
-#### [NEW] [validatorMiddleware.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/validator.js)
-Un motor de reglas de negocio que intercepta los datos antes de guardarlos:
-- **Regla de Inventario**: Si se intenta vender/trasladar un animal que no existe o más animales de los que hay en la finca.
-- **Regla de Producción**: Si un registro de leche excede los 40 litros/día por vaca (dato atípico).
-- **Regla de Peso**: Cambios drásticos de peso (+/- 50kg) en menos de 24 horas.
-
----
+#### [NEW] [businessValidator.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/businessValidator.js)
+Motor de reglas que desviará a `cuarentena` si:
+- Producción > 50L/día por animal.
+- Venta > 30% del hato en un solo día.
+- Peso ganado/perdido > 60kg en una semana.
 
 ### 3. Sistema de Alertas Rojas
 
-#### [MODIFY] [admin_dashboard.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html)
-- **Widget de "Incidentes de Seguridad"**: Un panel rojo que solo aparece si hay datos en cuarentena o intentos de acceso fallidos masivos.
-- **Botón de Decisión**: El Administrador podrá "Aprobar" o "Descartar" los datos en cuarentena.
-
 #### [MODIFY] [emailService.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/services/emailService.js)
-- Notificación inmediata al Admin cuando un dato entra en cuarentena por sospecha de fraude o error grave.
+- Añadir función `alertarFraude` que enviará un correo con los datos de la cuarentena.
 
----
+### 4. Seguridad de Versión (VCS)
 
-### 4. Blindaje contra Suplantación
-
-#### [MODIFY] [auth.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/auth.js)
-- Añadir verificación de `User-Agent` o IP para asegurar que el token no haya sido robado y usado desde otro dispositivo.
+- Se realizará un **Commit previo** (ya ejecutado) para asegurar que no se pierda la historia.
+- Se realizarán **Commits granulares** por cada componente de seguridad implementado.
 
 ## Verification Plan
 
-### Pruebas de "Ataque"
-- Intentar registrar la venta de 100 vacas en una finca que solo tiene 10. Verificar que el sistema envíe el dato a cuarentena y muestre una alerta roja al administrador.
-- Realizar 1000 peticiones en un segundo para verificar que el servidor bloquee la IP temporalmente.
+### Automated Tests
+- Simular ingreso de 1,000 litros de leche y verificar que la respuesta sea "Registro en revisión por seguridad".
+- Verificar que el dato aparezca en la tabla `cuarentena` y no en `produccion`.
 
-### Verificación de Datos
-- Comprobar que los datos en cuarentena no alteran los totales (litros, cabezas) del hato hasta que el administrador los apruebe.
+### Security Audit
+- Escaneo de cabeceras con `curl -I` para confirmar que Helmet está activo.
+- Intento de fuerza bruta para confirmar bloqueo de IP.

@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const usuarios = require("./controllers/usuarios" );
@@ -11,8 +13,22 @@ const veterinario = require("./controllers/veterinario");
 const auth = require("./middleware/auth");
 const checkRole = require("./middleware/roleAuth");
 const auditor = require("./middleware/logger");
+const securityValidator = require("./middleware/businessValidator");
 
 const app = express();
+
+// --- CAPA DE SEGURIDAD (SECURITY EDGE) ---
+app.use(helmet()); // Blindaje de cabeceras HTTP
+app.disable('x-powered-by'); // Ocultar tecnología del servidor
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 100, // Límite de 100 peticiones por IP
+    message: { error: "DEMASIADAS PETICIONES", message: "Su acceso ha sido limitado temporalmente por seguridad." }
+});
+app.use("/login", limiter); // Proteger especialmente el login contra fuerza bruta
+app.use("/register", limiter);
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "frontend")));
@@ -23,8 +39,8 @@ app.post("/login", usuarios.login);
 app.get("/recuperar/pregunta/:nombre_usuario", usuarios.obtenerPregunta);
 app.post("/recuperar/reset", usuarios.verificarRespuestaYResetear);
 
-// Middleware de auditoría para todas las rutas protegidas que cambian datos
-app.use(auth, auditor);
+// Middleware de auditoría y validación de seguridad (solo para rutas protegidas)
+app.use(auth, auditor, securityValidator);
 
 // Rutas protegidas (Usuario, Veterinario, Admin)
 app.post("/ganado", ganado.ingreso);
@@ -50,6 +66,8 @@ app.post("/admin/usuarios/password", checkRole(['admin']), admin.cambiarPassword
 app.get("/admin/fincas", checkRole(['admin']), admin.listarFincas);
 app.post("/admin/fincas", checkRole(['admin']), admin.crearFinca);
 app.get("/admin/auditoria", checkRole(['admin']), admin.obtenerAuditoria);
+app.get("/admin/cuarentena", checkRole(['admin']), admin.listarCuarentena);
+app.post("/admin/cuarentena/procesar", checkRole(['admin']), admin.procesarCuarentena);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

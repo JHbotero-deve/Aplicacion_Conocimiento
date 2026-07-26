@@ -100,7 +100,19 @@ CREATE TABLE IF NOT EXISTS novedades (
     finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE
 );
 
--- 9. Citas Veterinarias
+-- 9. Tabla de Cuarentena (Anti-Fraude y Anomalías)
+CREATE TABLE IF NOT EXISTS cuarentena (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL,
+    finca_id INTEGER REFERENCES fincas(id) ON DELETE SET NULL,
+    tipo_accion VARCHAR(100) NOT NULL, -- Ej: Registro Producción, Venta
+    datos_json JSONB NOT NULL, -- Los datos sospechosos originales
+    motivo_bloqueo TEXT, -- Ej: Supera promedio histórico (Litros > 50)
+    estado VARCHAR(20) DEFAULT 'Pendiente', -- Pendiente, Aprobado, Descartado
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 10. Citas Veterinarias
 CREATE TABLE IF NOT EXISTS citas_veterinarias (
     id SERIAL PRIMARY KEY,
     finca_id INTEGER REFERENCES fincas(id) ON DELETE CASCADE,

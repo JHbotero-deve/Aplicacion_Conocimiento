@@ -64,3 +64,33 @@ exports.obtenerAuditoria = async (req, res) => {
         res.status(500).json({ error: "Error al obtener auditoría" });
     }
 };
+
+// Gestión de Cuarentena (Anti-Fraude)
+exports.listarCuarentena = async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT c.*, u.nombre_usuario, f.nombre as nombre_finca
+            FROM cuarentena c
+            LEFT JOIN usuarios u ON c.usuario_id = u.id
+            LEFT JOIN fincas f ON c.finca_id = f.id
+            WHERE c.estado = 'Pendiente'
+            ORDER BY c.fecha DESC
+        `);
+        res.json(result.rows);
+    } catch (e) { res.status(500).json({ error: "Error al listar cuarentena" }); }
+};
+
+exports.procesarCuarentena = async (req, res) => {
+    const { id, accion } = req.body; // accion: 'APROBAR' o 'DESCARTAR'
+    try {
+        if (accion === 'DESCARTAR') {
+            await pool.query("UPDATE cuarentena SET estado = 'Descartado' WHERE id = $1", [id]);
+            return res.json({ message: "Registro descartado por seguridad." });
+        }
+
+        // Si se aprueba, el Admin debe ingresar el dato manualmente por ahora (o implementar re-inyección lógica)
+        await pool.query("UPDATE cuarentena SET estado = 'Aprobado' WHERE id = $1", [id]);
+        res.json({ message: "Dato marcado como aprobado para ingreso manual." });
+
+    } catch (e) { res.status(500).json({ error: "Error al procesar" }); }
+};
