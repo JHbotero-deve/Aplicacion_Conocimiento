@@ -6,6 +6,9 @@ services:
     volumes:
       - ./backend:/app
       - ./frontend:/frontend
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -26,3 +29,8 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./backend/models/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ganaderia -d ganaderia"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
