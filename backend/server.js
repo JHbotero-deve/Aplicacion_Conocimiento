@@ -18,8 +18,19 @@ const securityValidator = require("./middleware/businessValidator");
 const app = express();
 
 // --- CAPA DE SEGURIDAD (SECURITY EDGE) ---
-app.use(helmet()); // Blindaje de cabeceras HTTP
-app.disable('x-powered-by'); // Ocultar tecnología del servidor
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+            imgSrc: ["'self'", "data:", "blob:"],
+            connectSrc: ["'self'"]
+        }
+    }
+}));
+app.disable('x-powered-by');
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos

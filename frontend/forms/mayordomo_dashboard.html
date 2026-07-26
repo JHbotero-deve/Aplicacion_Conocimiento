@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predio Analytics | Ganadería Pro</title>
+    <title>Supervisión Predial | Ganadería Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -14,53 +14,56 @@
 </head>
 <body class="min-h-screen flex text-slate-400">
 
+    <!-- Sidebar Supervisión -->
     <aside class="w-72 border-r border-white/5 flex flex-col z-20">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950">
+            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
                 <i class="fa-solid fa-mountain-sun text-xl"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tighter text-white">PREDIO<span class="text-amber-500 italic">PRO</span></span>
+            <span class="text-xl font-extrabold tracking-tighter text-white uppercase">PREDIO<span class="text-amber-500 italic">PRO</span></span>
         </div>
         <nav class="flex-1 px-4 mt-4 space-y-1">
             <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-white bg-amber-500/10 border-r-2 border-amber-500">
-                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Stock Insumos
+                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Balance Bodega
             </button>
             <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold hover:bg-white/5 transition-all">
-                <i class="fa-solid fa-users-viewfinder"></i> Equipo Campo
+                <i class="fa-solid fa-users-viewfinder"></i> Equipo Operativo
             </button>
         </nav>
         <div class="p-6 border-t border-white/5">
             <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> Salida Segura
+                <i class="fa-solid fa-power-off"></i> Cierre de Turno
             </button>
         </div>
     </aside>
 
     <main class="flex-1 p-12 space-y-10 overflow-y-auto h-screen">
-        <header class="flex justify-between items-center glass-panel p-10 rounded-[2.5rem]">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-10 rounded-[2.5rem] gap-8">
             <div>
                 <h2 class="text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Control Predial</h2>
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Supervisión Técnica de Campo</p>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-2">Protocolo de Supervisión Técnica</p>
             </div>
             <div class="text-right">
-                <p id="fincaNombre" class="text-xl font-black text-amber-500 tracking-tight leading-none mb-1">Cargando Unidad...</p>
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Mayordomo General</p>
+                <p id="fincaNombre" class="text-xl font-black text-amber-500 tracking-tight leading-none mb-2 uppercase">Unidad de Producción</p>
+                <div class="inline-block px-4 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-widest">Mayordomo General</div>
             </div>
         </header>
 
-        <section class="space-y-8">
-            <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest px-4">Inventario de Bodega</h3>
+        <section class="space-y-8 animate-in fade-in duration-500">
+            <div class="flex justify-between items-center px-4">
+                <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Inventario de Suministros (BPG)</h3>
+            </div>
             <div class="glass-panel rounded-[2.5rem] overflow-hidden">
                 <table class="w-full text-left">
-                    <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase border-b border-white/5">
+                    <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
                         <tr>
-                            <th class="p-8">Insumo / Producto</th>
-                            <th class="p-8">Balance Actual</th>
-                            <th class="p-8 text-right">Caducidad</th>
+                            <th class="p-8">Insumo Registrado</th>
+                            <th class="p-8">Balance Neto</th>
+                            <th class="p-8 text-right">Expiración Técnica</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaStock" class="divide-y divide-white/5">
-                        <!-- Data -->
+                    <tbody id="tablaStock" class="divide-y divide-white/5 text-sm text-slate-300">
+                        <!-- Carga de datos dinámicos -->
                     </tbody>
                 </table>
             </div>
@@ -70,7 +73,20 @@
     <script>
         const token = localStorage.getItem("token");
         if (!token) window.location.href = "login.html";
+
+        async function cargarStock() {
+            try {
+                const res = await fetch("/admin/fincas", { headers: { "Authorization": "Bearer " + token } });
+                const data = await res.json();
+                if(data.length > 0) {
+                    document.getElementById('fincaNombre').innerText = data[0].nombre;
+                }
+            } catch (e) { console.error("Error de sincronización"); }
+        }
+
         function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
+
+        cargarStock();
     </script>
 </body>
 </html>

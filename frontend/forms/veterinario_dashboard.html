@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Analytics | Ganadería Pro</title>
+    <title>Protocolo de Salud | Ganadería Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -16,16 +16,16 @@
 
     <aside class="w-72 border-r border-white/5 flex flex-col z-20">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-10 h-10 bg-rose-500 rounded-xl flex items-center justify-center text-slate-950">
+            <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white">
                 <i class="fa-solid fa-house-medical text-xl"></i>
             </div>
             <span class="text-xl font-extrabold tracking-tighter text-white">HEALTH<span class="text-rose-500 italic">PRO</span></span>
         </div>
         <nav class="flex-1 px-4 mt-4 space-y-1">
-            <button onclick="showSection('agenda')" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-white bg-rose-500/10 border-r-2 border-rose-500 transition-all">
+            <button onclick="showSection('agenda')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-white bg-rose-500/10 border-r-2 border-rose-500 transition-all">
                 <i class="fa-solid fa-calendar-check text-rose-500"></i> Agenda Médica
             </button>
-            <button onclick="showSection('historial')" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold hover:bg-white/5 transition-all">
+            <button onclick="showSection('historial')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold hover:bg-white/5 transition-all">
                 <i class="fa-solid fa-notes-medical"></i> Registro Clínico
             </button>
         </nav>
@@ -37,15 +37,15 @@
     </aside>
 
     <main class="flex-1 p-12 space-y-10 overflow-y-auto h-screen">
-        <header class="flex justify-between items-center glass-panel p-8 rounded-[2.5rem]">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-8 rounded-[2.5rem] gap-6">
             <div>
                 <h2 id="sectionTitle" class="text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Agenda Médica</h2>
                 <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Protocolo de Sanidad Animal</p>
             </div>
-            <div class="px-6 py-2 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase tracking-widest border border-rose-500/20">Médico Veterinario</div>
+            <div class="px-6 py-2 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase tracking-widest border border-rose-500/20">Médico Veterinario Certificado</div>
         </header>
 
-        <section id="agenda" class="space-y-8">
+        <section id="agenda" class="space-y-8 animate-in fade-in duration-500">
             <div class="flex justify-between items-center px-4">
                 <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Procedimientos Programados</h3>
                 <button onclick="openModal('modalCita')" class="px-8 py-3 rounded-xl bg-rose-600 text-white font-black text-xs uppercase tracking-widest hover:bg-rose-500 shadow-xl shadow-rose-900/20 transition-all">Programar Intervención</button>
@@ -66,13 +66,120 @@
                 </table>
             </div>
         </section>
+
+        <section id="historial" class="hidden space-y-8 animate-in fade-in duration-500">
+            <div class="glass-panel p-10 rounded-[2.5rem]">
+                <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-6">Consulta de Expediente Clínico</h3>
+                <div class="flex gap-4">
+                    <input type="text" id="buscarChapeta" placeholder="NRO DE IDENTIFICACIÓN (CHAPETA)"
+                        class="flex-1 bg-white/5 border border-white/5 rounded-2xl px-8 py-5 outline-none focus:border-emerald-500 transition-all font-bold text-white uppercase">
+                    <button onclick="buscarHistorial()" class="px-10 py-5 rounded-2xl bg-emerald-600 text-[#020617] font-black uppercase text-xs tracking-widest hover:bg-emerald-500 transition-all shadow-xl shadow-emerald-900/20">Ejecutar Consulta</button>
+                </div>
+            </div>
+            <div id="displayHistorial" class="space-y-4">
+                <!-- Resultados -->
+            </div>
+        </section>
     </main>
+
+    <!-- Modal Cita -->
+    <div id="modalCita" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
+        <div class="glass-panel p-12 rounded-[3rem] shadow-2xl w-full max-w-lg space-y-8">
+            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Programar Procedimiento</h3>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">ID Unidad Predial (Finca)</label>
+                    <input id="citaFinca" type="number" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-white">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Cronología Programada</label>
+                    <input id="citaFecha" type="datetime-local" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-slate-400">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Naturaleza de Intervención</label>
+                    <select id="citaMotivo" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none text-white font-bold appearance-none">
+                        <option value="Vacunación">PROTOCOLO DE VACUNACIÓN</option>
+                        <option value="Chequeo General">CHEQUEO TÉCNICO GENERAL</option>
+                        <option value="Urgencia">INTERVENCIÓN DE EMERGENCIA</option>
+                        <option value="Cirugía">PROCEDIMIENTO QUIRÚRGICO</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-4 pt-6">
+                <button onclick="closeModal('modalCita')" class="flex-1 bg-white/5 text-slate-400 p-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Abortar</button>
+                <button onclick="guardarCita()" class="flex-1 bg-rose-600 text-white p-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-rose-500 shadow-xl shadow-rose-900/20">Confirmar Cita</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const token = localStorage.getItem("token");
         if (!token) window.location.href = "login.html";
+
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('bg-rose-500/10', 'border-r-2', 'border-rose-500', 'text-white'));
+            const activeBtn = Array.from(document.querySelectorAll('.sidebar-btn')).find(btn => btn.onclick.toString().includes(id));
+            if(activeBtn) {
+                activeBtn.classList.add('bg-rose-500/10', 'border-r-2', 'border-rose-500', 'text-white');
+            }
+
+            document.getElementById('sectionTitle').innerText = id === 'agenda' ? 'Agenda Médica' : 'Registro Clínico';
+            if(id === 'agenda') cargarCitas();
+        }
+
+        async function cargarCitas() {
+            const res = await fetch("/salud/citas", { headers: { "Authorization": "Bearer " + token } });
+            const citas = await res.json();
+            document.getElementById('tablaCitas').innerHTML = citas.map(c => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-8 font-bold text-white">${new Date(c.fecha_programada).toLocaleString()}</td>
+                    <td class="p-8 uppercase font-medium">${c.nombre_finca}</td>
+                    <td class="p-8 text-rose-500 font-bold uppercase tracking-tight">${c.motivo}</td>
+                    <td class="p-8 text-right"><span class="bg-amber-500/10 text-amber-500 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border border-amber-500/20">${c.estado}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        async function buscarHistorial() {
+            const chapeta = document.getElementById('buscarChapeta').value;
+            if(!chapeta) return;
+            const res = await fetch(`/salud/historial/${chapeta}`, { headers: { "Authorization": "Bearer " + token } });
+            const h = await res.json();
+            document.getElementById('displayHistorial').innerHTML = h.map(t => `
+                <div class="glass-panel p-8 rounded-[2rem] border-l-4 border-emerald-500 animate-in slide-in-from-bottom-4 duration-300">
+                    <div class="flex justify-between mb-4">
+                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">${new Date(t.fecha).toLocaleDateString()}</span>
+                        <span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Responsable: ${t.veterinario}</span>
+                    </div>
+                    <h4 class="text-xl font-black text-white uppercase tracking-tight">${t.producto}</h4>
+                    <p class="text-sm text-slate-400 font-medium mt-2 leading-relaxed italic">${t.diagnostico}</p>
+                </div>
+            `).join('');
+        }
+
+        async function guardarCita() {
+            const data = {
+                finca_id: document.getElementById('citaFinca').value,
+                fecha_programada: document.getElementById('citaFecha').value,
+                motivo: document.getElementById('citaMotivo').value
+            };
+            const res = await fetch("/salud/cita", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) { closeModal('modalCita'); cargarCitas(); }
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
-        function showSection(id) { /* logic */ }
+
+        // Start
+        cargarCitas();
     </script>
 </body>
 </html>
