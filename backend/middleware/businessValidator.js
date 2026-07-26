@@ -13,7 +13,17 @@ module.exports = async (req, res, next) => {
     const body = req.body;
     let motivo = null;
 
-    // 1. Regla de Oro: Producción de Leche
+    // 1. Regla de Oro: Registro Inicial de Ganado (NUEVA COBERTURA)
+    if (path === '/ganado') {
+        const peso = parseFloat(body.peso);
+        const edad = parseInt(body.edad);
+
+        if (peso > 1500) motivo = `Incoherencia biológica: Peso inicial de ${peso}kg excede el máximo bovino (1500kg).`;
+        if (edad > 300) motivo = `Incoherencia biológica: Edad de ${edad} meses excede el límite productivo (25 años).`;
+        if (!body.chapeta || body.chapeta.length < 2) motivo = `Identificación inválida: Chapeta muy corta o vacía.`;
+    }
+
+    // 2. Regla de Oro: Producción de Leche
     if (path === '/operaciones/produccion' && body.tipo === 'Leche') {
         const litros = parseFloat(body.cantidad);
         if (litros > 45) { // Una vaca promedia 15-30L, 45L es sospechoso/élite

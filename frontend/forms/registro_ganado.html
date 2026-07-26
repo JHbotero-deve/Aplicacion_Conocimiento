@@ -136,9 +136,13 @@
                     }
                 } else { input.value = corrected; }
                 icon.className = 'fa-solid fa-microphone';
-            }, () => {
+            }, (err) => {
                 icon.className = 'fa-solid fa-microphone';
-                alert("ERROR: NO SE HA PODIDO DECODIFICAR EL AUDIO");
+                let msg = "ERROR DE VOZ: ";
+                if (err === 'not-allowed') msg += "Falta permiso de micrófono.";
+                else if (err === 'network') msg += "Sin conexión para procesar voz.";
+                else msg += "No se pudo entender el audio.";
+                alert(msg);
             });
         }
 

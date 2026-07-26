@@ -1,51 +1,42 @@
-# Plan de Auditoría y Navegación "Irrompible"
+# Plan de Refuerzo Security Edge 2.0: Validación Total y Estabilidad de Voz
 
-Este plan detalla la revisión exhaustiva y corrección de todos los flujos de navegación, botones y conexiones API del sistema para asegurar una experiencia de usuario fluida y profesional.
+Este plan aborda los fallos de validación en el registro inicial de ganado y corrige los bloqueos de seguridad que impiden el funcionamiento del asistente de voz.
 
-## Objetivos de la Auditoría
+## Resumen de Hallazgos (Protocolo Security Edge)
 
-> [!IMPORTANT]
-> **Navegación Contextual**: Los botones "Volver" deben llevar al usuario a su dashboard específico según su rol (Admin, Mayordomo, Veterinario, Ganadero).
-> **Blindaje de Sesión**: Todas las páginas protegidas deben verificar la existencia del token al cargar.
-> **Unificación de Interfaz**: Estandarizar el comportamiento del Menú Hamburguesa en todos los dispositivos móviles.
+> [!CAUTION]
+> **Falla de Cobertura**: El motor de validación actual solo protege la producción, pero deja la "puerta abierta" en el registro inicial de ganado (`/ganado`).
+> **Bloqueo de Voz (CSP)**: Las políticas de seguridad están impidiendo que el motor de voz del navegador se comunique con los servicios de reconocimiento, provocando el error de decodificación.
 
 ---
 
 ## Proposed Changes
 
-### 1. Estandarización de Navegación (Frontend)
+### 1. Blindaje Universal de Datos (Anti-Fraude)
 
-#### [MODIFY] [Todos los Dashboards](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/)
-- Implementar la función `toggleSidebar()` de forma idéntica en Admin, Veterinario y Mayordomo.
-- Asegurar que el botón de "Cerrar Sesión" limpie el `localStorage` y redirija a `login.html`.
+#### [MODIFY] [businessValidator.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/middleware/businessValidator.js)
+- **Extender validación a `/ganado`**:
+    - Bloquear pesos > 1,500 kg en el registro inicial.
+    - Bloquear edades > 300 meses (25 años) por ser biológicamente improbables para producción.
+    - Asegurar que el `finca_id` sea un UUID válido antes de procesar.
 
-#### [MODIFY] [Formularios Operativos](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/)
-- Actualizar el botón "Volver" en `tratamientos.html`, `produccion.html`, `inventario.html` y `novedades.html`.
-- **Lógica Inteligente**: El botón detectará el rol del usuario guardado en el token y lo regresará a su dashboard correspondiente en lugar de un archivo fijo.
-
-### 2. Blindaje de Conexión API
+### 2. Solución al Error de Voz (Conectividad)
 
 #### [MODIFY] [server.js](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/server.js)
-- Re-activar y ajustar la **Content Security Policy (CSP)** de Helmet de forma equilibrada para permitir Tailwind y FontAwesome sin comprometer la seguridad.
-- Asegurar que todas las rutas estáticas se sirvan correctamente.
+- **Ajuste de CSP para Web Speech API**: Añadir `https://*.google.com` y `https://*.googleapis.com` a las directivas de `connect-src` y `script-src`, ya que Chrome y Android utilizan estos servicios para el reconocimiento de voz en la nube.
 
-### 3. Verificación de Rutas y Botones
-
-#### [REVISE] [registro_ganado.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/registro_ganado.html)
-- Corregir el script de envío para que use la misma lógica de "Respuesta del Sistema" que el login.
-- Eliminar bloques de script duplicados detectados.
+#### [MODIFY] [registro_ganado.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/registro_ganado.html)
+- Mejorar el reporte de errores de voz para indicar si el problema es de **Permisos**, **Internet** o **Hardware**, en lugar de un mensaje genérico.
 
 ---
 
 ## Verification Plan
 
-### Pruebas de Flujo Completo
-- Entrar como **Ganadero**, registrar una novedad, y pulsar "Volver" (debe ir a `ganadero_dashboard.html`).
-- Entrar como **Veterinario**, registrar un tratamiento, y pulsar "Volver" (debe ir a `veterinario_dashboard.html`).
-- Intentar entrar a un dashboard pegando la URL directamente sin estar logueado (debe redirigir a `login.html`).
+### Prueba de Inyección de Datos
+- Intentar registrar un animal de 10,000 kg mediante el formulario oficial. El sistema debe enviarlo a **Cuarentena** y mostrar el aviso de seguridad.
 
-### Verificación de Consola
-- Confirmar que no hay errores 404 de archivos CSS/JS ni errores de CORS/CSP al navegar entre secciones.
+### Verificación de Voz
+- Activar el micrófono en Chrome y verificar que los iconos de carga fluyan y el texto se capture correctamente sin el error de decodificación.
 
 ## Resumen de Commits (VCS)
-- Se realizará el commit: `Arquitectura: Unificación de flujos de navegación, protección de rutas y corrección de enlaces contextuales`.
+- Mensaje: `Seguridad: Validación universal de inventario pecuario y habilitación de servicios de voz en CSP`.
