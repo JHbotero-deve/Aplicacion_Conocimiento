@@ -29,13 +29,26 @@ module.exports = async (req, res, next) => {
         }
     }
 
-    // 3. Regla de Oro: Novedades Masivas
+    // 3. Regla de Oro: Novedades e Inventario (Control de Fraude)
     if (path === '/operaciones/novedad' && body.tipo_novedad === 'Venta') {
-        // En una app real, aquí consultaríamos el total de ganado de la finca
-        // Por ahora, activamos alerta si el usuario reporta una venta sin descripción técnica
-        if (!body.descripcion || body.descripcion.length < 10) {
-            motivo = `Venta Sospechosa: Reporte de venta sin detalle técnico suficiente. Posible sustracción de activos.`;
-        }
+        try {
+            // Verificamos cuántas vacas hay realmente en la finca antes de permitir la venta
+            const countRes = await pool.query(
+                "SELECT COUNT(*) FROM ganado WHERE finca_id = $1 AND bloqueado = 0",
+                [body.finca_id]
+            );
+            const totalActual = parseInt(countRes.rows[0].count);
+
+            // Si se intenta vender un porcentaje absurdo o más de lo que hay
+            if (totalActual > 0 && totalActual < 5) { // Para fincas pequeñas, control estricto
+                 motivo = `Alerta de Liquidación: Intento de venta en finca con inventario crítico (${totalActual} animales).`;
+            }
+
+            if (body.descripcion && (body.descripcion.includes("todo") || body.descripcion.includes("remate"))) {
+                motivo = `Venta Masiva Detectada: El usuario intenta liquidar el hato. Se requiere autorización del Admin.`;
+            }
+
+        } catch (e) { console.error("Error en validación de inventario:", e); }
     }
 
     // Si hay un motivo de sospecha, desviamos a Cuarentena
