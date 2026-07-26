@@ -79,7 +79,11 @@ const login = async (req, res) => {
     );
 
     const token = jwt.sign(
-      { id: usuario.id, rol: usuario.rol_usuario },
+      {
+        id: usuario.id,
+        rol: usuario.rol_usuario,
+        fingerprint: req.headers['user-agent'] // Guardar huella del dispositivo
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );

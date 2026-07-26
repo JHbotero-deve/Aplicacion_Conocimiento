@@ -1,32 +1,36 @@
-# Walkthrough: Ganadería Pro "Corporativa Alucinante"
+# Walkthrough: Ganadería Pro "Security Edge Edition"
 
-Se ha transformado la plataforma en una herramienta de clase mundial con un diseño corporativo impecable, eliminando cualquier rastro de informalidad y elevando la experiencia del administrador.
+Se ha culminado la fase de blindaje total del sistema, implementando defensas proactivas contra ataques técnicos e integridad de datos de negocio.
 
-## Mejoras de Diseño y Funcionalidad
+## Mejoras de Seguridad Implementadas
 
-### 1. Interfaz Corporativa "Emoji-Free"
-- **Limpieza Total**: Se eliminaron todos los emoticones y stickers. Ahora el sistema utiliza iconografía vectorial (FontAwesome) de alta precisión y colores sobrios (`emerald`, `zinc`, `slate`).
-- **Landing Page 2026**: La página de inicio ([index.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/index.html)) presenta un diseño Hero animado con una cuadrícula modular (Bento Grid) para mostrar las capacidades tecnológicas.
+### 1. Blindaje de Infraestructura (Hardening)
+- **Helmet HTTP**: Se activaron cabeceras de seguridad que ocultan la tecnología del servidor y protegen contra inyecciones XSS y Clickjacking.
+- **Rate Limiting**: El servidor ahora detecta y bloquea automáticamente IPs que realicen más de 100 peticiones en 15 minutos, previniendo caídas por saturación.
+- **Ocultamiento de Firma**: Se eliminó la cabecera `X-Powered-By` para dificultar el escaneo de vulnerabilidades.
 
-### 2. Dashboard Administrativo de Nueva Generación
-- **Analítica Visual**: Integración de **ApexCharts** en [admin_dashboard.html](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html) para visualizar tendencias de producción de forma interactiva.
-- **Glassmorphism 2.0**: Uso de paneles translúcidos y desenfoque de fondo para una sensación de software premium "Glass" sobre un fondo oscuro corporativo (`Eco-Dark Mode`).
-- **Sidebar Retraíble**: Navegación lateral refinada con estados activos y efectos de hover suaves.
+### 2. Motor de Inteligencia Anti-Fraude (Cuarentena)
+- **Validación Zootécnica**: El sistema ahora "entiende" los límites del negocio.
+    - Bloquea registros de producción de leche imposibles (>45L/día).
+    - Bloquea pesajes fuera de rango biológico.
+    - Bloquea ventas masivas sin descripción técnica.
+- **Zona de Cuarentena**: Los datos sospechosos no alteran tus estadísticas. Se guardan en una tabla aislada ([cuarentena](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/backend/models/init.sql)) para que el Administrador decida su destino.
 
-### 3. Formularios Técnicos de Campo
-- **UI de Alta Densidad**: Todos los formularios (Sanidad, Producción, Inventario) fueron rediseñados para maximizar la legibilidad en pantallas de alta resolución, manteniendo los botones de voz gigantes para facilitar el dictado.
-- **Consistencia Visual**: Los modales de registro de fincas y usuarios ahora comparten el mismo lenguaje de diseño "Glass", proyectando una imagen de seriedad institucional.
+### 3. Centro de Seguridad Administrativo
+- Se añadió el **"Centro de Seguridad"** al [Dashboard de Administrador](file:///C:/Workspace_Dev/1_Proyectos/proyecto_ganaderia/frontend/forms/admin_dashboard.html). Desde aquí, el dueño puede:
+    - Ver alertas rojas de fraude en tiempo real.
+    - Revisar el JSON original del dato sospechoso.
+    - **Autorizar** o **Eliminar** el registro con un clic.
 
-## Estado de la Aplicación
+### 4. Seguridad en Versiones (Git)
+- Se realizaron **Commits Atómicos** para asegurar la trazabilidad de los cambios de seguridad.
+- El historial se mantiene íntegro y protegido.
 
-> [!CHECK]
-> **Estética**: 100% Corporativa y Limpia.
-> **Funcionalidad**: Operacional con soporte para 4 roles y asistente de voz.
-> **Tecnología**: Tailwind CSS v4, ApexCharts y FontAwesome Pro Icons.
+## Guía de Prueba de Seguridad
 
-## Pruebas de Calidad Visual
-- Se recomienda visualizar el dashboard en un PC con pantalla amplia para apreciar los detalles de las gráficas y el layout modular.
-- Pruebe el login con fondo de cristal para verificar la legibilidad de las credenciales.
+1.  **Probar Cuarentena**: Intenta registrar un animal con un peso de **5,000 kg** o una producción de **200 litros**.
+2.  **Verificación**: El sistema te dirá "REGISTRO EN REVISIÓN".
+3.  **Acción Admin**: Ve al Centro de Seguridad en el Dashboard y verás la alerta roja lista para ser procesada.
 
 ---
-© 2026 Ganadería Pro | Tecnología de Precisión para la Gestión Pecuaria.
+© 2026 Ganadería Pro | Seguridad Edge Edition - Datos Blindados.
