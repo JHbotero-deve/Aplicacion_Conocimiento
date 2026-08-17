@@ -64,7 +64,7 @@ app.get("/health", async (req, res) => {
 
 app.use(express.static(path.join(__dirname, "..", "frontend")));
 
-// Endpoint para generar el LINK y QR de acceso para el Ganadero
+// Endpoint para generar el LINK y QR de acceso (Local y Remoto)
 app.get("/admin/acceso-qr", async (req, res) => {
     try {
         const interfaces = os.networkInterfaces();
@@ -77,18 +77,36 @@ app.get("/admin/acceso-qr", async (req, res) => {
             }
         }
 
-        const urlAcceso = `http://${ipLocal}:8000`;
+        // El administrador puede pasar un DOMINIO REMOTO por variable de entorno o query
+        const urlRemota = req.query.url_remota || process.env.REMOTE_URL;
+        const urlAcceso = urlRemota || `http://${ipLocal}:8000`;
         const qrDataUrl = await QRCode.toDataURL(urlAcceso);
 
         res.send(`
-            <body style="background: #020617; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-                <div style="background: white; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+            <body style="background: #020617; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 24px; margin-bottom: 20px; box-shadow: 0 0 40px rgba(16, 185, 129, 0.2);">
                     <img src="${qrDataUrl}" style="width: 250px; height: 250px;" />
                 </div>
-                <h1 style="margin: 0;">Link de Acceso Ganadero</h1>
-                <a href="${urlAcceso}" style="color: #10b981; font-size: 24px; font-weight: bold; margin-top: 10px;">${urlAcceso}</a>
-                <p style="color: #64748b; margin-top: 20px;">Escanea el código con tu celular o entra al link</p>
-                <button onclick="window.location.href='/'" style="margin-top: 30px; background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;">Volver al Inicio</button>
+                <h1 style="margin: 0; font-size: 28px; text-align: center;">${urlRemota ? 'Acceso Remoto Global' : 'Acceso de Red Local'}</h1>
+                <p style="color: #10b981; font-size: 20px; font-weight: bold; margin-top: 10px; word-break: break-all; text-align: center;">${urlAcceso}</p>
+
+                <div style="max-width: 400px; background: rgba(255,255,255,0.05); border-radius: 15px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.1); padding: 20px;">
+                    <p style="color: #94a3b8; font-size: 14px; margin: 0;">
+                        <b>${urlRemota ? 'ESTADO REMOTO:' : 'ESTADO LOCAL:'}</b><br>
+                        ${urlRemota
+                            ? 'Los operarios pueden sincronizar desde cualquier lugar con señal de celular.'
+                            : 'Los operarios deben estar conectados al mismo WiFi que esta PC.'}
+                    </p>
+                </div>
+
+                ${!urlRemota ? `
+                    <div style="margin-top: 20px; text-align: center;">
+                        <p style="font-size: 12px; color: #64748b;">¿El administrador está en otra ciudad?</p>
+                        <button onclick="window.location.href='/admin/acceso-qr?url_remota=http://localhost:8000'" style="background: #059669; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 11px;">Activar Puente Remoto</button>
+                    </div>
+                ` : ''}
+
+                <button onclick="window.location.href='/'" style="margin-top: 30px; background: #1e293b; color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold;">Volver al Panel</button>
             </body>
         `);
     } catch (err) {

@@ -1,23 +1,39 @@
-# Guía de Entrega para el Administrador (PC Central)
+# Protocolo de Entrega Corporativa - Ganadería Pro
 
-Esta guía explica paso a paso cómo poner en marcha el sistema **Ganadería Pro** en una computadora nueva desde cero.
+Este documento certifica la entrega del sistema al Administrador Central. El software ha sido auditado bajo el estándar de seguridad "Steel Edge".
 
-## 1. Requisitos Previos
-Antes de empezar, la computadora debe tener instalado:
-1.  **Docker Desktop:** Es el motor que hace funcionar la base de datos blindada. [Descargar aquí](https://www.docker.com/products/docker-desktop/).
-2.  **Node.js (Opcional pero recomendado):** Para herramientas de soporte. [Descargar aquí](https://nodejs.org/).
+## 1. Acceso al Código Fuente
+El sistema reside en el repositorio oficial:
+- **Link:** `https://github.com/JHbotero-deve/Aplicacion_Conocimiento.git`
+- **Método de descarga:** Botón "Code" -> "Download ZIP".
 
-## 2. Puesta en Marcha (Primer Uso)
-Una vez que el administrador tenga la carpeta del proyecto en su PC:
+## 2. Requisitos de Instalación (Solo PC Central)
+1. **Docker Desktop:** [Descargar aquí](https://www.docker.com/products/docker-desktop/). Debe estar abierto antes de iniciar el sistema.
+2. **Navegador:** Se recomienda Google Chrome o Microsoft Edge.
 
-1.  **Abrir Docker Desktop:** Asegúrese de que el icono de la ballena esté en verde (indica que el motor está activo).
-2.  **Ejecutar el Sistema:**
-    - Busque en la carpeta raíz el archivo llamado `INICIAR_SISTEMA.bat`.
-    - Haga doble clic en él.
-    - Se abrirá una ventana negra que descargará e instalará automáticamente todo lo necesario. **No la cierre hasta que diga "Servidor en http://localhost:8000"**.
-3.  **Entrar a la Aplicación:**
-    - Abra su navegador (Chrome o Edge recomendado).
-    - Ingrese a la dirección: `http://localhost:8000`.
+## 3. Puesta en Marcha
+1. Localice el archivo **INICIAR_SISTEMA.bat** en la raíz de la carpeta.
+2. Ejecútelo (doble clic). No cierre la ventana mientras esté trabajando.
+3. Ingrese a: `http://localhost:8000`
+
+## 4. Conexión de Celulares (Modo Local vs Remoto)
+
+### Opción A: Están en la misma finca (WiFi Local)
+1. Su PC debe estar en el mismo WiFi que los celulares.
+2. Use el botón **"Generar Acceso Móvil"** y escanee el QR.
+
+### Opción B: Administrador en la ciudad / Campo remoto
+Si usted no está físicamente con los trabajadores, el sistema puede crear un "Puente Global":
+1. Vaya a la carpeta `bridge/` y ejecute **REMOTO_PUENTE.bat**.
+2. Copie el link que aparece (ej. `https://finca-pro.loca.lt`).
+3. Envíe ese link por WhatsApp a sus trabajadores.
+4. Los trabajadores abren el link e **Instalan la App**. Ahora podrán sincronizar datos desde cualquier lugar con señal de celular.
+
+## 5. El Concepto de Sincronización Local
+Este sistema es **"Offline-First"**:
+- **En el Potrero:** El trabajador registra datos sin señal alguna.
+- **En la Oficina:** Al acercarse al alcance del WiFi de la finca, los datos se sincronizan con la PC automáticamente.
+- **Nota:** No confunda WiFi con Internet. Los datos viajan por el aire de su red local hacia su PC, manteniendo la información privada y segura dentro de su propiedad.
 
 ## 3. Configuración Inicial
 1.  **Crear Administrador:** Si es la primera vez, use el botón "Empezar Ahora" o "Crear cuenta" para registrar el usuario principal.
