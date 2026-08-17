@@ -1,0 +1,9 @@
+{
+  "name": "Ganadería Pro",
+  "short_name": "Ganadería Pro",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ecfdf5",
+  "theme_color": "#059669",
+  "lang": "es-CO"
+}

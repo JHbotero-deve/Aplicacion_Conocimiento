@@ -4,99 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuevo Registro de Operador | Ganadería Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tailwind.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link href="../styles/theme.css" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        select option { background-color: #0f172a; color: white; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+        select option { background-color: #ffffff; color: #0f172a; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
+<body class="app-theme min-h-screen flex items-center justify-center p-6">
 
-    <div class="w-full max-w-lg">
-        <a href="../index.html" class="inline-flex items-center text-slate-500 hover:text-emerald-400 mb-8 transition-all font-bold text-xs uppercase tracking-widest">
-            <i class="fa-solid fa-arrow-left-long mr-2"></i> Volver al Inicio
-        </a>
+    <div class="w-full max-w-2xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+            <a href="../index.html" class="inline-flex items-center text-emerald-600 hover:text-emerald-700 transition-all font-bold text-sm">
+                <i class="fa-solid fa-arrow-left-long mr-2"></i> Volver al Inicio
+            </a>
+            <a href="login.html" class="text-sm text-slate-700 hover:underline">¿Ya tienes cuenta? Inicia sesión</a>
+        </div>
 
-        <form id="register" class="glass rounded-[3rem] p-12 space-y-10 shadow-2xl">
+        <form id="register" class="glass rounded-2xl p-8 space-y-8 shadow-lg">
             <div class="text-center">
-                <div class="inline-flex w-20 h-20 bg-blue-500/10 rounded-[2rem] items-center justify-center text-blue-400 mb-6 border border-blue-500/20">
-                    <i class="fa-solid fa-user-plus text-3xl"></i>
+                <div class="inline-flex w-16 h-16 bg-emerald-600/10 rounded-2xl items-center justify-center text-emerald-600 mb-4">
+                    <i class="fa-solid fa-user-plus text-2xl"></i>
                 </div>
-                <h1 class="text-3xl font-black text-white uppercase tracking-tighter">Nueva Credencial</h1>
-                <p class="text-slate-500 font-medium mt-2">Habilitar acceso a nuevo personal técnico</p>
+                <h1 class="text-2xl font-extrabold text-slate-900 uppercase tracking-tight">Nueva Cuenta</h1>
+                <p class="text-sm muted mt-1">Crea credenciales para personal autorizado</p>
             </div>
 
-            <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Nombre de Usuario</label>
-                    <input type="text" name="nombre_usuario" required placeholder="Identificador de sistema"
-                        class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-white">
+                    <label class="block text-xs font-bold muted mb-2">Nombre de Usuario</label>
+                    <input type="text" name="nombre_usuario" required placeholder="Identificador"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500">
                 </div>
-
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Contraseña Inicial</label>
-                    <input type="password" name="contrasena" required placeholder="Seguridad alfa-numérica"
-                        class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-white">
+                    <label class="block text-xs font-bold muted mb-2">Contraseña</label>
+                    <input type="password" name="contrasena" required placeholder="Contraseña segura"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500">
                 </div>
-
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Asignación de Rol Operativo</label>
-                    <select name="rol_usuario" required
-                        class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-white appearance-none">
-                        <option value="" disabled selected>Seleccione nivel...</option>
-                        <option value="admin">Administrador Central</option>
-                        <option value="mayordomo">Supervisión de Predio</option>
-                        <option value="veterinario">Servicios de Salud</option>
-                        <option value="usuario">Operador de Campo</option>
+                    <label class="block text-xs font-bold muted mb-2">Rol</label>
+                    <select name="rol_usuario" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500">
+                        <option value="" disabled selected>Seleccione rol...</option>
+                        <option value="admin">Administrador</option>
+                        <option value="mayordomo">Mayordomo</option>
+                        <option value="veterinario">Veterinario</option>
+                        <option value="usuario">Operador</option>
                     </select>
                 </div>
-
-                <div class="pt-6 border-t border-white/5 space-y-6">
-                    <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center"><i class="fa-solid fa-lock-keyhole mr-2"></i> Recuperación de Acceso Offline</p>
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Pregunta Secreta de Validación</label>
-                        <select name="pregunta_seguridad" required class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 font-bold text-white appearance-none">
-                            <option value="¿Cuál es el nombre de tu primer mascota?">¿Cuál es el nombre de tu primer mascota?</option>
-                            <option value="¿En qué vereda se encuentra tu predio natal?">¿En qué vereda se encuentra tu predio natal?</option>
-                            <option value="¿Cuál es tu fabricante de maquinaria favorito?">¿Cuál es tu fabricante de maquinaria favorito?</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Respuesta Técnica</label>
-                        <input type="text" name="respuesta" required placeholder="Dato único de validación"
-                            class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500/50 transition-all font-bold text-white uppercase">
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold muted mb-2">Pregunta de Recuperación</label>
+                    <select name="pregunta_seguridad" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500">
+                        <option>¿Cuál es el nombre de tu primer mascota?</option>
+                        <option>¿En qué vereda se encuentra tu predio natal?</option>
+                        <option>¿Cuál es tu fabricante de maquinaria favorito?</option>
+                    </select>
                 </div>
             </div>
 
-            <button type="submit"
-                class="w-full bg-blue-600 text-white py-6 rounded-3xl hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/20 font-black text-xs uppercase tracking-[0.2em]">
-                Emitir Registro de Usuario
-            </button>
+            <div>
+                <label class="block text-xs font-bold muted mb-2">Respuesta</label>
+                <input type="text" name="respuesta" required placeholder="Respuesta secreta"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-emerald-500">
+            </div>
+
+            <div class="flex gap-3">
+                <button type="submit" class="btn-primary px-4 py-3 rounded-lg font-bold">Crear cuenta</button>
+                <a href="login.html" class="px-4 py-3 rounded-lg border border-gray-200 text-slate-800 font-bold hover:bg-gray-50">Volver a login</a>
+            </div>
         </form>
     </div>
 
     <script>
         const registerForm = document.getElementById('register');
-        registerForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const formData = new FormData(registerForm);
-          const data = Object.fromEntries(formData.entries());
-          try {
-            const response = await fetch("/register", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data)
-            });
-            if (response.ok) {
-              alert("SISTEMA: USUARIO REGISTRADO EXITOSAMENTE ✅");
-              window.location.href = "login.html";
-            } else { alert("ERROR: EL USUARIO YA EXISTE O DATOS NO VÁLIDOS"); }
-          } catch (error) { alert("ERROR: SIN CONEXIÓN CON EL SERVIDOR"); }
-        });
+                registerForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(registerForm);
+                    const data = Object.fromEntries(formData.entries());
+                    const API_BASE = window.location.port === '8080' ? 'http://localhost:8000' : '';
+                    try {
+                        const response = await fetch(`${API_BASE}/register`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(data)
+                        });
+                        if (response.ok) {
+                            alert("SISTEMA: USUARIO REGISTRADO EXITOSAMENTE ✅");
+                            window.location.href = "login.html";
+                        } else { alert("ERROR: EL USUARIO YA EXISTE O DATOS NO VÁLIDOS"); }
+                    } catch (error) { alert("ERROR: SIN CONEXIÓN CON EL SERVIDOR"); }
+                });
     </script>
 </body>
 </html>

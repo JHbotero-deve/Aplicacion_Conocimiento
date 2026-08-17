@@ -24,8 +24,6 @@ services:
       POSTGRES_USER: ganaderia
       POSTGRES_PASSWORD: 1100
       POSTGRES_DB: ganaderia
-    ports:
-      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./backend/models/init.sql:/docker-entrypoint-initdb.d/init.sql

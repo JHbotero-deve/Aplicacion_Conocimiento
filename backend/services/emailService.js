@@ -14,14 +14,14 @@ const transporter = nodemailer.createTransport({
 exports.enviarAlertaSeguridad = async (detalles) => {
     try {
         if (!process.env.ADMIN_EMAIL) {
-            console.log("ℹ️ Correo de administración no configurado. Alerta omitida.");
+            console.log("ℹ Correo de administración no configurado. Alerta omitida.");
             return;
         }
 
         await transporter.sendMail({
             from: `"Seguridad Ganadería Pro" <${process.env.ADMIN_EMAIL}>`,
             to: process.env.ADMIN_EMAIL,
-            subject: "⚠️ ALERTA DE SEGURIDAD - Ganadería Pro",
+            subject: "ALERTA DE SEGURIDAD - Ganadería Pro",
             html: `
                 <div style="font-family: sans-serif; border: 2px solid red; padding: 20px; border-radius: 10px;">
                     <h2 style="color: red;">Detección de Actividad Sospechosa</h2>
@@ -35,8 +35,8 @@ exports.enviarAlertaSeguridad = async (detalles) => {
                 </div>
             `
         });
-        console.log("✅ Alerta de seguridad enviada por correo.");
+        console.log(" Alerta de seguridad enviada por correo.");
     } catch (error) {
-        console.error("❌ Error al enviar correo de alerta:", error.message);
+        console.error("Error al enviar correo de alerta:", error.message);
     }
 };

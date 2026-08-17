@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal de Campo | Ganadería Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tailwind.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
         .action-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
@@ -51,6 +50,33 @@
             </a>
         </div>
 
+        <!-- Estado de Sincronización (Visual para el campo) -->
+        <div id="syncStatusBanner" class="bg-slate-900 border border-white/10 p-6 rounded-[2rem] flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div id="syncIcon" class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                    <i class="fa-solid fa-cloud-check"></i>
+                </div>
+                <div>
+                    <p id="syncText" class="text-xs font-black text-white uppercase tracking-tight">Sistema al día</p>
+                    <p id="syncSubtext" class="text-[9px] text-slate-500 font-bold uppercase">Listo para trabajar offline</p>
+                </div>
+            </div>
+            <div id="pendingBadge" class="hidden px-3 py-1 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black animate-bounce">
+                0 PENDIENTES
+            </div>
+        </div>
+
+        <!-- Auditoría Local (Mis Registros de Hoy) -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center px-4">
+                <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Mis Registros de Hoy</h3>
+                <button onclick="renderLocalAudit()" class="text-emerald-500 text-[8px] font-black uppercase tracking-widest hover:underline">Actualizar</button>
+            </div>
+            <div id="localAuditList" class="space-y-3">
+                <!-- Data dinámica de auditoría local -->
+            </div>
+        </div>
+
         <!-- Alertas Técnicas -->
         <div class="space-y-4">
             <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4">Notificaciones de Predio</h3>
@@ -64,6 +90,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer Corporativo -->
+        <div id="footerContainer"></div>
     </div>
 
     <!-- Barra de Navegación Fija -->
@@ -79,8 +108,75 @@
     </nav>
 
     <script src="../services/navigation.js"></script>
+    <script src="../services/offlineSync.js"></script>
     <script>
-        // navigation.js ya maneja el logout y checkAuth
+        async function updateSyncUI() {
+            if (!window.offlineSync) return;
+            const count = await window.offlineSync.refreshStatus();
+            const banner = document.getElementById('syncStatusBanner');
+            const icon = document.getElementById('syncIcon');
+            const text = document.getElementById('syncText');
+            const badge = document.getElementById('pendingBadge');
+
+            if (count > 0) {
+                banner.classList.add('border-amber-500/30');
+                icon.className = 'w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center';
+                icon.innerHTML = '<i class="fa-solid fa-cloud-arrow-up animate-pulse"></i>';
+                text.innerText = 'Pendientes por subir';
+                badge.innerText = `${count} PENDIENTES`;
+                badge.classList.remove('hidden');
+            } else {
+                banner.classList.remove('border-amber-500/30');
+                icon.className = 'w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center';
+                icon.innerHTML = '<i class="fa-solid fa-cloud-check"></i>';
+                text.innerText = 'Sistema al día';
+                badge.classList.add('hidden');
+            }
+        }
+
+        async function renderLocalAudit() {
+            if (!window.offlineSync) return;
+            const records = await window.offlineSync.getAllRecords();
+            const list = document.getElementById('localAuditList');
+            const today = new Date().toLocaleDateString();
+
+            const dailyRecords = records.filter(r => new Date(r.createdAt).toLocaleDateString() === today);
+
+            if (dailyRecords.length === 0) {
+                list.innerHTML = '<p class="text-[10px] text-slate-600 text-center italic">No hay registros pendientes para hoy.</p>';
+                return;
+            }
+
+            list.innerHTML = dailyRecords.map(r => `
+                <div class="bg-white/5 border border-white/5 p-5 rounded-2xl flex justify-between items-center animate-in slide-in-from-left-4 duration-300">
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-lg ${r.path.includes('produccion') ? 'bg-blue-500/10 text-blue-500' : 'bg-emerald-500/10 text-emerald-500'} flex items-center justify-center text-xs">
+                            <i class="fa-solid ${r.path.includes('produccion') ? 'fa-flask' : 'fa-cow'}"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white leading-none">${r.body.ganado_id || 'Nuevo Animal'}</p>
+                            <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mt-1">${r.path.split('/').pop()}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black text-emerald-400">${r.body.cantidad || r.body.peso || ''} ${r.body.unidad || 'Kg'}</p>
+                        <p class="text-[8px] text-slate-600 font-bold">${new Date(r.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLocalAudit();
+            updateSyncUI();
+            navigation.renderFooter('footerContainer');
+
+            // Escuchar cambios de red para actualizar la UI
+            window.addEventListener('online', () => {
+                setTimeout(updateSyncUI, 2000); // Dar tiempo al sync real
+            });
+            window.addEventListener('offline', updateSyncUI);
+        });
     </script>
 </body>
 </html>

@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supervisión Predial | Ganadería Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tailwind.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
         .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
@@ -76,6 +75,9 @@
                 </table>
             </div>
         </section>
+
+        <!-- Footer Corporativo -->
+        <div id="footerContainer"></div>
     </main>
 
     <script src="../services/navigation.js"></script>
@@ -106,9 +108,12 @@
             } catch (e) { console.error("Error de sincronización"); }
         }
 
-        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
+        function logout() { navigation.logout(); }
 
-        cargarStock();
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarStock();
+            navigation.renderFooter('footerContainer');
+        });
     </script>
 </body>
 </html>

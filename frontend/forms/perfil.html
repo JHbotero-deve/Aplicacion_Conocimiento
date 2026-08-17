@@ -41,6 +41,8 @@
                 </button>
             </form>
         </div>
+
+        <div id="footerContainer"></div>
     </div>
 
     <script src="../services/navigation.js"></script>
@@ -70,6 +72,10 @@
             } else {
                 alert("❌ Error al actualizar");
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            navigation.renderFooter('footerContainer');
         });
     </script>
 </body>

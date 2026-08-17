@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Analytics | Ganadería Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tailwind.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <script src="../assets/js/apexcharts.js"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background-color: #020617; }
         .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .sidebar-item-active { background: rgba(16, 185, 129, 0.1); color: #10b981; border-right: 3px solid #10b981; }
         ::-webkit-scrollbar { width: 6px; }
@@ -46,6 +45,12 @@
             </button>
             <button onclick="showSection('auditoria')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
                 <i class="fa-solid fa-file-shield"></i> Registro de Auditoría
+            </button>
+            <button onclick="window.open('/admin/acceso-qr', '_blank')" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-emerald-400 hover:bg-emerald-500/5 transition-all">
+                <i class="fa-solid fa-qrcode"></i> Generar Acceso Móvil
+            </button>
+            <button onclick="showSection('respaldo')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+                <i class="fa-solid fa-box-archive"></i> Copia de Seguridad
             </button>
             <button onclick="showSection('seguridad')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-rose-500/5 text-rose-500 hover:text-rose-400">
                 <i class="fa-solid fa-shield-virus"></i> Centro de Seguridad
@@ -263,6 +268,40 @@
                 </div>
             </section>
 
+            <!-- SECCIÓN RESPALDO (BACKUP) -->
+            <section id="respaldo" class="hidden space-y-10 animate-in fade-in duration-500">
+                <div class="glass-panel p-10 rounded-[2.5rem] border-emerald-500/10">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center border border-blue-500/20">
+                            <i class="fa-solid fa-cloud-arrow-down text-3xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Protección de Datos</h3>
+                            <p class="text-sm font-medium text-slate-500">Resguarde la información histórica de la finca</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white/5 p-8 rounded-3xl border border-white/5 space-y-4">
+                            <h4 class="text-lg font-bold text-white uppercase">¿Cómo hacer un Respaldo?</h4>
+                            <ul class="space-y-3 text-sm text-slate-400">
+                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-1 text-emerald-500 mt-1"></i> Vaya a la carpeta principal del sistema en su PC.</li>
+                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-2 text-emerald-500 mt-1"></i> Busque y ejecute el archivo <b>EXPORTAR_BACKUP.bat</b>.</li>
+                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-3 text-emerald-500 mt-1"></i> Se creará un archivo en la carpeta <b>backups/</b>.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-500/5 p-8 rounded-3xl border border-amber-500/10 flex flex-col justify-center items-center text-center">
+                            <i class="fa-solid fa-shield-check text-5xl text-amber-500 mb-4"></i>
+                            <p class="text-xs font-black text-amber-500 uppercase tracking-widest">Recomendación Semanal</p>
+                            <p class="text-sm text-slate-400 mt-2 italic">"Copie sus backups en una memoria USB para máxima seguridad ante robos o fallos de disco."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Corporativo -->
+            <div id="footerContainer"></div>
+
         </div>
     </main>
 
@@ -297,7 +336,7 @@
             const activeBtn = Array.from(document.querySelectorAll('.sidebar-item')).find(btn => btn.onclick.toString().includes(id));
             if(activeBtn) activeBtn.classList.add('sidebar-item-active');
 
-            document.getElementById('sectionTitle').innerText = id.replace('resumen', 'Resumen Ejecutivo').replace('diario', 'Operaciones Diarias').replace('usuarios', 'Gestión de Talento').replace('auditoria', 'Registro de Auditoría').replace('fincas', 'Control de Predios');
+            document.getElementById('sectionTitle').innerText = id.replace('resumen', 'Resumen Ejecutivo').replace('diario', 'Operaciones Diarias').replace('usuarios', 'Gestión de Talento').replace('auditoria', 'Registro de Auditoría').replace('fincas', 'Control de Predios').replace('respaldo', 'Protección de Datos');
 
             if(id === 'resumen') cargarResumen();
             if(id === 'usuarios') cargarUsuarios();
@@ -417,6 +456,11 @@
 
         // Start Resumen
         cargarResumen();
+
+        // Inyectar Footer
+        document.addEventListener('DOMContentLoaded', () => {
+            navigation.renderFooter('footerContainer');
+        });
     </script>
 </body>
 </html>

@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Métricas de Producción | Ganadería Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tailwind.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
@@ -25,7 +24,12 @@
                     <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Producción Diaria de Hato</p>
                 </div>
             </div>
-            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Dashboard</button>
+            <div class="flex gap-3">
+                <button onclick="startHandsFree()" class="px-6 py-3 rounded-xl bg-emerald-600 text-slate-950 font-black text-xs uppercase hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-headset mr-2"></i> Manos Libres
+                </button>
+                <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Cerrar</button>
+            </div>
         </div>
 
         <form id="formProduccion" class="glass rounded-[3rem] p-10 md:p-16 space-y-12 text-center">
@@ -61,10 +65,14 @@
                 Sincronizar Datos de Producción
             </button>
         </form>
+
+        <div id="footerContainer"></div>
     </div>
 
     <script src="../services/navigation.js"></script>
     <script src="../services/voiceAssistant.js"></script>
+    <script src="../services/offlineSync.js"></script>
+    <script src="../services/auditHelper.js"></script>
     <script>
         function setType(t) {
             document.getElementById('prod_tipo').value = t;
@@ -72,9 +80,82 @@
             document.getElementById('btnLeche').className = t === 'Leche' ? 'px-10 py-3 rounded-xl font-black uppercase text-xs tracking-widest transition-all bg-blue-600 text-white shadow-xl' : 'px-10 py-3 rounded-xl font-black uppercase text-xs tracking-widest transition-all text-slate-500 hover:text-white';
             document.getElementById('btnCarne').className = t === 'Carne' ? 'px-10 py-3 rounded-xl font-black uppercase text-xs tracking-widest transition-all bg-amber-600 text-white shadow-xl' : 'px-10 py-3 rounded-xl font-black uppercase text-xs tracking-widest transition-all text-slate-500 hover:text-white';
         }
-        function activateVoice(id) {
-            voiceAssistant.start((corrected) => document.getElementById(id).value = corrected);
+
+        function activateVoice(fieldId, category = null) {
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            const originalIcon = icon.className;
+            icon.className = 'fa-solid fa-circle-notch fa-spin';
+
+            // Determinar categoría dinámica para producción
+            if (fieldId === 'prod_cantidad') {
+                category = document.getElementById('prod_tipo').value === 'Leche' ? 'leche' : 'produccion';
+            }
+
+            voiceAssistant.start((corrected, original, anomaly) => {
+                const input = document.getElementById(fieldId);
+                input.value = corrected;
+
+                input.classList.add('ring-2', anomaly ? 'ring-amber-500' : 'ring-blue-500');
+                setTimeout(() => input.classList.remove('ring-2', 'ring-amber-500', 'ring-blue-500'), 2000);
+
+                if (anomaly) {
+                    const status = document.createElement('p');
+                    status.className = 'text-[10px] font-bold text-amber-500 mt-1 animate-pulse';
+                    status.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${anomaly}`;
+                    input.parentElement.appendChild(status);
+                    setTimeout(() => status.remove(), 5000);
+                } else {
+                    voiceAssistant.speak(`Entendido: ${corrected}`);
+                }
+                icon.className = originalIcon;
+            }, (err) => {
+                icon.className = originalIcon;
+                alert("Error de voz detectado.");
+            }, category);
         }
+
+        async function startHandsFree() {
+            const fields = [
+                { id: 'prod_animal', label: 'el número de chapeta', category: 'generales' },
+                { id: 'prod_cantidad', label: 'la cantidad producida', category: document.getElementById('prod_tipo').value === 'Leche' ? 'leche' : 'produccion' }
+            ];
+
+            await voiceAssistant.startSequence(fields, () => {
+                document.getElementById('formProduccion').dispatchEvent(new Event('submit'));
+            });
+        }
+        document.getElementById('formProduccion').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            const path = '/operaciones/produccion';
+
+            // 1. Auditoría Local Preventiva
+            if (window.auditHelper) {
+                const conflict = await window.auditHelper.checkDailyConflict({ path, body: data });
+                if (conflict && !confirm(conflict)) return;
+            }
+
+            // 2. Envío con Offline Sync
+            try {
+                const result = await window.offlineSync.submit(path, data);
+                if (result.queued) {
+                    voiceAssistant.speak("Sin internet. Guardado en la cola offline.");
+                    alert("GUARDADO OFFLINE ✅");
+                } else {
+                    voiceAssistant.speak("Registro sincronizado correctamente.");
+                    alert("REGISTRO EXITOSO ✅");
+                }
+                e.target.reset();
+            } catch (error) {
+                alert("ERROR: " + error.message);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            navigation.renderFooter('footerContainer');
+        });
     </script>
 </body>
 </html>

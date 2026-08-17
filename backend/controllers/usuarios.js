@@ -3,11 +3,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const emailService = require("../services/emailService");
 
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_local_secret';
+
 const registro = async (req, res) => {
   try {
     const { nombre_usuario, contrasena, rol_usuario, pregunta_seguridad, respuesta } = req.body;
+    if (!nombre_usuario || !contrasena || !rol_usuario || !pregunta_seguridad || !respuesta) {
+      return res.status(400).json({ error: "Campos requeridos faltantes" });
+    }
     const hash = await bcrypt.hash(contrasena, 10);
-    const respuestaHash = await bcrypt.hash(respuesta.toLowerCase(), 10);
+    const respuestaHash = await bcrypt.hash(String(respuesta).toLowerCase(), 10);
 
     await pool.query(
       "INSERT INTO usuarios (nombre_usuario, contrasena_hash, rol_usuario, pregunta_seguridad, respuesta_hash, fecha_creacion) VALUES ($1,$2,$3,$4,$5,NOW())",
@@ -84,7 +89,7 @@ const login = async (req, res) => {
         rol: usuario.rol_usuario,
         fingerprint: req.headers['user-agent'] // Guardar huella del dispositivo
       },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: "1h" }
     );
 

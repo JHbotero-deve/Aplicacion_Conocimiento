@@ -51,7 +51,7 @@ module.exports = async (req, res, next) => {
 
             // Si se intenta vender un porcentaje absurdo o más de lo que hay
             if (totalActual > 0 && totalActual < 5) { // Para fincas pequeñas, control estricto
-                 motivo = `Alerta de Liquidación: Intento de venta en finca con inventario crítico (${totalActual} animales).`;
+                motivo = `Alerta de Liquidación: Intento de venta en finca con inventario crítico (${totalActual} animales).`;
             }
 
             if (body.descripcion && (body.descripcion.includes("todo") || body.descripcion.includes("remate"))) {

@@ -1,4 +1,10 @@
 {
+  "name": "aplicacion-conocimiento",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev"
+  },
   "devDependencies": {
     "@types/node": "^25.9.3",
     "typescript": "^6.0.3"
