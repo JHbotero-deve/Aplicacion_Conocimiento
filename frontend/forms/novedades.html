@@ -6,62 +6,57 @@
     <title>Bitácora de Eventos | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        select option { background-color: #0f172a; color: white; }
-    </style>
+    <link rel="stylesheet" href="../styles/theme.css">
 </head>
-<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center mesh-gradient-light">
 
     <div class="w-full max-w-4xl space-y-10">
-        <div class="flex justify-between items-center bg-white/5 p-8 rounded-[2rem] border border-white/5">
+        <div class="premium-card p-8 flex justify-between items-center border-purple-100">
             <div class="flex items-center gap-6">
-                <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white">
+                <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-purple-200">
                     <i class="fa-solid fa-list-timeline text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Bitácora de Novedades</h1>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Cronología Operativa de Hato</p>
+                    <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Bitácora de Hato</h1>
+                    <p class="text-[10px] font-black text-purple-600 uppercase tracking-widest">Eventos y Novedades</p>
                 </div>
             </div>
-            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Regresar</button>
+            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-slate-50 text-slate-600 font-bold text-xs uppercase hover:bg-slate-100 border border-slate-100 transition-all">Regresar</button>
         </div>
 
-        <form id="formNovedad" class="glass rounded-[3rem] p-10 md:p-16 space-y-12">
-
+        <form id="formNovedad" class="premium-panel p-10 md:p-16 space-y-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Animal Referenciado</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Animal (Chapeta)</label>
                     <div class="relative">
                         <input type="text" id="nov_animal" name="ganado_id" required placeholder="ID-0000"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-purple-500/50 transition-all font-bold text-2xl text-white uppercase">
-                        <button type="button" onclick="activateVoice('nov_animal')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-purple-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                            class="premium-input text-xl font-black">
+                        <button type="button" onclick="activateVoice('nov_animal')" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Clasificación de Evento</label>
-                    <select name="tipo_novedad" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 font-bold text-white appearance-none uppercase text-sm">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Tipo de Novedad</label>
+                    <select name="tipo_novedad" class="premium-input appearance-none font-bold">
                         <option value="Parto">NATALIDAD (PARTO)</option>
                         <option value="Muerte">DECESO (MUERTE)</option>
                         <option value="Venta">COMERCIALIZACIÓN (VENTA)</option>
-                        <option value="Traslado">MOVILIZACIÓN (TRASLADO)</option>
+                        <option value="Traslado">TRASLADO INTERNO</option>
                     </select>
                 </div>
             </div>
 
             <div class="space-y-3">
-                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Observaciones Técnicas</label>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Detalle de la Novedad</label>
                 <div class="relative">
-                    <textarea id="nov_desc" name="descripcion" rows="5" placeholder="INFORME DETALLADO DE LA NOVEDAD..."
-                        class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-6 outline-none focus:border-purple-500/50 font-medium text-white uppercase tracking-tight leading-relaxed"></textarea>
-                    <button type="button" onclick="activateVoice('nov_desc')" class="absolute right-3 top-6 text-purple-400 p-2 hover:scale-110 transition-all"><i class="fa-solid fa-microphone-lines text-2xl"></i></button>
+                    <textarea id="nov_desc" name="descripcion" rows="4" placeholder="Describa lo sucedido..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-[2rem] px-8 py-8 focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 outline-none transition-all text-slate-600 font-medium"></textarea>
+                    <button type="button" onclick="activateVoice('nov_desc')" class="absolute right-6 bottom-6 text-purple-400 p-2 hover:scale-110 transition-all"><i class="fa-solid fa-microphone-lines text-2xl"></i></button>
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-purple-600 text-white py-6 rounded-[2rem] font-black text-lg uppercase tracking-widest hover:bg-purple-500 transition-all shadow-2xl shadow-purple-900/20">
-                Registrar Novedad en Sistema
+            <button type="submit" class="btn-premium w-full py-6 text-lg bg-gradient-to-r from-purple-700 to-purple-500 shadow-purple-200">
+                <i class="fa-solid fa-check-double"></i> Registrar Novedad
             </button>
         </form>
 
@@ -72,9 +67,11 @@
     <script src="../services/voiceAssistant.js"></script>
     <script>
         function activateVoice(id) {
-            voiceAssistant.start((corrected) => document.getElementById(id).value = corrected);
+            voiceAssistant.start((corrected) => {
+                document.getElementById(id).value = corrected;
+                voiceAssistant.speak(`Confirmado: ${corrected}`);
+            });
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             navigation.renderFooter('footerContainer');
         });

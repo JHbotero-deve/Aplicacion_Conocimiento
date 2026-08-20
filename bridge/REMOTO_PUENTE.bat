@@ -1,18 +1,36 @@
 @echo off
-echo ============================================
-echo   PUENTE REMOTO - GANADERIA PRO (CIUDAD-CAMPO)
-echo ============================================
+setlocal
+title Ganaderia Pro - Modo Remoto Activo
+
+echo ================================================================
+echo       ESTABLECIENDO ENLACE SEGURO CIUDAD-CAMPO
+echo ================================================================
 echo.
-echo Este script creara un link que funciona en CUALQUIER PARTE.
-echo Asegurese de que INICIAR_SISTEMA.bat este corriendo.
+
+:: Verificar si el tunel ya existe
+lt --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [SISTEMA] Preparando conexion global (Paso unico)...
+    cmd /c "npm install -g localtunnel" >nul 2>&1
+)
+
 echo.
-echo Paso 1: Instalando herramienta de tunel seguro...
-cmd /c "npm install -g localtunnel"
+echo >>> El sistema esta creando su Link Global Privado.
 echo.
-echo Paso 2: Abriendo el puente global...
+
+:: Lanzar localtunnel y extraer la URL para que el usuario no vea la terminal
+start /b lt --port 8000 > tunnel.log
+timeout /t 5 /nobreak >nul
+
+for /f "tokens=*" %%a in ('findstr "your url is" tunnel.log') do set "URL=%%a"
+set "URL=%URL:your url is: =%"
+
 echo.
-echo >>> COPIE LA URL QUE APARECE ABAJO (ej. https://lucky-cows-jump.loca.lt)
-echo >>> Y PEGUELA EN SU NAVEGADOR PARA DARSELA A SUS TRABAJADORES.
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo   SU LINK DE WHATSAPP ES: %URL%
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo.
-lt --port 8000
+echo Pegue este link en su navegador y envielo a sus trabajadores.
+echo No cierre esta ventana para mantener el enlace activo.
+echo.
 pause

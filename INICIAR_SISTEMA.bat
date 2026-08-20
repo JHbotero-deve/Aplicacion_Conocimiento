@@ -1,84 +1,38 @@
 @echo off
 setlocal enabledelayedexpansion
-title Ganaderia Pro - Lanzador Corporativo Inteligente
 
-:: Paleta de Colores ANSI (si es compatible)
-set "GREEN=[32m"
-set "CYAN=[36m"
-set "YELLOW=[33m"
-set "RED=[31m"
-set "RESET=[0m"
+:: 1. Mostrar Splash Screen (Ventana de Carga Visual)
+echo ^<html^>^<head^>^<title^>Iniciando Ganaderia Pro^</title^>^<style^>body{background:#064e3b;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden;} .loader{border:4px solid #f3f3f3;border-top:4px solid #10b981;border-radius:50%%;width:30px;height:30px;animation:spin 2s linear infinite;} @keyframes spin{0%%{transform:rotate(0deg);}100%%{transform:rotate(360deg);}}^</style^>^<script^>window.resizeTo(400,300);window.moveTo((screen.width-400)/2,(screen.height-300)/2);^</script^>^</head^>^<body^>^<h2 style='margin-bottom:10px;'^>GANADERIA PRO^</h2^>^<div class='loader'^>^</div^>^<p style='margin-top:20px;font-size:12px;opacity:0.7;'^>Preparando infraestructura de campo...^</p^>^</body^>^</html^> > splash.hta
+start "" mshta.exe "%cd%\splash.hta"
 
-echo.
-echo !CYAN!================================================================!RESET!
-echo !GREEN!      GANADERIA PRO - SISTEMA DE GESTION DE PRECISION         !RESET!
-echo !CYAN!================================================================!RESET!
-echo.
-
-:: 1. Deteccion de IP Local para el Admin
-for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4 Address" /c:"Dirección IPv4"') do (
-    set "LOCAL_IP=%%a"
-    set "LOCAL_IP=!LOCAL_IP: =!"
-)
-
-echo !YELLOW![INFO]!RESET! Su IP de red es: !LOCAL_IP!
-echo !YELLOW![INFO]!RESET! Puerto de operacion: 8000
-echo.
-
-:: 2. Verificar Puerto 8000
-netstat -ano | findstr :8000 >nul
-if %errorlevel% equ 0 (
-    echo !RED![ALERTA]!RESET! El puerto 8000 ya esta siendo usado.
-    echo Por favor, cierre cualquier otra instancia de la aplicacion.
-    pause
-    exit /b
-)
-
-:: 3. Verificar/Lanzar Docker
+:: 2. Verificar/Lanzar Docker
 docker info >nul 2>&1
 if %errorlevel% neq 0 (
-    echo !YELLOW![SISTEMA]!RESET! Docker no responde. Intentando abrir Docker Desktop...
     start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-    echo Esperando a que Docker inicie (puede tardar 1-2 minutos)...
-    :docker_wait
-    docker info >nul 2>&1
-    if %errorlevel% neq 0 (
-        timeout /t 5 /nobreak >nul
-        goto docker_wait
-    )
+    :: Esperar pacientemente
+    timeout /t 20 /nobreak >nul
 )
 
-echo !GREEN![1/4]!RESET! Levantando infraestructura blindada...
-docker-compose up -d --build
+:: 3. Levantar sistema en silencio
+docker-compose up -d --build >nul 2>&1
 
-echo !GREEN![2/4]!RESET! Verificando estabilidad del nucleo (Health Check)...
-set "RETRY=0"
-:health_check
+:: 4. Esperar salud del sistema
+:wait_loop
+timeout /t 2 /nobreak >nul
 curl -s http://localhost:8000/health | findstr "available" >nul
-if %errorlevel% neq 0 (
-    set /a RETRY+=1
-    if !RETRY! gtr 15 (
-        echo !RED![ERROR]!RESET! El nucleo no responde. Use REINICIAR_SISTEMA.bat.
-        pause
-        exit /b
-    )
-    echo ... esperando enlace central (!RETRY!/15) ...
-    timeout /t 2 /nobreak >nul
-    goto health_check
+if %errorlevel% neq 0 goto wait_loop
+
+:: 5. Cerrar Splash Screen y abrir App Real
+taskkill /F /IM mshta.exe >nul 2>&1
+del splash.hta
+
+:: 6. Crear Acceso Directo si no existe (Toque Premium)
+if not exist "%USERPROFILE%\Desktop\Ganaderia Pro.lnk" (
+    wscript.exe "%cd%\bridge\CREAR_ACCESO_DIRECTO.vbs"
 )
 
-echo !GREEN![3/4]!RESET! Sincronizando bases de datos y seguridad...
-docker-compose exec -T backend npm run seed
+:: Abrir en Modo Aplicación (Sin barras de navegador)
+start msedge --app=http://localhost:8000/index.html
+if %errorlevel% neq 0 start chrome --app=http://localhost:8000/index.html
 
-echo !GREEN![4/4]!RESET! ¡EXITO! Redireccionando al Acceso Real...
-:: Abrimos directo el Login Corporativo Premium
-start http://localhost:8000/forms/login.html
-
-echo.
-echo !CYAN!================================================================!RESET!
-echo !GREEN!      SISTEMA OPERATIVO - AUDITORIA ACTIVA (STEEL EDGE)       !RESET!
-echo !CYAN!================================================================!RESET!
-echo.
-echo Para moviles, use: http://!LOCAL_IP!:8000
-echo.
-docker-compose logs -f
+exit

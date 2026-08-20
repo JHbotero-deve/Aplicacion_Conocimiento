@@ -6,83 +6,71 @@
     <title>Protocolo Sanitario | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        select option { background-color: #0f172a; color: white; }
-    </style>
+    <link rel="stylesheet" href="../styles/theme.css">
 </head>
-<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center mesh-gradient-light">
 
     <div class="w-full max-w-4xl space-y-10">
-        <div class="flex justify-between items-center bg-white/5 p-8 rounded-[2rem] border border-white/5">
+        <div class="premium-card p-8 flex justify-between items-center border-rose-100">
             <div class="flex items-center gap-6">
-                <div class="w-14 h-14 bg-rose-500 rounded-2xl flex items-center justify-center text-[#020617]">
+                <div class="w-14 h-14 bg-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-rose-200">
                     <i class="fa-solid fa-kit-medical text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Intervención Sanitaria</h1>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Control Veterinario BPG</p>
+                    <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Intervención Sanitaria</h1>
+                    <p class="text-[10px] font-black text-rose-600 uppercase tracking-widest">Control Veterinario BPG</p>
                 </div>
             </div>
-            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all border border-white/5">Retornar</button>
+            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-slate-50 text-slate-600 font-bold text-xs uppercase hover:bg-slate-100 transition-all border border-slate-100">Retornar</button>
         </div>
 
-        <form id="formTratamiento" class="glass rounded-[3rem] p-10 md:p-16 space-y-12">
+        <form id="formTratamiento" class="premium-panel p-10 md:p-16 space-y-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Identificador Animal</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Animal (Chapeta)</label>
                     <div class="relative">
                         <input type="text" id="animal_id" name="ganado_id" required placeholder="ID-0000"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-rose-500/50 transition-all font-bold text-xl text-white">
-                        <button type="button" onclick="activateVoice('animal_id')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-rose-500/10 text-rose-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                            class="premium-input text-xl font-black">
+                        <button type="button" onclick="activateVoice('animal_id')" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Agente Farmacológico</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Producto / Fármaco</label>
                     <div class="relative">
-                        <input type="text" id="producto" name="producto" required placeholder="NOMBRE DEL PRODUCTO"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-rose-500/50 transition-all font-bold text-white uppercase">
-                        <button type="button" onclick="activateVoice('producto', 'tratamientos')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                        <input type="text" id="producto" name="producto" required placeholder="Nombre Comercial"
+                            class="premium-input font-bold uppercase">
+                        <button type="button" onclick="activateVoice('producto', 'tratamientos')" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                 </div>
 
                 <div class="space-y-3 col-span-full">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Diagnóstico Clínico</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Diagnóstico / Observación</label>
                     <div class="relative">
-                        <input type="text" id="diagnostico" name="diagnostico" required placeholder="DESCRIPCIÓN DE LA SINTOMATOLOGÍA"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-rose-500/50 transition-all font-medium text-white">
-                        <button type="button" onclick="activateVoice('diagnostico', 'tratamientos')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                        <input type="text" id="diagnostico" name="diagnostico" required placeholder="Sintomatología detectada"
+                            class="premium-input">
+                        <button type="button" onclick="activateVoice('diagnostico', 'tratamientos')" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Tiempo de Retiro (Días)</label>
-                    <div class="relative">
-                        <input type="number" id="tiempo_retiro" name="tiempo_retiro" required value="0"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-amber-500/50 transition-all font-black text-3xl text-amber-500">
-                        <button type="button" onclick="activateVoice('tiempo_retiro')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
-                    </div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Tiempo de Retiro (Días)</label>
+                    <input type="number" name="tiempo_retiro" required value="0" class="premium-input text-3xl font-black text-amber-600">
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Vía de Aplicación</label>
-                    <div class="relative">
-                        <select id="via" name="via" required class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-rose-500/50 transition-all font-bold text-white appearance-none">
-                            <option value="Intramuscular">INTRAMUSCULAR</option>
-                            <option value="Subcutánea">SUBCUTÁNEA</option>
-                            <option value="Oral">ORAL</option>
-                            <option value="Intravenosa">INTRAVENOSA</option>
-                        </select>
-                        <button type="button" onclick="activateVoice('via', 'tratamientos')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
-                    </div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Vía de Aplicación</label>
+                    <select name="via" required class="premium-input appearance-none">
+                        <option value="Intramuscular">INTRAMUSCULAR</option>
+                        <option value="Subcutánea">SUBCUTÁNEA</option>
+                        <option value="Oral">ORAL</option>
+                    </select>
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-rose-600 text-white py-6 rounded-[2rem] font-black text-lg uppercase tracking-widest hover:bg-rose-500 transition-all shadow-2xl shadow-rose-900/20">
-                Confirmar Registro Médico
+            <button type="submit" class="btn-premium w-full py-6 text-lg bg-gradient-to-r from-rose-700 to-rose-500 shadow-rose-200">
+                <i class="fa-solid fa-notes-medical"></i> Registrar Acción Sanitaria
             </button>
         </form>
 
@@ -92,35 +80,22 @@
     <script src="../services/navigation.js"></script>
     <script src="../services/voiceAssistant.js"></script>
     <script>
-        function activateVoice(fieldId, category = null) {
+        function activateVoice(id, cat = null) {
             const btn = event.currentTarget;
             const icon = btn.querySelector('i');
             const originalIcon = icon.className;
             icon.className = 'fa-solid fa-circle-notch fa-spin';
 
-            voiceAssistant.start((corrected, original, anomaly) => {
-                const input = document.getElementById(fieldId);
-                if (input.tagName === 'SELECT') {
-                    for (let i = 0; i < input.options.length; i++) {
-                        if (input.options[i].text.toLowerCase().includes(corrected.toLowerCase()) ||
-                            input.options[i].value.toLowerCase().includes(corrected.toLowerCase())) {
-                            input.selectedIndex = i;
-                            break;
-                        }
-                    }
-                } else { input.value = corrected; }
-
-                input.classList.add('ring-2', 'ring-rose-500');
-                setTimeout(() => input.classList.remove('ring-2', 'ring-rose-500'), 2000);
+            voiceAssistant.start((corrected) => {
+                document.getElementById(id).value = corrected;
+                voiceAssistant.speak(`Entendido: ${corrected}`);
                 icon.className = originalIcon;
-            }, (err) => {
-                icon.className = originalIcon;
-                alert("Error de audio.");
-            }, category);
+            }, (err) => { icon.className = originalIcon; }, cat);
         }
-        document.getElementById('formTratamiento').addEventListener('submit', async (e) => {
+
+        document.getElementById('formTratamiento').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert("SISTEMA: TRATAMIENTO REGISTRADO CORRECTAMENTE ✅");
+            alert("TRATAMIENTO REGISTRADO ✅");
         });
 
         document.addEventListener('DOMContentLoaded', () => {

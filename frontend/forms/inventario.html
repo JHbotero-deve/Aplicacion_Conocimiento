@@ -3,73 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock de Insumos | Ganadería Pro</title>
+    <title>Balance de Insumos | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        select option { background-color: #0f172a; color: white; }
-    </style>
+    <link rel="stylesheet" href="../styles/theme.css">
 </head>
-<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
+<body class="min-h-screen p-6 md:p-12 flex flex-col items-center mesh-gradient-light">
 
     <div class="w-full max-w-4xl space-y-10">
-        <div class="flex justify-between items-center bg-white/5 p-8 rounded-[2rem] border border-white/5">
+        <div class="premium-card p-8 flex justify-between items-center border-amber-100">
             <div class="flex items-center gap-6">
-                <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-[#020617]">
+                <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-amber-200">
                     <i class="fa-solid fa-boxes-stacked text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Control de Suministros</h1>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Balance de Almacén BPG</p>
+                    <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Control de Almacén</h1>
+                    <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Insumos y Suministros</p>
                 </div>
             </div>
-            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-white/5 text-slate-300 font-bold text-xs uppercase hover:bg-white/10 transition-all">Retornar</button>
+            <button onclick="navigation.goBack()" class="px-6 py-3 rounded-xl bg-slate-50 text-slate-600 font-bold text-xs uppercase hover:bg-slate-100 border border-slate-100">Cerrar</button>
         </div>
 
-        <form id="formInventario" class="glass rounded-[3rem] p-10 md:p-16 space-y-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <form id="formInventario" class="premium-panel p-10 md:p-16 space-y-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Nombre Comercial</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Nombre del Insumo</label>
                     <div class="relative">
-                        <input type="text" id="inv_nombre" name="nombre" required placeholder="DESCRIPCIÓN DEL PRODUCTO"
-                            class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-amber-500/50 transition-all font-bold text-white uppercase">
-                        <button type="button" onclick="activateVoice('inv_nombre')" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/5 text-amber-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                        <input type="text" id="inv_nombre" name="nombre" required placeholder="Descripción Comercial"
+                            class="premium-input font-bold uppercase">
+                        <button type="button" onclick="activateVoice('inv_nombre')" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-slate-50 text-amber-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Tipo de Suministro</label>
-                    <select name="tipo" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 focus:outline-none focus:border-amber-500/50 transition-all font-bold text-white appearance-none">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Tipo de Producto</label>
+                    <select name="tipo" class="premium-input appearance-none font-bold text-sm">
                         <option value="Alimento">NUTRICIÓN / SUPLEMENTO</option>
                         <option value="Medicamento">FARMACOLOGÍA / VACUNA</option>
-                        <option value="Herramienta">EQUIPAMIENTO TÉCNICO</option>
+                        <option value="Herramienta">EQUIPO TÉCNICO</option>
                     </select>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Volumen de Ingreso</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Cantidad de Ingreso</label>
                     <div class="flex gap-4">
-                        <input type="number" step="0.01" name="cantidad" required class="flex-1 bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-amber-500/50 font-black text-3xl text-white">
-                        <select name="unidad" class="w-40 bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 font-bold text-white appearance-none text-xs">
-                            <option value="Kilos">KILOGRAMOS</option>
-                            <option value="Bultos">BULTOS</option>
-                            <option value="ML">MILILITROS</option>
+                        <input type="number" step="0.1" name="cantidad" required class="flex-1 premium-input text-2xl font-black text-amber-600">
+                        <select name="unidad" class="w-32 premium-input text-[10px] font-black uppercase">
+                            <option value="Kilos">Kg</option>
+                            <option value="Bultos">Bultos</option>
+                            <option value="ML">ml</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Fecha de Caducidad</label>
-                    <input type="date" name="fecha_vencimiento" class="w-full bg-white/5 border-2 border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-amber-500/50 font-bold text-slate-400">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Vencimiento</label>
+                    <input type="date" name="fecha_vencimiento" class="premium-input font-bold text-slate-400">
                 </div>
-
             </div>
 
-            <button type="submit" class="w-full bg-amber-600 text-[#020617] py-6 rounded-[2rem] font-black text-lg uppercase tracking-widest hover:bg-amber-500 transition-all shadow-2xl shadow-amber-900/20">
-                Registrar Entrada a Bodega
+            <button type="submit" class="btn-premium w-full py-6 text-lg bg-gradient-to-r from-amber-600 to-amber-400 shadow-amber-200">
+                <i class="fa-solid fa-file-invoice"></i> Registrar Entrada
             </button>
         </form>
 
@@ -80,9 +75,11 @@
     <script src="../services/voiceAssistant.js"></script>
     <script>
         function activateVoice(id) {
-            voiceAssistant.start((corrected) => document.getElementById(id).value = corrected);
+            voiceAssistant.start((corrected) => {
+                document.getElementById(id).value = corrected;
+                voiceAssistant.speak(`Entendido: ${corrected}`);
+            });
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             navigation.renderFooter('footerContainer');
         });

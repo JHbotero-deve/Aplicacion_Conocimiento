@@ -6,59 +6,59 @@
     <title>Enterprise Analytics | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="../styles/theme.css">
     <script src="../assets/js/apexcharts.js"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background-color: #020617; }
-        .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .sidebar-item-active { background: rgba(16, 185, 129, 0.1); color: #10b981; border-right: 3px solid #10b981; }
+        body { background-color: #f8fafc; color: #0f172a; }
+        .glass-panel { background: white; border: 1px solid rgba(16, 185, 129, 0.1); box-shadow: var(--shadow-premium); }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="text-slate-400 flex min-h-screen overflow-hidden relative">
+<body class="flex min-h-screen overflow-hidden relative mesh-gradient-light">
 
-    <!-- Overlay para móvil cuando el sidebar está abierto -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+    <!-- Overlay para móvil -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
-    <!-- Sidebar Corporativa Adaptativa -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-[#020617] border-r border-white/5 flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <!-- Sidebar Corporativa Blanca -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 sidebar-light flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-emerald-500/20">
+            <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-200">
                 <i class="fa-solid fa-layer-group text-xl"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tighter text-white">GANADERÍA<span class="text-emerald-500 italic">PRO</span></span>
+            <span class="text-xl font-extrabold tracking-tighter text-slate-900 uppercase">GANADERÍA<span class="text-emerald-600 italic">PRO</span></span>
         </div>
 
         <nav class="flex-1 px-4 space-y-1 mt-4">
-            <button onclick="showSection('resumen')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white sidebar-item-active">
+            <button onclick="showSection('resumen')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600 sidebar-item-active">
                 <i class="fa-solid fa-chart-pie-simple"></i> Resumen Ejecutivo
             </button>
-            <button onclick="showSection('diario')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+            <button onclick="showSection('diario')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600">
                 <i class="fa-solid fa-calendar-lines-pen"></i> Operaciones Diarias
             </button>
-            <button onclick="showSection('usuarios')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+            <button onclick="showSection('usuarios')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600">
                 <i class="fa-solid fa-user-gear"></i> Gestión de Talento
             </button>
-            <button onclick="showSection('fincas')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+            <button onclick="showSection('fincas')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600">
                 <i class="fa-solid fa-mountain-city"></i> Control de Predios
             </button>
-            <button onclick="showSection('auditoria')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+            <button onclick="showSection('auditoria')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600">
                 <i class="fa-solid fa-file-shield"></i> Registro de Auditoría
             </button>
-            <button onclick="window.open('/admin/acceso-qr', '_blank')" class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-emerald-400 hover:bg-emerald-500/5 transition-all">
+            <button onclick="window.open('/admin/acceso-qr', '_blank')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
                 <i class="fa-solid fa-qrcode"></i> Generar Acceso Móvil
             </button>
-            <button onclick="showSection('respaldo')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-white/5 hover:text-white">
+            <button onclick="showSection('respaldo')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-emerald-50 text-slate-600">
                 <i class="fa-solid fa-box-archive"></i> Copia de Seguridad
             </button>
-            <button onclick="showSection('seguridad')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-semibold transition-all hover:bg-rose-500/5 text-rose-500 hover:text-rose-400">
+            <button onclick="showSection('seguridad')" class="sidebar-item w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold transition-all hover:bg-rose-50 text-rose-600">
                 <i class="fa-solid fa-shield-virus"></i> Centro de Seguridad
             </button>
         </nav>
 
-        <div class="p-6 border-t border-white/5">
-            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
+        <div class="p-6 border-t border-slate-100">
+            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Finalizar Sesión
             </button>
         </div>
@@ -66,156 +66,116 @@
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto">
-        <!-- Dashboard Header -->
-        <header class="sticky top-0 z-10 px-6 lg:px-10 py-6 border-b border-white/5 flex justify-between items-center bg-[#020617]/80 backdrop-blur-md">
+        <!-- Header -->
+        <header class="sticky top-0 z-10 px-6 lg:px-10 py-6 border-b border-slate-100 flex justify-between items-center bg-white/80 backdrop-blur-md">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-xl border border-white/10">
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-xl">
                     <i class="fa-solid fa-bars-staggered"></i>
                 </button>
-                <h2 id="sectionTitle" class="text-xl lg:text-2xl font-bold text-white tracking-tight uppercase">Resumen Ejecutivo</h2>
+                <h2 id="sectionTitle" class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight uppercase">Resumen Ejecutivo</h2>
             </div>
             <div class="flex items-center gap-6">
-                <div class="text-right">
-                    <p class="text-xs font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Administrador Global</p>
-                    <p id="adminName" class="text-sm font-bold text-emerald-400">Estado: En Línea</p>
+                <div class="text-right hidden sm:block">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Administrador Global</p>
+                    <p id="adminName" class="text-sm font-bold text-emerald-600">Estado: En Línea</p>
                 </div>
-                <div class="w-12 h-12 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-emerald-500 text-xl font-black">A</div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl font-black border border-emerald-100">A</div>
             </div>
         </header>
 
-        <div id="content" class="p-10 space-y-10">
+        <div id="content" class="p-6 lg:p-10 space-y-10">
 
-            <!-- SECCIÓN RESUMEN (Bento Grid) -->
-            <section id="resumen" class="space-y-10">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <!-- Stat Card 1 -->
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-emerald-500/30 transition-all group">
-                        <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Ganado Activo</p>
+            <!-- SECCIÓN RESUMEN -->
+            <section id="resumen" class="space-y-10 animate-in fade-in duration-500">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <!-- Stat Cards en Blanco -->
+                    <div class="premium-card p-8 group">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ganado Activo</p>
                         <div class="flex items-end justify-between">
-                            <h3 id="statCabezas" class="text-5xl font-black text-white leading-none">0</h3>
-                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center"><i class="fa-solid fa-cow"></i></div>
+                            <h3 id="statCabezas" class="text-4xl font-black text-slate-900 leading-none">0</h3>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-cow"></i></div>
                         </div>
-                        <p class="text-[10px] font-bold text-emerald-500 mt-4 uppercase"><i class="fa-solid fa-arrow-up mr-1"></i> Actualizado</p>
+                        <p class="text-[10px] font-bold text-emerald-500 mt-4 uppercase">Censo Actualizado</p>
                     </div>
-                    <!-- Stat Card 2 -->
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-blue-500/30 transition-all group">
-                        <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Peso del Hato</p>
+                    <div class="premium-card p-8 group">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Peso del Hato</p>
                         <div class="flex items-end justify-between">
-                            <h3 id="statPesoTotal" class="text-4xl font-black text-white leading-none">0 <span class="text-base text-slate-500 uppercase">Kg</span></h3>
-                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center"><i class="fa-solid fa-weight-scale"></i></div>
+                            <h3 id="statPesoTotal" class="text-3xl font-black text-slate-900 leading-none">0 <span class="text-sm text-slate-400">Kg</span></h3>
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-weight-scale"></i></div>
                         </div>
-                        <p class="text-[10px] font-bold text-slate-500 mt-4 uppercase italic">Total acumulado</p>
+                        <p class="text-[10px] font-bold text-slate-400 mt-4 uppercase italic">Total acumulado</p>
                     </div>
-                    <!-- Stat Card 3 -->
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-purple-500/30 transition-all group">
-                        <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Peso Promedio</p>
+                    <div class="premium-card p-8 group">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Peso Promedio</p>
                         <div class="flex items-end justify-between">
-                            <h3 id="statPesoProm" class="text-4xl font-black text-white leading-none">0 <span class="text-base text-slate-500 uppercase">Kg</span></h3>
-                            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center"><i class="fa-solid fa-chart-line-up"></i></div>
+                            <h3 id="statPesoProm" class="text-3xl font-black text-slate-900 leading-none">0 <span class="text-sm text-slate-400">Kg</span></h3>
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-chart-line-up"></i></div>
                         </div>
                         <p class="text-[10px] font-bold text-blue-500 mt-4 uppercase">Eficiencia hato</p>
                     </div>
-                    <!-- Stat Card 4 -->
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-rose-500/30 transition-all group border-rose-500/10">
-                        <p class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Registros Bloqueados</p>
+                    <div class="premium-card p-8 group border-rose-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">En Cuarentena</p>
                         <div class="flex items-end justify-between">
-                            <h3 id="statBloqueados" class="text-5xl font-black text-rose-500 leading-none">0</h3>
-                            <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <h3 id="statBloqueados" class="text-4xl font-black text-rose-600 leading-none">0</h3>
+                            <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center"><i class="fa-solid fa-shield-virus"></i></div>
                         </div>
-                        <p class="text-[10px] font-bold text-rose-400 mt-4 uppercase tracking-tighter">Requiere Revisión Sanitaria</p>
+                        <p class="text-[10px] font-bold text-rose-400 mt-4 uppercase">Alertas Activas</p>
                     </div>
                 </div>
 
-                <!-- Charts Bento Section -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 glass-panel p-10 rounded-[2.5rem] relative overflow-hidden">
-                        <div class="flex justify-between items-center mb-8 relative z-10">
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 premium-card p-8">
+                        <div class="flex justify-between items-center mb-8">
                             <div>
-                                <h4 class="text-xl font-black text-white tracking-tight">Tendencia de Producción de Leche</h4>
-                                <p class="text-sm font-medium text-slate-500">Volumen semanal por finca</p>
+                                <h4 class="text-lg font-black text-slate-900 tracking-tight uppercase">Tendencia de Producción</h4>
+                                <p class="text-xs font-bold text-slate-400 tracking-widest">Rendimiento semanal del hato</p>
                             </div>
-                            <button onclick="cargarResumen()" class="px-6 py-2 rounded-xl bg-emerald-600 text-white text-xs font-black uppercase hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">Refrescar Data</button>
+                            <button onclick="cargarResumen()" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-[10px] font-black uppercase hover:bg-emerald-500 transition-all">Refrescar</button>
                         </div>
                         <div id="productionChart" class="min-h-[300px]"></div>
                     </div>
 
-                    <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-emerald-600/5 to-transparent border-emerald-500/10">
+                    <div class="premium-card p-10 flex flex-col justify-between bg-emerald-900 text-white border-none relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10">
+                            <i class="fa-solid fa-microchip absolute -bottom-10 -right-10 text-[12rem]"></i>
+                        </div>
                         <div class="relative z-10">
-                            <i class="fa-solid fa-sparkles text-3xl text-emerald-500 mb-6 block"></i>
-                            <h4 class="text-3xl font-black text-white leading-tight mb-4 tracking-tighter">Bienvenido a la Inteligencia Ganadera</h4>
-                            <p class="text-slate-400 font-medium leading-relaxed">
-                                Ha sido habilitado el módulo de analítica predictiva. Puede supervisar el rendimiento de cada predio en tiempo real.
+                            <i class="fa-solid fa-sparkles text-3xl text-emerald-400 mb-6 block"></i>
+                            <h4 class="text-3xl font-black leading-tight mb-4 tracking-tighter">Gestión de Precisión</h4>
+                            <p class="text-emerald-100/70 text-sm font-medium leading-relaxed">
+                                El motor de inteligencia supervisa cada pesaje y registro para garantizar la pureza de sus datos.
                             </p>
                         </div>
-                        <button class="mt-8 px-8 py-4 rounded-[1.5rem] bg-white text-[#020617] font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">Ver Reportes BPG</button>
+                        <button class="mt-8 px-6 py-4 rounded-2xl bg-white text-emerald-900 font-black text-xs uppercase tracking-widest hover:scale-105 transition-all">Exportar Reportes</button>
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN TRABAJO DIARIO (Operativo) -->
-            <section id="diario" class="hidden space-y-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <a href="registro_ganado.html" class="glass-panel p-10 rounded-[2.5rem] hover:bg-white/[0.04] transition-all group border-emerald-500/10">
-                        <div class="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-[1.5rem] flex items-center justify-center mb-6 border border-emerald-500/10 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-circle-plus text-3xl"></i>
-                        </div>
-                        <h5 class="text-lg font-black text-white uppercase tracking-tighter">Nuevo Registro</h5>
-                        <p class="text-xs text-slate-500 font-bold mt-2">Censo ICA 3-101</p>
-                    </a>
-                    <a href="tratamientos.html" class="glass-panel p-10 rounded-[2.5rem] hover:bg-white/[0.04] transition-all group border-rose-500/10">
-                        <div class="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-[1.5rem] flex items-center justify-center mb-6 border border-rose-500/10 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-suitcase-medical text-3xl"></i>
-                        </div>
-                        <h5 class="text-lg font-black text-white uppercase tracking-tighter">Sanidad Animal</h5>
-                        <p class="text-xs text-slate-500 font-bold mt-2">Tratamientos y Retiro</p>
-                    </a>
-                    <a href="produccion.html" class="glass-panel p-10 rounded-[2.5rem] hover:bg-white/[0.04] transition-all group border-blue-500/10">
-                        <div class="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-[1.5rem] flex items-center justify-center mb-6 border border-blue-500/10 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-flask-vial text-3xl"></i>
-                        </div>
-                        <h5 class="text-lg font-black text-white uppercase tracking-tighter">Producción</h5>
-                        <p class="text-xs text-slate-500 font-bold mt-2">Pesaje y Ordeño</p>
-                    </a>
-                    <a href="novedades.html" class="glass-panel p-10 rounded-[2.5rem] hover:bg-white/[0.04] transition-all group border-purple-500/10">
-                        <div class="w-16 h-16 bg-purple-500/10 text-purple-500 rounded-[1.5rem] flex items-center justify-center mb-6 border border-purple-500/10 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-megaphone text-3xl"></i>
-                        </div>
-                        <h5 class="text-lg font-black text-white uppercase tracking-tighter">Notificaciones</h5>
-                        <p class="text-xs text-slate-500 font-bold mt-2">Partos y Traslados</p>
-                    </a>
-                </div>
-            </section>
-
-            <!-- SECCIÓN USUARIOS -->
+            <!-- OTRAS SECCIONES (Sincronizadas con Modo Claro) -->
             <section id="usuarios" class="hidden space-y-10 animate-in fade-in duration-500">
-                <div class="glass-panel p-10 rounded-[2.5rem] border-emerald-500/10">
+                <div class="premium-card p-8 lg:p-10">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                         <div>
-                            <h3 class="text-3xl font-black text-white tracking-tighter uppercase">Equipo de Trabajo</h3>
-                            <p class="text-sm font-medium text-slate-500">Administración de perfiles y niveles de acceso</p>
+                            <h3 class="text-2xl font-black text-slate-900 tracking-tighter uppercase">Equipo de Trabajo</h3>
+                            <p class="text-sm font-bold text-slate-400">Niveles de acceso corporativo</p>
                         </div>
-                        <div class="flex gap-4">
-                             <button onclick="resetPass(null, true)" class="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
-                                <i class="fa-solid fa-key-skeleton mr-2"></i> Mi Seguridad
-                            </button>
-                            <a href="registro.html" class="px-8 py-4 rounded-2xl bg-emerald-600 text-white font-black text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">
-                                <i class="fa-solid fa-user-plus mr-2"></i> Nuevo Personal
-                            </a>
-                        </div>
+                        <a href="registro.html" class="px-8 py-4 btn-premium text-xs uppercase tracking-widest">
+                            <i class="fa-solid fa-user-plus mr-2"></i> Vincular Personal
+                        </a>
                     </div>
-
-                    <div class="overflow-x-auto rounded-[1.5rem] border border-white/5 bg-white/[0.01]">
-                        <table class="w-full text-left min-w-[600px]">
-                            <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-widest border-b border-white/5">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
                                 <tr>
-                                    <th class="p-6">ID</th>
-                                    <th class="p-6">Nombre de Usuario</th>
-                                    <th class="p-6">Nivel de Acceso</th>
-                                    <th class="p-6">Estado de Cuenta</th>
-                                    <th class="p-6 text-right">Controles</th>
+                                    <th class="p-6">ID Operador</th>
+                                    <th class="p-6">Nombre</th>
+                                    <th class="p-6">Rango</th>
+                                    <th class="p-6">Estado</th>
+                                    <th class="p-6 text-right">Seguridad</th>
                                 </tr>
                             </thead>
-                            <tbody id="tablaUsuarios" class="divide-y divide-white/5 text-sm text-slate-400">
+                            <tbody id="tablaUsuarios" class="divide-y divide-slate-50 text-sm text-slate-600 font-medium">
                                 <!-- Data Dinámica -->
                             </tbody>
                         </table>
@@ -223,120 +183,81 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN AUDITORÍA -->
-            <section id="auditoria" class="hidden space-y-10 animate-in fade-in duration-500">
-                <div class="glass-panel p-10 rounded-[2.5rem]">
-                    <div class="flex justify-between items-center mb-10">
-                        <h3 class="text-2xl font-black text-white uppercase tracking-tighter">Bitácora de Acciones</h3>
-                        <button onclick="cargarAuditoria()" class="text-emerald-500 font-black text-xs uppercase tracking-widest border border-emerald-500/20 px-6 py-2 rounded-xl hover:bg-emerald-500/5 transition-all">Actualizar Logs</button>
-                    </div>
-                    <div class="overflow-x-auto rounded-2xl border border-white/5">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-white/5 text-slate-500 font-black uppercase">
-                                <tr>
-                                    <th class="p-5">Marca Temporal</th>
-                                    <th class="p-5">Operador</th>
-                                    <th class="p-5">Acción</th>
-                                    <th class="p-5">Detalle Técnico</th>
-                                    <th class="p-5">Predio</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tablaAuditoria" class="divide-y divide-white/5">
-                                <!-- Data Dinámica -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECCIÓN SEGURIDAD (CUARENTENA) -->
+            <!-- SECCIÓN SEGURIDAD (CUARENTENA CLARA) -->
             <section id="seguridad" class="hidden space-y-10 animate-in fade-in duration-500">
-                <div class="bg-rose-500/5 border border-rose-500/10 p-10 rounded-[2.5rem]">
+                <div class="bg-rose-50 border border-rose-100 p-8 lg:p-10 rounded-[2.5rem]">
                     <div class="flex justify-between items-center mb-10">
                         <div>
-                            <h3 class="text-2xl font-black text-rose-500 uppercase tracking-tighter flex items-center gap-3">
+                            <h3 class="text-2xl font-black text-rose-700 uppercase tracking-tighter flex items-center gap-3">
                                 <i class="fa-solid fa-radiation"></i> Cuarentena de Datos
                             </h3>
-                            <p class="text-sm font-medium text-slate-500">Registros sospechosos bloqueados por el motor de inteligencia</p>
+                            <p class="text-sm font-bold text-rose-400 uppercase tracking-widest">Registros anómalos detectados</p>
                         </div>
-                        <button onclick="cargarCuarentena()" class="text-rose-400 font-black text-xs uppercase tracking-widest border border-rose-500/20 px-6 py-2 rounded-xl hover:bg-rose-500/5 transition-all">Sincronizar Alertas</button>
+                        <button onclick="cargarCuarentena()" class="px-6 py-2 rounded-xl border-2 border-rose-200 text-rose-600 text-[10px] font-black uppercase hover:bg-rose-100 transition-all">Sincronizar Alertas</button>
                     </div>
-
-                    <div class="grid grid-cols-1 gap-6" id="gridCuarentena">
-                        <!-- Alertas dinámicas -->
-                    </div>
+                    <div class="grid grid-cols-1 gap-6" id="gridCuarentena"></div>
                 </div>
             </section>
 
-            <!-- SECCIÓN RESPALDO (BACKUP) -->
-            <section id="respaldo" class="hidden space-y-10 animate-in fade-in duration-500">
-                <div class="glass-panel p-10 rounded-[2.5rem] border-emerald-500/10">
-                    <div class="flex items-center gap-6 mb-8">
-                        <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center border border-blue-500/20">
-                            <i class="fa-solid fa-cloud-arrow-down text-3xl"></i>
+            <!-- SECCIÓN RESPALDO CLARA -->
+            <section id="respaldo" class="hidden animate-in fade-in duration-500">
+                <div class="premium-card p-10 border-emerald-100">
+                    <div class="flex items-center gap-6 mb-12">
+                        <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center border border-emerald-100">
+                            <i class="fa-solid fa-box-archive text-3xl"></i>
                         </div>
                         <div>
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Protección de Datos</h3>
-                            <p class="text-sm font-medium text-slate-500">Resguarde la información histórica de la finca</p>
+                            <h3 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Protección de Datos</h3>
+                            <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">Copia de Seguridad Corporativa</p>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-white/5 p-8 rounded-3xl border border-white/5 space-y-4">
-                            <h4 class="text-lg font-bold text-white uppercase">¿Cómo hacer un Respaldo?</h4>
-                            <ul class="space-y-3 text-sm text-slate-400">
-                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-1 text-emerald-500 mt-1"></i> Vaya a la carpeta principal del sistema en su PC.</li>
-                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-2 text-emerald-500 mt-1"></i> Busque y ejecute el archivo <b>EXPORTAR_BACKUP.bat</b>.</li>
-                                <li class="flex items-start gap-3"><i class="fa-solid fa-circle-3 text-emerald-500 mt-1"></i> Se creará un archivo en la carpeta <b>backups/</b>.</li>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
+                            <h4 class="font-black text-slate-900 uppercase text-sm mb-6">Protocolo de Respaldo</h4>
+                            <ul class="space-y-4 text-xs font-bold text-slate-500">
+                                <li class="flex items-center gap-4"><span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">1</span> Inicie el script <b>EXPORTAR_BACKUP.bat</b></li>
+                                <li class="flex items-center gap-4"><span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">2</span> Verifique el archivo en la carpeta <b>backups/</b></li>
+                                <li class="flex items-center gap-4"><span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">3</span> Suba el archivo a su nube privada para mayor seguridad</li>
                             </ul>
                         </div>
-                        <div class="bg-amber-500/5 p-8 rounded-3xl border border-amber-500/10 flex flex-col justify-center items-center text-center">
-                            <i class="fa-solid fa-shield-check text-5xl text-amber-500 mb-4"></i>
-                            <p class="text-xs font-black text-amber-500 uppercase tracking-widest">Recomendación Semanal</p>
-                            <p class="text-sm text-slate-400 mt-2 italic">"Copie sus backups en una memoria USB para máxima seguridad ante robos o fallos de disco."</p>
+                        <div class="flex flex-col justify-center items-center text-center p-8">
+                            <i class="fa-solid fa-shield-check text-6xl text-emerald-100 mb-6"></i>
+                            <p class="text-xs font-black text-emerald-600 uppercase tracking-widest">Seguridad Garantizada</p>
+                            <p class="text-[10px] text-slate-400 font-bold mt-2">Sus datos están protegidos bajo cifrado local Steel Edge.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Footer Corporativo -->
+            <!-- Footer Inyectado -->
             <div id="footerContainer"></div>
-
         </div>
     </main>
 
     <script src="../services/navigation.js"></script>
     <script>
         const token = localStorage.getItem("token");
-        // navigation.js ya maneja el checkAuth()
-
         let prodChart;
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isHidden = sidebar.classList.contains('-translate-x-full');
-
-            if (isHidden) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
+            if (isHidden) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
         }
 
         function showSection(id) {
-            if (window.innerWidth < 1024) toggleSidebar();
-
+            if (window.innerWidth < 1024 && !document.getElementById('sidebar').classList.contains('-translate-x-full')) toggleSidebar();
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
 
-            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('sidebar-item-active'));
-            const activeBtn = Array.from(document.querySelectorAll('.sidebar-item')).find(btn => btn.onclick.toString().includes(id));
+            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('sidebar-item-active', 'bg-emerald-50', 'text-emerald-700'));
+            const activeBtn = Array.from(document.querySelectorAll('.sidebar-item')).find(btn => btn.getAttribute('onclick').includes(id));
             if(activeBtn) activeBtn.classList.add('sidebar-item-active');
 
-            document.getElementById('sectionTitle').innerText = id.replace('resumen', 'Resumen Ejecutivo').replace('diario', 'Operaciones Diarias').replace('usuarios', 'Gestión de Talento').replace('auditoria', 'Registro de Auditoría').replace('fincas', 'Control de Predios').replace('respaldo', 'Protección de Datos');
+            const titles = { resumen: 'Resumen Ejecutivo', diario: 'Operaciones Diarias', usuarios: 'Gestión de Talento', fincas: 'Control de Predios', auditoria: 'Registro de Auditoría', respaldo: 'Protección de Datos', seguridad: 'Centro de Seguridad' };
+            document.getElementById('sectionTitle').innerText = titles[id] || 'Panel';
 
             if(id === 'resumen') cargarResumen();
             if(id === 'usuarios') cargarUsuarios();
@@ -360,14 +281,14 @@
             if (prodChart) prodChart.destroy();
             const options = {
                 chart: { type: 'area', height: 300, toolbar: { show: false }, background: 'transparent' },
-                colors: ['#10b981'],
+                colors: ['#059669'],
                 dataLabels: { enabled: false },
                 stroke: { curve: 'smooth', width: 4 },
                 series: [{ name: 'Litros', data: [120, 150, 140, 180, 170, 210, 200] }],
-                xaxis: { categories: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'], labels: { style: { colors: '#64748b' } } },
-                yaxis: { labels: { style: { colors: '#64748b' } } },
-                grid: { borderColor: 'rgba(255,255,255,0.05)' },
-                theme: { mode: 'dark' }
+                xaxis: { categories: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'], labels: { style: { colors: '#94a3b8', fontWeight: 700 } } },
+                yaxis: { labels: { style: { colors: '#94a3b8', fontWeight: 700 } } },
+                grid: { borderColor: '#f1f5f9' },
+                theme: { mode: 'light' }
             };
             prodChart = new ApexCharts(document.querySelector("#productionChart"), options);
             prodChart.render();
@@ -377,17 +298,17 @@
             const res = await fetch("/admin/usuarios", { headers: { "Authorization": "Bearer " + token } });
             const users = await res.json();
             document.getElementById('tablaUsuarios').innerHTML = users.map(u => `
-                <tr class="hover:bg-white/5 transition-colors">
-                    <td class="p-6 font-mono text-slate-600">ID-${u.id}</td>
-                    <td class="p-6 font-bold text-white">${u.nombre_usuario}</td>
-                    <td class="p-6"><span class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest">${u.rol_usuario}</span></td>
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-6 font-mono text-[10px] text-slate-400">#${u.id.substring(0,8)}</td>
+                    <td class="p-6 font-black text-slate-900">${u.nombre_usuario}</td>
+                    <td class="p-6"><span class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest">${u.rol_usuario}</span></td>
                     <td class="p-6">
                         ${u.bloqueado_hasta && new Date(u.bloqueado_hasta) > new Date()
-                          ? '<span class="text-rose-500 text-xs font-bold uppercase"><i class="fa-solid fa-lock-keyhole mr-1"></i> Bloqueada</span>'
-                          : '<span class="text-emerald-500 text-xs font-bold uppercase"><i class="fa-solid fa-circle-check mr-1"></i> Operacional</span>'}
+                          ? '<span class="text-rose-600 text-[10px] font-black uppercase tracking-tighter"><i class="fa-solid fa-lock mr-1"></i> Bloqueado</span>'
+                          : '<span class="text-emerald-600 text-[10px] font-black uppercase tracking-tighter"><i class="fa-solid fa-circle-check mr-1"></i> Activo</span>'}
                     </td>
                     <td class="p-6 text-right">
-                        <button onclick="resetPass(${u.id})" class="p-2 text-slate-500 hover:text-white transition-all"><i class="fa-solid fa-shield-keyhole"></i></button>
+                        <button onclick="resetPass('${u.id}')" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-400 hover:bg-emerald-600 hover:text-white transition-all"><i class="fa-solid fa-shield-keyhole"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -397,12 +318,12 @@
             const res = await fetch("/admin/auditoria", { headers: { "Authorization": "Bearer " + token } });
             const logs = await res.json();
             document.getElementById('tablaAuditoria').innerHTML = logs.map(l => `
-                <tr class="hover:bg-white/5 transition-colors">
-                    <td class="p-5 text-slate-500">${new Date(l.fecha).toLocaleString()}</td>
-                    <td class="p-5 font-bold text-slate-300">${l.nombre_usuario || 'SISTEMA'}</td>
-                    <td class="p-5"><span class="text-emerald-500 font-mono">${l.accion}</span></td>
-                    <td class="p-5 truncate max-w-xs text-slate-500">${l.descripcion}</td>
-                    <td class="p-5 italic font-medium text-slate-400">${l.nombre_finca || '---'}</td>
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-5 text-slate-400 font-bold">${new Date(l.fecha).toLocaleString()}</td>
+                    <td class="p-5 font-black text-slate-700">${l.nombre_usuario || 'SISTEMA'}</td>
+                    <td class="p-5"><span class="text-emerald-600 font-mono font-bold">${l.accion}</span></td>
+                    <td class="p-5 truncate max-w-xs text-slate-500 text-xs">${l.descripcion}</td>
+                    <td class="p-5 italic font-bold text-slate-400 text-xs">${l.nombre_finca || '---'}</td>
                 </tr>
             `).join('');
         }
@@ -411,21 +332,18 @@
             const res = await fetch("/admin/cuarentena", { headers: { "Authorization": "Bearer " + token } });
             const alertas = await res.json();
             document.getElementById('gridCuarentena').innerHTML = alertas.map(a => `
-                <div class="glass-panel p-8 rounded-[2rem] border-rose-500/20 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="premium-card p-6 border-rose-100 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="space-y-2">
                         <div class="flex items-center gap-3">
-                            <span class="px-3 py-1 rounded-lg bg-rose-500 text-slate-950 text-[10px] font-black uppercase">Sospecha de Fraude</span>
-                            <span class="text-xs font-bold text-slate-500">${new Date(a.fecha).toLocaleString()}</span>
+                            <span class="px-3 py-1 rounded-lg bg-rose-600 text-white text-[9px] font-black uppercase tracking-widest">Alerta de Seguridad</span>
+                            <span class="text-[10px] font-bold text-slate-400">${new Date(a.fecha).toLocaleString()}</span>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase">${a.tipo_accion}</h4>
-                        <p class="text-sm text-rose-400 font-medium italic">${a.motivo_bloqueo}</p>
-                        <div class="text-xs text-slate-500 font-mono bg-black/20 p-4 rounded-xl mt-4">
-                            ${JSON.stringify(a.datos_json)}
-                        </div>
+                        <h4 class="text-lg font-black text-slate-900 uppercase tracking-tight">${a.tipo_accion}</h4>
+                        <p class="text-xs text-rose-600 font-bold italic">${a.motivo_bloqueo}</p>
                     </div>
-                    <div class="flex flex-col gap-3 min-w-[200px]">
-                        <button onclick="procesarAlerta(${a.id}, 'APROBAR')" class="w-full py-3 rounded-xl bg-emerald-600 text-white font-black text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all">Autorizar Datos</button>
-                        <button onclick="procesarAlerta(${a.id}, 'DESCARTAR')" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-rose-500 font-black text-xs uppercase tracking-widest hover:bg-rose-500/10 transition-all">Eliminar Registro</button>
+                    <div class="flex gap-3">
+                        <button onclick="procesarAlerta('${a.id}', 'APROBAR')" class="px-6 py-3 rounded-xl bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-200">Autorizar</button>
+                        <button onclick="procesarAlerta('${a.id}', 'DESCARTAR')" class="px-6 py-3 rounded-xl bg-white border border-rose-200 text-rose-600 font-black text-[10px] uppercase tracking-widest hover:bg-rose-50">Descartar</button>
                     </div>
                 </div>
             `).join('');
@@ -440,25 +358,20 @@
             if (res.ok) cargarCuarentena();
         }
 
-        async function resetPass(id, isSelf = false) {
-            const pass = prompt(isSelf ? "NUEVA CONTRASEÑA DE ACCESO:" : "NUEVA CONTRASEÑA PARA EMPLEADO:");
+        async function resetPass(id) {
+            const pass = prompt("INGRESE NUEVA CONTRASEÑA CORPORATIVA:");
             if(!pass) return;
             await fetch("/admin/usuarios/password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
                 body: JSON.stringify({ id, nuevaContrasena: pass })
             });
-            alert("SISTEMA: CLAVE ACTUALIZADA EXITOSAMENTE ✅");
-            if(!isSelf) cargarUsuarios();
+            alert("SISTEMA: CLAVE ACTUALIZADA ✅");
+            cargarUsuarios();
         }
 
-        function logout() { localStorage.removeItem("token"); window.location.href = "login.html"; }
-
-        // Start Resumen
-        cargarResumen();
-
-        // Inyectar Footer
         document.addEventListener('DOMContentLoaded', () => {
+            cargarResumen();
             navigation.renderFooter('footerContainer');
         });
     </script>

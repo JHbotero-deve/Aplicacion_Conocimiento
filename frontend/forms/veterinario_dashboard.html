@@ -6,68 +6,69 @@
     <title>Protocolo de Salud | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="../styles/theme.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
-        .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        body { background: #f8fafc; color: #0f172a; }
+        .sidebar-btn-active { background: var(--brand-50); color: var(--brand-600); border-right: 4px solid var(--brand-600); }
     </style>
 </head>
-<body class="min-h-screen flex text-slate-400 relative overflow-hidden">
+<body class="min-h-screen flex text-slate-600 relative overflow-hidden mesh-gradient-light">
 
     <!-- Overlay para móvil -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-[#020617] border-r border-white/5 flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 sidebar-light flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white">
+            <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-rose-200">
                 <i class="fa-solid fa-house-medical text-xl"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tighter text-white">HEALTH<span class="text-rose-500 italic">PRO</span></span>
+            <span class="text-xl font-extrabold tracking-tighter text-slate-900">HEALTH<span class="text-rose-600 italic">PRO</span></span>
         </div>
         <nav class="flex-1 px-4 mt-4 space-y-1">
-            <button onclick="showSection('agenda')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-white bg-rose-500/10 border-r-2 border-rose-500 transition-all">
+            <button onclick="showSection('agenda')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all sidebar-btn-active">
                 <i class="fa-solid fa-calendar-check text-rose-500"></i> Agenda Médica
             </button>
-            <button onclick="showSection('historial')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold hover:bg-white/5 transition-all">
+            <button onclick="showSection('historial')" class="sidebar-btn w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition-all">
                 <i class="fa-solid fa-notes-medical"></i> Registro Clínico
             </button>
         </nav>
-        <div class="p-6 border-t border-white/5">
-            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
+        <div class="p-6 border-t border-slate-100">
+            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Salida Segura
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 p-8 md:p-12 space-y-10 overflow-y-auto h-screen">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-8 rounded-[2.5rem] gap-6">
+    <main class="flex-1 p-6 md:p-12 space-y-10 overflow-y-auto h-screen">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center premium-card p-8 gap-6 border-emerald-100">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-xl border border-white/10">
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-xl">
                     <i class="fa-solid fa-bars-staggered"></i>
                 </button>
                 <div>
-                    <h2 id="sectionTitle" class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Agenda Médica</h2>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Protocolo de Sanidad Animal</p>
+                    <h2 id="sectionTitle" class="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Agenda Médica</h2>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-2">Protocolo de Sanidad Animal</p>
                 </div>
             </div>
-            <div class="px-6 py-2 rounded-xl bg-rose-500/10 text-rose-500 font-bold text-xs uppercase tracking-widest border border-rose-500/20">Médico Veterinario Certificado</div>
+            <div class="px-6 py-2 rounded-xl bg-rose-50 text-rose-600 font-black text-[10px] uppercase tracking-widest border border-rose-100 shadow-sm">Médico Veterinario Certificado</div>
         </header>
 
         <section id="agenda" class="space-y-8 animate-in fade-in duration-500">
             <div class="flex justify-between items-center px-4">
-                <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Procedimientos Programados</h3>
-                <button onclick="openModal('modalCita')" class="px-8 py-3 rounded-xl bg-rose-600 text-white font-black text-xs uppercase tracking-widest hover:bg-rose-500 shadow-xl shadow-rose-900/20 transition-all">Programar Intervención</button>
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Intervenciones Programadas</h3>
+                <button onclick="openModal('modalCita')" class="px-6 py-3 rounded-xl bg-rose-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-rose-500 shadow-lg shadow-rose-200 transition-all">Programar Nueva</button>
             </div>
-            <div class="glass-panel rounded-[2.5rem] overflow-hidden">
+            <div class="premium-card overflow-hidden border-none">
                 <table class="w-full text-left">
-                    <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-widest border-b border-white/5">
+                    <thead class="bg-slate-50 text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] border-b border-slate-100">
                         <tr>
                             <th class="p-8">Marca Temporal</th>
                             <th class="p-8">Unidad Predial</th>
-                            <th class="p-8">Tipo de Intervención</th>
+                            <th class="p-8">Procedimiento</th>
                             <th class="p-8 text-right">Estatus</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaCitas" class="divide-y divide-white/5 text-sm">
+                    <tbody id="tablaCitas" class="divide-y divide-slate-50 text-sm text-slate-600 font-medium">
                         <!-- Data -->
                     </tbody>
                 </table>
@@ -75,39 +76,39 @@
         </section>
 
         <section id="historial" class="hidden space-y-8 animate-in fade-in duration-500">
-            <div class="glass-panel p-10 rounded-[2.5rem]">
-                <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-6">Consulta de Expediente Clínico</h3>
-                <div class="flex gap-4">
-                    <input type="text" id="buscarChapeta" placeholder="NRO DE IDENTIFICACIÓN (CHAPETA)"
-                        class="flex-1 bg-white/5 border border-white/5 rounded-2xl px-8 py-5 outline-none focus:border-emerald-500 transition-all font-bold text-white uppercase">
-                    <button onclick="buscarHistorial()" class="px-10 py-5 rounded-2xl bg-emerald-600 text-[#020617] font-black uppercase text-xs tracking-widest hover:bg-emerald-500 transition-all shadow-xl shadow-emerald-900/20">Ejecutar Consulta</button>
+            <div class="premium-card p-10 border-emerald-100">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Consulta de Expediente Clínico</h3>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                        <input type="text" id="buscarChapeta" placeholder="NRO DE IDENTIFICACIÓN (CHAPETA)"
+                            class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl pl-14 pr-8 py-5 outline-none focus:border-emerald-500 transition-all font-bold text-slate-900 uppercase">
+                    </div>
+                    <button onclick="buscarHistorial()" class="px-10 py-5 rounded-2xl bg-emerald-600 text-white font-black uppercase text-xs tracking-widest hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-200">Ejecutar Consulta</button>
                 </div>
             </div>
-            <div id="displayHistorial" class="space-y-4">
-                <!-- Resultados -->
-            </div>
+            <div id="displayHistorial" class="space-y-4"></div>
         </section>
 
-        <!-- Footer Corporativo -->
         <div id="footerContainer"></div>
     </main>
 
-    <!-- Modal Cita -->
-    <div id="modalCita" class="fixed inset-0 bg-[#020617]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
-        <div class="glass-panel p-12 rounded-[3rem] shadow-2xl w-full max-w-lg space-y-8">
-            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Programar Procedimiento</h3>
-            <div class="space-y-6">
+    <!-- Modal Cita Clara -->
+    <div id="modalCita" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden flex items-center justify-center z-50 p-6">
+        <div class="bg-white p-10 md:p-12 rounded-[3rem] shadow-2xl w-full max-w-lg space-y-8">
+            <h3 class="text-3xl font-black text-slate-900 uppercase tracking-tighter">Programar Cita</h3>
+            <div class="space-y-6 text-left">
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">ID Unidad Predial (Finca)</label>
-                    <input id="citaFinca" type="number" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-white">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-2">Unidad Predial (Finca)</label>
+                    <input id="citaFinca" type="number" class="w-full bg-slate-50 border border-slate-200 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-slate-900">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Cronología Programada</label>
-                    <input id="citaFecha" type="datetime-local" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-slate-400">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-2">Cronología Programada</label>
+                    <input id="citaFecha" type="datetime-local" class="w-full bg-slate-50 border border-slate-200 p-5 rounded-2xl outline-none focus:border-rose-500 font-bold text-slate-400">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-2">Naturaleza de Intervención</label>
-                    <select id="citaMotivo" class="w-full bg-white/5 border border-white/5 p-5 rounded-2xl outline-none text-white font-bold appearance-none">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-2">Naturaleza de Intervención</label>
+                    <select id="citaMotivo" class="w-full bg-slate-50 border border-slate-200 p-5 rounded-2xl outline-none text-slate-900 font-bold appearance-none">
                         <option value="Vacunación">PROTOCOLO DE VACUNACIÓN</option>
                         <option value="Chequeo General">CHEQUEO TÉCNICO GENERAL</option>
                         <option value="Urgencia">INTERVENCIÓN DE EMERGENCIA</option>
@@ -116,8 +117,8 @@
                 </div>
             </div>
             <div class="flex gap-4 pt-6">
-                <button onclick="closeModal('modalCita')" class="flex-1 bg-white/5 text-slate-400 p-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Abortar</button>
-                <button onclick="guardarCita()" class="flex-1 bg-rose-600 text-white p-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-rose-500 shadow-xl shadow-rose-900/20">Confirmar Cita</button>
+                <button onclick="closeModal('modalCita')" class="flex-1 bg-slate-100 text-slate-400 p-5 rounded-2xl font-bold uppercase text-[10px] tracking-widest">Abortar</button>
+                <button onclick="guardarCita()" class="flex-1 bg-rose-600 text-white p-5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-rose-500 shadow-xl shadow-rose-200">Confirmar</button>
             </div>
         </div>
     </div>
@@ -130,27 +131,18 @@
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isHidden = sidebar.classList.contains('-translate-x-full');
-
-            if (isHidden) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
+            if (isHidden) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
         }
 
         function showSection(id) {
             if (window.innerWidth < 1024) toggleSidebar();
-
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
 
-            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('bg-rose-500/10', 'border-r-2', 'border-rose-500', 'text-white'));
-            const activeBtn = Array.from(document.querySelectorAll('.sidebar-btn')).find(btn => btn.onclick.toString().includes(id));
-            if(activeBtn) {
-                activeBtn.classList.add('bg-rose-500/10', 'border-r-2', 'border-rose-500', 'text-white');
-            }
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('sidebar-btn-active', 'bg-rose-50', 'text-rose-700'));
+            const activeBtn = Array.from(document.querySelectorAll('.sidebar-btn')).find(btn => btn.getAttribute('onclick').includes(id));
+            if(activeBtn) { activeBtn.classList.add('sidebar-btn-active', 'bg-rose-50', 'text-rose-700'); }
 
             document.getElementById('sectionTitle').innerText = id === 'agenda' ? 'Agenda Médica' : 'Registro Clínico';
             if(id === 'agenda') cargarCitas();
@@ -160,11 +152,11 @@
             const res = await fetch("/salud/citas", { headers: { "Authorization": "Bearer " + token } });
             const citas = await res.json();
             document.getElementById('tablaCitas').innerHTML = citas.map(c => `
-                <tr class="hover:bg-white/5 transition-colors">
-                    <td class="p-8 font-bold text-white">${new Date(c.fecha_programada).toLocaleString()}</td>
-                    <td class="p-8 uppercase font-medium">${c.nombre_finca}</td>
-                    <td class="p-8 text-rose-500 font-bold uppercase tracking-tight">${c.motivo}</td>
-                    <td class="p-8 text-right"><span class="bg-amber-500/10 text-amber-500 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border border-amber-500/20">${c.estado}</span></td>
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-8 font-black text-slate-900">${new Date(c.fecha_programada).toLocaleString()}</td>
+                    <td class="p-8 uppercase font-bold text-slate-500 text-xs">${c.nombre_finca}</td>
+                    <td class="p-8 text-rose-600 font-black text-xs uppercase tracking-tight">${c.motivo}</td>
+                    <td class="p-8 text-right"><span class="bg-amber-50 text-amber-600 px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border border-amber-100">${c.estado}</span></td>
                 </tr>
             `).join('');
         }
@@ -175,13 +167,13 @@
             const res = await fetch(`/salud/historial/${chapeta}`, { headers: { "Authorization": "Bearer " + token } });
             const h = await res.json();
             document.getElementById('displayHistorial').innerHTML = h.map(t => `
-                <div class="glass-panel p-8 rounded-[2rem] border-l-4 border-emerald-500 animate-in slide-in-from-bottom-4 duration-300">
+                <div class="premium-card p-8 border-l-4 border-emerald-500 animate-in slide-in-from-bottom-4 duration-300">
                     <div class="flex justify-between mb-4">
-                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">${new Date(t.fecha).toLocaleDateString()}</span>
-                        <span class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Responsable: ${t.veterinario}</span>
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${new Date(t.fecha).toLocaleDateString()}</span>
+                        <span class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Responsable: ${t.veterinario}</span>
                     </div>
-                    <h4 class="text-xl font-black text-white uppercase tracking-tight">${t.producto}</h4>
-                    <p class="text-sm text-slate-400 font-medium mt-2 leading-relaxed italic">${t.diagnostico}</p>
+                    <h4 class="text-lg font-black text-slate-900 uppercase tracking-tight">${t.producto}</h4>
+                    <p class="text-xs text-slate-500 font-medium mt-3 leading-relaxed italic border-t border-slate-50 pt-3">${t.diagnostico}</p>
                 </div>
             `).join('');
         }

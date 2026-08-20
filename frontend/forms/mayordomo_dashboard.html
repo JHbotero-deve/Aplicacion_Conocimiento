@@ -6,109 +6,101 @@
     <title>Supervisión Predial | Ganadería Pro</title>
     <link rel="stylesheet" href="../assets/css/tailwind.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="../styles/theme.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; background: #020617; }
-        .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        body { background: #f8fafc; color: #0f172a; }
     </style>
 </head>
-<body class="min-h-screen flex text-slate-400 relative overflow-hidden">
+<body class="min-h-screen flex text-slate-600 relative overflow-hidden mesh-gradient-light">
 
     <!-- Overlay para móvil -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
-    <!-- Sidebar Supervisión -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-[#020617] border-r border-white/5 flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 sidebar-light flex flex-col z-50 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
+            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-amber-200">
                 <i class="fa-solid fa-mountain-sun text-xl"></i>
             </div>
-            <span class="text-xl font-extrabold tracking-tighter text-white uppercase">PREDIO<span class="text-amber-500 italic">PRO</span></span>
+            <span class="text-xl font-extrabold tracking-tighter text-slate-900 uppercase">PREDIO<span class="text-amber-500 italic">PRO</span></span>
         </div>
         <nav class="flex-1 px-4 mt-4 space-y-1">
-            <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-white bg-amber-500/10 border-r-2 border-amber-500">
-                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Balance Bodega
+            <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-amber-700 bg-amber-50 border-r-4 border-amber-500">
+                <i class="fa-solid fa-boxes-stacked"></i> Balance Bodega
             </button>
-            <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold hover:bg-white/5 transition-all">
+            <button class="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-sm font-bold text-slate-400 hover:bg-slate-50 transition-all">
                 <i class="fa-solid fa-users-viewfinder"></i> Equipo Operativo
             </button>
         </nav>
-        <div class="p-6 border-t border-white/5">
-            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">
+        <div class="p-6 border-t border-slate-100">
+            <button onclick="navigation.logout()" class="w-full flex items-center gap-4 px-6 py-4 text-sm font-bold text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
                 <i class="fa-solid fa-power-off"></i> Cierre de Turno
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 p-8 md:p-12 space-y-10 overflow-y-auto h-screen">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center glass-panel p-10 rounded-[2.5rem] gap-8">
+    <main class="flex-1 p-6 md:p-12 space-y-10 overflow-y-auto h-screen">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center premium-card p-10 gap-8 border-amber-100">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-white bg-white/5 rounded-xl border border-white/10">
+                <button onclick="toggleSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-xl">
                     <i class="fa-solid fa-bars-staggered"></i>
                 </button>
                 <div>
-                    <h2 class="text-3xl font-black text-white uppercase tracking-tighter leading-none mb-1">Control Predial</h2>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-2">Protocolo de Supervisión Técnica</p>
+                    <h2 class="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Supervisión</h2>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-2">Gestión Técnica de Predio</p>
                 </div>
             </div>
             <div class="text-right">
-                <p id="fincaNombre" class="text-xl font-black text-amber-500 tracking-tight leading-none mb-2 uppercase">Unidad de Producción</p>
-                <div class="inline-block px-4 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-widest">Mayordomo General</div>
+                <p id="fincaNombre" class="text-xl font-black text-amber-600 tracking-tight leading-none mb-2 uppercase">Cargando...</p>
+                <div class="inline-block px-4 py-1.5 rounded-lg bg-amber-50 border border-amber-100 text-amber-600 text-[10px] font-black uppercase tracking-widest">Mayordomo General</div>
             </div>
         </header>
 
         <section class="space-y-8 animate-in fade-in duration-500">
             <div class="flex justify-between items-center px-4">
-                <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Inventario de Suministros (BPG)</h3>
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Inventario de Suministros</h3>
+                <a href="inventario.html" class="text-amber-600 text-xs font-black uppercase tracking-widest hover:underline">+ Registrar Ingreso</a>
             </div>
-            <div class="glass-panel rounded-[2.5rem] overflow-hidden">
+            <div class="premium-card overflow-hidden border-none">
                 <table class="w-full text-left">
-                    <thead class="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
+                    <thead class="bg-slate-50 text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] border-b border-slate-100">
                         <tr>
-                            <th class="p-8">Insumo Registrado</th>
-                            <th class="p-8">Balance Neto</th>
-                            <th class="p-8 text-right">Expiración Técnica</th>
+                            <th class="p-8">Insumo</th>
+                            <th class="p-8 text-center">Stock Actual</th>
+                            <th class="p-8 text-right">Caducidad</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaStock" class="divide-y divide-white/5 text-sm text-slate-300">
-                        <!-- Carga de datos dinámicos -->
+                    <tbody id="tablaStock" class="divide-y divide-slate-50 text-sm text-slate-600 font-medium">
+                        <tr class="hover:bg-amber-50/30 transition-colors">
+                            <td class="p-8 font-black text-slate-900">SILO DE MAÍZ</td>
+                            <td class="p-8 text-center"><span class="px-4 py-1 rounded-full bg-emerald-50 text-emerald-600 font-black">500 Kg</span></td>
+                            <td class="p-8 text-right font-bold text-slate-400">---</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- Footer Corporativo -->
         <div id="footerContainer"></div>
     </main>
 
     <script src="../services/navigation.js"></script>
     <script>
-        const token = localStorage.getItem("token");
-
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isHidden = sidebar.classList.contains('-translate-x-full');
-
-            if (isHidden) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
+            if (isHidden) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
         }
 
         async function cargarStock() {
             try {
+                const token = localStorage.getItem("token");
                 const res = await fetch("/admin/fincas", { headers: { "Authorization": "Bearer " + token } });
                 const data = await res.json();
-                if(data.length > 0) {
-                    document.getElementById('fincaNombre').innerText = data[0].nombre;
-                }
-            } catch (e) { console.error("Error de sincronización"); }
+                if(data.length > 0) document.getElementById('fincaNombre').innerText = data[0].nombre;
+            } catch (e) { }
         }
-
-        function logout() { navigation.logout(); }
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarStock();

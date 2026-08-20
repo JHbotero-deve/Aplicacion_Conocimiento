@@ -1,16 +1,17 @@
 # Ganadería Pro - Sistema de Gestión Pecuaria de Precisión
 
-Aplicación profesional para la administración de fincas, control de ganado, operaciones de campo y sanidad animal. Diseñada específicamente para entornos rurales con conectividad limitada.
+Aplicación profesional para la administración de fincas, control de ganado, operaciones de campo y sanidad animal. Diseñada específicamente para entornos rurales con conectividad limitada y una experiencia de usuario de nivel ejecutivo.
 
 ## 🚀 Guía de Inicio Rápido (PC Administrador)
 
-Para entregar e instalar el sistema en una PC nueva, siga estos pasos:
+Para entregar e instalar el sistema en una PC nueva de forma profesional:
 
-1.  **Instalar Docker Desktop:** Descárguelo e instálelo desde [docker.com](https://www.docker.com/). Es fundamental para la base de datos blindada.
-2.  **Descargar el Proyecto:** Coloque la carpeta del sistema en un directorio de su preferencia (ej. `C:/GanaderiaPro`).
-3.  **Iniciar el Sistema:** Ejecute el archivo `INICIAR_SISTEMA.bat` ubicado en la raíz.
-    - El script configurará automáticamente la red local, el backend y la base de datos.
-4.  **Acceso Local:** Una vez finalizado el proceso, abra su navegador en `http://localhost:8000`.
+1.  **Instalar Docker Desktop:** Descárguelo e instálelo desde [docker.com](https://www.docker.com/). Es el motor de seguridad blindada.
+2.  **Descargar el Proyecto:** Coloque la carpeta del sistema en su PC (ej. `C:/GanaderiaPro`).
+3.  **Primer Lanzamiento:** Haga doble clic en el archivo **`INICIAR_GANADERIA_PRO.vbs`**. 
+    - Verá una ventana elegante de carga mientras el sistema se auto-configura.
+    - El script creará automáticamente un **Acceso Directo en su Escritorio** con el icono oficial.
+4.  **Acceso Diario:** A partir del primer uso, simplemente abra la aplicación desde el icono **"Ganadería Pro"** en su escritorio. El sistema se abrirá en "Modo Aplicación" (sin barras de navegador).
 
 ## 📱 Acceso para Operarios (Celulares)
 

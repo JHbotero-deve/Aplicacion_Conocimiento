@@ -6,103 +6,110 @@
     <title>Ganadería Pro | Gestión Pecuaria de Precisión</title>
     <link rel="stylesheet" href="./assets/css/tailwind.css">
     <link rel="stylesheet" href="./assets/css/all.min.css">
-    <link href="./styles/theme.css" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        .bento-glow:hover { box-shadow: 0 0 30px rgba(16, 185, 129, 0.1); }
-    </style>
+    <link rel="stylesheet" href="./styles/theme.css">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <meta name="theme-color" content="#059669">
 </head>
-<body class="app-theme bg-emerald-50 text-slate-900 min-h-screen selection:bg-emerald-300/40">
+<body class="bg-white text-slate-900 min-h-screen selection:bg-emerald-100 mesh-gradient-light">
 
-    <!-- Header / Nav -->
-    <header class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center glass border-b border-white/5">
-        <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-[#020617]">
-                <i class="fa-solid fa-layer-group text-xl"></i>
+    <!-- Header Corporativo -->
+    <header class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-200">
+                <i class="fa-solid fa-cow"></i>
             </div>
-            <span class="text-xl font-black tracking-tighter text-slate-900 uppercase">Ganadería<span class="text-emerald-600">Pro</span></span>
+            <span class="text-xl font-black tracking-tighter text-slate-900 uppercase italic">Ganadería<span class="text-emerald-600">Pro</span></span>
         </div>
         <div class="flex gap-4">
-            <a href="/admin/acceso-qr" class="px-6 py-2.5 rounded-xl font-bold text-sm text-emerald-400 hover:bg-emerald-500/10 transition-all border border-emerald-500/20"><i class="fa-solid fa-qrcode mr-2"></i>Link para Celular</a>
-            <a href="./forms/login.html" class="px-6 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:bg-white/5 transition-all border border-white/10">Acceso Corporativo</a>
-            <a href="./forms/registro.html" class="px-6 py-2.5 rounded-xl font-bold text-sm bg-emerald-600 text-white hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">Empezar Ahora</a>
+            <a href="/admin/acceso-qr" class="hidden sm:flex px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest text-emerald-600 hover:bg-emerald-50 transition-all border border-emerald-100">
+                <i class="fa-solid fa-qrcode mr-2 text-xs"></i>Link Móvil
+            </a>
+            <a href="./forms/login.html" class="px-8 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/10">
+                Acceso Corporativo
+            </a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <main class="pt-40 pb-20 px-6 max-w-7xl mx-auto">
+    <main class="pt-48 pb-20 px-6 max-w-7xl mx-auto">
         <div class="text-center mb-24">
-            <span class="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-black uppercase tracking-widest border border-emerald-500/20 inline-block mb-6">Versión 2026 | AgriTech Intelligence</span>
-            <h1 class="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] mb-8">
-                Control Total.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-500 italic">Cero Complicaciones.</span>
+            <span class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em] border border-emerald-100 inline-block mb-8">
+                Versión 2026 | AgriTech Intelligence
+            </span>
+            <h1 class="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.95] mb-10">
+                Productividad.<br><span class="text-emerald-600 italic">Sin Límites.</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
-                La plataforma definitiva para la gestión ganadera profesional. Cumplimiento ICA automático, asistencia por voz y analítica predictiva en una sola interfaz.
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-bold leading-relaxed italic">
+                La plataforma líder para la trazabilidad y gestión pecuaria certificada bajo estándares BPG.
             </p>
         </div>
 
-        <!-- Bento Grid Features -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Large Feature -->
-            <div class="md:col-span-2 glass rounded-[2.5rem] p-10 bento-glow transition-all group overflow-hidden relative">
+        <!-- Bento Grid Premium -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 premium-card p-12 transition-all group overflow-hidden relative border-none shadow-2xl shadow-slate-900/5">
                 <div class="relative z-10">
-                    <div class="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20">
-                        <i class="fa-solid fa-microchip text-2xl"></i>
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-8 border border-emerald-100">
+                        <i class="fa-solid fa-microphone-lines text-2xl"></i>
                     </div>
-                    <h3 class="text-3xl font-black text-slate-900 mb-4 tracking-tight">Asistente de Voz Inteligente</h3>
-                    <p class="text-slate-400 font-medium max-w-sm">
-                        Optimizado para el trabajo en campo. Registra producciones, tratamientos y novedades simplemente hablando. Sin necesidad de internet constante.
+                    <h3 class="text-3xl font-black text-slate-900 mb-6 tracking-tight uppercase">Voz Inteligente</h3>
+                    <p class="text-slate-500 font-bold text-lg leading-relaxed max-w-sm">
+                        Optimice el registro en campo simplemente hablando. El sistema corrige automáticamente términos regionales y valida datos en tiempo real.
                     </p>
                 </div>
-                <i class="fa-solid fa-microphone-lines absolute -right-10 -bottom-10 text-emerald-500/5 text-[15rem] group-hover:scale-110 transition-transform duration-700"></i>
+                <i class="fa-solid fa-cow absolute -right-16 -bottom-16 text-emerald-50 text-[22rem] pointer-events-none"></i>
             </div>
 
-            <!-- Small Feature 1 -->
-            <div class="glass rounded-[2.5rem] p-10 bento-glow transition-all group relative overflow-hidden">
-                <div class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20">
-                    <i class="fa-solid fa-shield-check text-2xl"></i>
+            <div class="premium-card p-12 border-none shadow-2xl shadow-slate-900/5 bg-emerald-900 text-white">
+                <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
+                    <i class="fa-solid fa-shield-check text-2xl text-emerald-400"></i>
                 </div>
-                <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Cumplimiento ICA</h3>
-                <p class="text-slate-400 font-medium text-sm">
-                    Formatos RSPP y BPG integrados. Genera reportes oficiales de vacunación y sanidad animal con un clic.
+                <h3 class="text-2xl font-black mb-6 tracking-tight uppercase leading-tight">Acceso Blindado<br>Steel Edge</h3>
+                <p class="text-emerald-100/70 font-medium text-sm leading-relaxed">
+                    Privacidad absoluta para sus datos. Base de datos aislada y sincronización cifrada de extremo a extremo.
                 </p>
             </div>
 
-            <!-- Small Feature 2 -->
-            <div class="glass rounded-[2.5rem] p-10 bento-glow transition-all group relative overflow-hidden">
-                <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20">
-                    <i class="fa-solid fa-chart-network text-2xl"></i>
+            <div class="premium-card p-12 border-none shadow-2xl shadow-slate-900/5">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8 border border-blue-100">
+                    <i class="fa-solid fa-cloud-bolt text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Auditoría Pro</h3>
-                <p class="text-slate-400 font-medium text-sm">
-                    Trazabilidad total por finca y usuario. Sabrás exactamente quién, cuándo y dónde se realizó cada acción.
+                <h3 class="text-2xl font-black text-slate-900 mb-6 tracking-tight uppercase">Offline Total</h3>
+                <p class="text-slate-400 font-bold text-sm leading-relaxed">
+                    Diseñado para la realidad del campo. Trabaje sin señal y sincronice cuando detecte red WiFi automáticamente.
                 </p>
             </div>
 
-            <!-- Medium Feature -->
-            <div class="md:col-span-2 glass rounded-[2.5rem] p-10 bento-glow transition-all group flex flex-col md:flex-row items-center gap-10">
+            <div class="md:col-span-2 premium-card p-12 border-none shadow-2xl shadow-slate-900/5 flex flex-col md:flex-row items-center gap-12 bg-gradient-to-br from-white to-emerald-50">
                 <div class="flex-1">
-                    <div class="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/20">
-                        <i class="fa-solid fa-server text-2xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-slate-900 mb-4 tracking-tight">Arquitectura Offline-First</h3>
-                    <p class="text-slate-400 font-medium">
-                        Diseñado para la realidad del campo. Sincroniza datos cuando haya conexión y mantén la operación firme en zonas remotas.
+                    <h3 class="text-3xl font-black text-slate-900 mb-6 tracking-tight uppercase">Simplicidad PWA</h3>
+                    <p class="text-slate-500 font-bold leading-relaxed mb-8">
+                        Instale la aplicación en segundos desde un código QR. Sin complicaciones de descargas o tiendas de aplicaciones.
                     </p>
+                    <div class="flex gap-4">
+                        <div class="px-6 py-2 rounded-xl bg-white border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 shadow-sm">iOS</div>
+                        <div class="px-6 py-2 rounded-xl bg-white border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 shadow-sm">Android</div>
+                    </div>
                 </div>
-                <div class="flex gap-4">
-                    <div class="w-24 h-24 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center"><i class="fa-brands fa-docker text-4xl text-blue-400"></i></div>
-                    <div class="w-24 h-24 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center"><i class="fa-solid fa-database text-4xl text-emerald-400"></i></div>
+                <div class="w-48 h-48 bg-emerald-600 rounded-full flex items-center justify-center shadow-2xl shadow-emerald-900/20 relative">
+                     <i class="fa-solid fa-mobile-screen text-7xl text-white"></i>
+                     <div class="absolute -top-2 -right-2 w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shadow-lg animate-bounce">
+                        <i class="fa-solid fa-qrcode"></i>
+                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer Corporativo Premium -->
+    <!-- Footer Corporativo -->
     <div id="footerContainer"></div>
 
     <script src="./services/navigation.js"></script>
     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.error(err));
+            });
+        }
         document.addEventListener('DOMContentLoaded', () => {
             navigation.renderFooter('footerContainer');
         });

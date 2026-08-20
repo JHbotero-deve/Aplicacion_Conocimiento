@@ -11,10 +11,11 @@ El sistema reside en el repositorio oficial:
 1. **Docker Desktop:** [Descargar aquí](https://www.docker.com/products/docker-desktop/). Debe estar abierto antes de iniciar el sistema.
 2. **Navegador:** Se recomienda Google Chrome o Microsoft Edge.
 
-## 3. Puesta en Marcha
-1. Localice el archivo **INICIAR_SISTEMA.bat** en la raíz de la carpeta.
-2. Ejecútelo (doble clic). No cierre la ventana mientras esté trabajando.
-3. Ingrese a: `http://localhost:8000`
+## 3. Puesta en Marcha (Experiencia Cero Terminal)
+1. Localice el archivo **INICIAR_GANADERIA_PRO.vbs** en la raíz de la carpeta.
+2. Ejecútelo (doble clic). Aparecerá una ventana de carga profesional: "Iniciando Ganadería Pro...".
+3. **Acceso Directo:** El sistema creará automáticamente un icono en su escritorio. Úselo para entrar cada mañana.
+4. El sistema se abrirá automáticamente en una ventana limpia (Modo Aplicación), lista para trabajar.
 
 ## 4. Conexión de Celulares (Modo Local vs Remoto)
 
