@@ -1,14 +1,17 @@
-# Tareas: Sincronización de Navegación y Footers Premium
+# Tareas: Estandarización a Modo Claro Premium (Finalizado)
 
-- `[x]` Refactorizar `navigation.js`.
-    - `[x]` Mejorar lógica de `goBack()` por roles.
-    - `[x]` Unificar sistema de `logout()`.
-    - `[x]` Crear motor de inyección de `renderFooter()`.
-- `[x]` Aplicar Footers Corporativos en toda la plataforma.
-    - `[x]` Actualizar `index.html`.
-    - `[x]` Actualizar Dashboards (Admin, Ganadero, Mayordomo, Veterinario).
-    - `[x]` Actualizar Formularios de Operación (Producción, Salud, etc.).
-    - `[x]` Actualizar Vista de Perfil.
-- `[x]` Auditoría de Rutas y Botones.
-    - `[x]` Verificar enlaces entre dashboards y formularios.
-    - `[x]` Asegurar que el cierre de sesión limpia el historial de navegación.
+- `[x]` Actualizar `theme.css` con paleta de claridad total (Emerald Premium).
+- `[x]` Rediseñar Dashboard de Administrador (Modo Claro).
+- `[x]` Rediseñar Dashboard de Ganadero (Modo Claro).
+- `[x]` Rediseñar Dashboard de Veterinario (Modo Claro).
+- `[x]` Rediseñar Dashboard de Mayordomo (Modo Claro).
+- `[x]` Ajustar todos los formularios (Producción, Salud, Registro, etc.) al nuevo estándar.
+- `[x]` Sincronizar Landing Page (`index.html`) con la estética Premium.
+- `[x]` Actualizar `manifest.webmanifest` con el nuevo color de fondo blanco.
+- `[x]` Crear carpeta de imágenes para iconos PWA (`frontend/assets/img/`).
+- `[x]` Optimizar Scripts de Lanzamiento (`.bat`).
+    - `[x]` Implementar "Arranque Inteligente" (Detección de IP y puertos).
+    - `[x]` Configurar apertura directa al Login Corporativo Real.
+    - `[x]` Añadir motor de salud persistente para evitar errores de carga.
+    - `[x]` Crear script de Reinicio Diagnóstico para corrección de fallos.
+- `[x]` Verificación visual completa de la jerarquía de colores.

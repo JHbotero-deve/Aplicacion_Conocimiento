@@ -1,28 +1,52 @@
 @echo off
-setlocal
-title Ganaderia Pro - Mantenimiento
+setlocal enabledelayedexpansion
+title Ganaderia Pro - Mantenimiento Inteligente
 
-echo ======================================================
-echo       GANADERIA PRO - REINICIO DE EMERGENCIA
-echo ======================================================
 echo.
-echo Este proceso limpiara la cache y reiniciara los servicios.
-echo Sus datos (fincas, ganado) NO se borraran.
+echo ================================================================
+echo       GANADERIA PRO - REINICIO Y DIAGNOSTICO DE EMERGENCIA
+echo ================================================================
 echo.
-set /p confirm="¿Desea continuar? (S/N): "
+
+:: 1. Diagnostico previo
+echo [1/4] Analizando estado de contenedores...
+docker-compose ps
+echo.
+
+set /p confirm="¿Desea aplicar correccion y reinicio completo? (S/N): "
 if /i "%confirm%" neq "S" exit /b
 
-echo [1/2] Deteniendo servicios...
-docker-compose down
+echo.
+echo [2/4] Deteniendo servicios y limpiando errores de red...
+docker-compose down --remove-orphans
 
-echo [2/2] Limpiando y arrancando de nuevo...
+echo [3/4] Re-inicializando infraestructura Steel Edge...
 docker-compose up -d --build
 
-echo.
-echo Re-sincronizando...
-timeout /t 5 /nobreak >nul
-docker-compose exec backend npm run seed
+echo [4/4] Verificando restablecimiento del servicio...
+set "RETRY=0"
+:health_check
+curl -s http://localhost:8000/health | findstr "available" >nul
+if %errorlevel% neq 0 (
+    set /a RETRY+=1
+    if !RETRY! gtr 10 (
+        echo [!] El sistema requiere atencion manual. Verifique Docker Desktop.
+        pause
+        exit /b
+    )
+    echo ... re-conectando (!RETRY!/10) ...
+    timeout /t 2 /nobreak >nul
+    goto health_check
+)
 
 echo.
-echo [LISTO] El sistema ha sido reiniciado con exito.
+echo [LISTO] Sincronizando y abriendo aplicacion corporativa...
+docker-compose exec -T backend npm run seed
+start http://localhost:8000/forms/login.html
+
+echo.
+echo ================================================================
+echo      EL SISTEMA SE HA RESTABLECIDO CORRECTAMENTE ✅
+echo ================================================================
+echo.
 pause
